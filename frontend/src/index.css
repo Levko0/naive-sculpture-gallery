@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: #FAF8F5;
+    color: #18181B;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Museum Typography */
+  h1, h2, h3, .font-serif {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-feature-settings: 'lnum' 1;
+  }
+
+  /* Numbers & Dimensions */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Custom Gallery Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF8F5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E6E2DD;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D4CEC6;
+}
+
+/* Smooth Image Fade-In */
+.image-fade-in {
+  transition: opacity 0.4s ease-in-out, filter 0.4s ease-in-out;
+}
+
+/* Museum Card Thin Border */
+.gallery-card-border {
+  border: 1px solid #E6E2DD;
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+.gallery-card-border:hover {
+  border-color: #D4CEC6;
+}

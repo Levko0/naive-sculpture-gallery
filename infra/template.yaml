@@ -1,0 +1,425 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Naive Art Sculpture Gallery & Storefront (AWS Free Tier Architecture)
+  Monorepo serverless deployment with $0 idle cost:
+  S3 + CloudFront (OAC) + API Gateway HTTP API v2 + Python 3.12 FastAPI on Lambda (arm64)
+  + DynamoDB (Provisioned 5 RCU/5 WCU) + Cognito User Pool + SNS Email Notifications.
+
+Parameters:
+  Environment:
+    Type: String
+    Default: prod
+    AllowedValues: [dev, staging, prod]
+    Description: Deployment stage environment name.
+  
+  ArtistNotificationEmail:
+    Type: String
+    Default: artist@naive-sculptures.art
+    Description: Email address for instant SNS reservation & inquiry notifications.
+    AllowedPattern: '^.+@.+\..+$'
+    ConstraintDescription: Must be a valid email address.
+
+Globals:
+  Function:
+    Timeout: 15
+    MemorySize: 256
+    Runtime: python3.12
+    Architectures:
+      - arm64
+    Environment:
+      Variables:
+        ENVIRONMENT: !Ref Environment
+        SCULPTURES_TABLE: !Ref SculpturesTable
+        ORDERS_TABLE: !Ref OrdersTable
+        MEDIA_BUCKET: !Ref GalleryBucket
+        CLOUDFRONT_DOMAIN: !GetAtt GalleryDistribution.DomainName
+        SNS_TOPIC_ARN: !Ref OrderNotificationsTopic
+        COGNITO_USER_POOL_ID: !Ref ArtistUserPool
+        COGNITO_CLIENT_ID: !Ref ArtistUserPoolClient
+        LOG_LEVEL: INFO
+
+Resources:
+  # ============================================================================
+  # 1. DATABASE: DYNAMODB TABLES (AWS ALWAYS FREE TIER: 5 RCU / 5 WCU)
+  # ============================================================================
+  SculpturesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub '${AWS::StackName}-sculptures'
+      BillingMode: PROVISIONED
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: slug
+          AttributeType: S
+        - AttributeName: status
+          AttributeType: S
+        - AttributeName: display_order
+          AttributeType: N
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: SlugIndex
+          KeySchema:
+            - AttributeName: slug
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+        - IndexName: StatusIndex
+          KeySchema:
+            - AttributeName: status
+              KeyType: HASH
+            - AttributeName: display_order
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: false
+      SSESpecification:
+        SSEEnabled: true
+      Tags:
+        - Key: Project
+          Value: NaiveSculpturesGallery
+        - Key: Environment
+          Value: !Ref Environment
+
+  OrdersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub '${AWS::StackName}-orders'
+      BillingMode: PROVISIONED
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: status
+          AttributeType: S
+        - AttributeName: created_at
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: StatusCreatedAtIndex
+          KeySchema:
+            - AttributeName: status
+              KeyType: HASH
+            - AttributeName: created_at
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: false
+      SSESpecification:
+        SSEEnabled: true
+      Tags:
+        - Key: Project
+          Value: NaiveSculpturesGallery
+        - Key: Environment
+          Value: !Ref Environment
+
+  # ============================================================================
+  # 2. STORAGE: S3 BUCKET (STATIC FRONTEND + HIGH-RES /media/ PHOTOS)
+  # ============================================================================
+  GalleryBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub '${AWS::StackName}-gallery-${AWS::AccountId}-${AWS::Region}'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        IgnorePublicAcls: true
+        BlockPublicPolicy: true
+        RestrictPublicBuckets: true
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - '*'
+            AllowedMethods:
+              - GET
+              - PUT
+              - HEAD
+              - POST
+            AllowedOrigins:
+              - '*'
+            MaxAge: 3600
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      LifecycleConfiguration:
+        Rules:
+          - Id: AbortIncompleteMultipartUploads
+            Status: Enabled
+            AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 1
+
+  GalleryBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref GalleryBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: AllowCloudFrontServicePrincipalReadOnly
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub '${GalleryBucket.Arn}/*'
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${GalleryDistribution}'
+
+  # ============================================================================
+  # 3. CDN: CLOUDFRONT WITH ORIGIN ACCESS CONTROL (OAC)
+  # ============================================================================
+  GalleryOAC:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub '${AWS::StackName}-oac'
+        Description: Origin Access Control for Gallery S3 Bucket
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  GalleryDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: Naive Art Sculpture Gallery Global CDN (Free Tier 1TB/mo)
+        DefaultRootObject: index.html
+        PriceClass: PriceClass_100
+        HttpVersion: http2and3
+        Origins:
+          # S3 Static Assets & Media Origin
+          - Id: S3Origin
+            DomainName: !GetAtt GalleryBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt GalleryOAC.Id
+            S3OriginConfig: {}
+          # API Gateway Origin
+          - Id: ApiGatewayOrigin
+            DomainName: !Sub '${ApiGatewayHttpApi}.execute-api.${AWS::Region}.amazonaws.com'
+            CustomOriginConfig:
+              HTTPPort: 80
+              HTTPSPort: 443
+              OriginProtocolPolicy: https-only
+              OriginSSLProtocols:
+                - TLSv1.2
+        # Default behavior: Frontend SPA
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods: [GET, HEAD, OPTIONS]
+          CachedMethods: [GET, HEAD]
+          Compress: true
+          # Managed-CachingOptimized Policy ID
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+        CacheBehaviors:
+          # High-Res Media behavior: Immutable long-term caching
+          - PathPattern: 'media/*'
+            TargetOriginId: S3Origin
+            ViewerProtocolPolicy: redirect-to-https
+            AllowedMethods: [GET, HEAD, OPTIONS]
+            CachedMethods: [GET, HEAD]
+            Compress: true
+            CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+          # Dynamic API behavior: Zero caching, forward headers & query strings
+          - PathPattern: 'api/*'
+            TargetOriginId: ApiGatewayOrigin
+            ViewerProtocolPolicy: redirect-to-https
+            AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+            CachedMethods: [GET, HEAD, OPTIONS]
+            # Managed-CachingDisabled Policy ID
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+            # Managed-AllViewerExceptHostHeader Policy ID
+            OriginRequestPolicyId: b684b0cd-4e78-4581-89e4-b77914cb5462
+        # SPA routing: redirect 403 & 404 to /index.html with status 200
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+            ErrorCachingMinTTL: 0
+          - ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+            ErrorCachingMinTTL: 0
+
+  # ============================================================================
+  # 4. AUTHENTICATION: AMAZON COGNITO USER POOL & CLIENT
+  # ============================================================================
+  ArtistUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Sub '${AWS::StackName}-artist-pool'
+      UsernameAttributes:
+        - email
+      AutoVerifiedAttributes:
+        - email
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: true # Strict artist access only
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: false
+          RequireUppercase: true
+      MfaConfiguration: 'OFF'
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: verified_email
+            Priority: 1
+
+  ArtistUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: !Sub '${AWS::StackName}-web-client'
+      UserPoolId: !Ref ArtistUserPool
+      GenerateSecret: false # SPA public client
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+        - ALLOW_USER_SRP_AUTH
+      PreventUserExistenceErrors: ENABLED
+      AccessTokenValidity: 24
+      IdTokenValidity: 24
+      TokenValidityUnits:
+        AccessToken: hours
+        IdToken: hours
+
+  # ============================================================================
+  # 5. NOTIFICATIONS: AMAZON SNS TOPIC & EMAIL SUBSCRIPTION
+  # ============================================================================
+  OrderNotificationsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub '${AWS::StackName}-order-alerts'
+      DisplayName: Naive Art Sculpture Orders
+
+  ArtistEmailSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref OrderNotificationsTopic
+      Protocol: email
+      Endpoint: !Ref ArtistNotificationEmail
+
+  # ============================================================================
+  # 6. API: API GATEWAY HTTP API (V2) WITH STRICT CORS & JWT AUTHORIZER
+  # ============================================================================
+  ApiGatewayHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - '*'
+        AllowMethods:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+          - Authorization
+          - X-Requested-With
+        MaxAge: 600
+      Auth:
+        Authorizers:
+          CognitoJwtAuthorizer:
+            AuthorizationScopes: []
+            IdentitySource: '$request.header.Authorization'
+            JwtConfiguration:
+              issuer: !Sub 'https://cognito-idp.${AWS::Region}.amazonaws.com/${ArtistUserPool}'
+              audience:
+                - !Ref ArtistUserPoolClient
+
+  # ============================================================================
+  # 7. COMPUTE: FASTAPI ON AWS LAMBDA (ARM64, OUTSIDE VPC FOR $0 COST)
+  # ============================================================================
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub '${AWS::StackName}-api'
+      CodeUri: ../backend
+      Handler: app.main.handler
+      Description: FastAPI serverless backend for Naive Art Gallery
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SculpturesTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref OrdersTable
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt OrderNotificationsTopic.TopicName
+        - S3CrudPolicy:
+            BucketName: !Ref GalleryBucket
+      Events:
+        # Public API route (Storefront catalog & reservation)
+        PublicApiRoutes:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ApiGatewayHttpApi
+            Path: /api/{proxy+}
+            Method: ANY
+
+  # CloudWatch Logs 7-day retention for cost minimization
+  ApiFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${ApiFunction}'
+      RetentionInDays: 7
+
+Outputs:
+  CloudFrontUrl:
+    Description: Global CloudFront URL for Gallery Storefront
+    Value: !Sub 'https://${GalleryDistribution.DomainName}'
+    Export:
+      Name: !Sub '${AWS::StackName}-CloudFrontUrl'
+
+  ApiEndpointUrl:
+    Description: Direct API Gateway HTTP API Endpoint URL
+    Value: !Sub 'https://${ApiGatewayHttpApi}.execute-api.${AWS::Region}.amazonaws.com'
+    Export:
+      Name: !Sub '${AWS::StackName}-ApiEndpointUrl'
+
+  GalleryBucketName:
+    Description: S3 Bucket Name for Static Website Assets & Media
+    Value: !Ref GalleryBucket
+    Export:
+      Name: !Sub '${AWS::StackName}-GalleryBucket'
+
+  CognitoUserPoolId:
+    Description: Cognito User Pool ID for Artist Authentication
+    Value: !Ref ArtistUserPool
+    Export:
+      Name: !Sub '${AWS::StackName}-UserPoolId'
+
+  CognitoClientId:
+    Description: Cognito User Pool App Client ID
+    Value: !Ref ArtistUserPoolClient
+    Export:
+      Name: !Sub '${AWS::StackName}-ClientId'
+
+  SnsTopicArn:
+    Description: SNS Order Notifications Topic ARN
+    Value: !Ref OrderNotificationsTopic
+    Export:
+      Name: !Sub '${AWS::StackName}-SnsTopicArn'
