@@ -1,7 +1,7 @@
 # Галерея Наївного Мистецтва (Naive Art Sculpture Gallery)
 ### Production-Ready Serverless Web Application & Storefront (AWS Free Tier Optimized: $0/month idle cost)
 
-[![CI/CD Deployment](https://github.com/example/naive-sculpture-gallery/actions/workflows/deploy.yml/badge.svg)](https://github.com/example/naive-sculpture-gallery/actions/workflows/deploy.yml)
+[![CI/CD Deployment](https://github.com/Levko0/naive-sculpture-gallery/actions/workflows/deploy.yml/badge.svg)](https://github.com/Levko0/naive-sculpture-gallery/actions/workflows/deploy.yml)
 [![AWS Free Tier](https://img.shields.io/badge/AWS_Free_Tier-100%25_Compliant-2E5A36)](https://aws.amazon.com/free/)
 [![FastAPI](https://img.shields.io/badge/Backend-Python_3.12_FastAPI-009688)](https://fastapi.tiangolo.com/)
 [![React 18](https://img.shields.io/badge/Frontend-React_18_Vite_TS-61DAFB)](https://react.dev/)
