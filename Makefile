@@ -5,7 +5,7 @@ export SAM_CLI_TELEMETRY := 0
 
 STACK_NAME ?= naive-sculpture-gallery
 AWS_REGION ?= eu-central-1
-ARTIST_EMAIL ?= artist@naive-sculptures.art
+ARTIST_EMAIL ?= zhuraiev.pn@ucu.edu.ua
 
 help:
 	@echo "🎨 Naive Art Sculpture Gallery & Storefront — Makefile"
@@ -68,15 +68,25 @@ deploy-frontend:
 	@echo "🚀 Syncing frontend to S3 and invalidating CloudFront..."
 	@BUCKET_NAME=$$(aws cloudformation describe-stacks --stack-name $(STACK_NAME) --region $(AWS_REGION) --query "Stacks[0].Outputs[?OutputKey=='GalleryBucketName'].OutputValue" --output text); \
 	DIST_ID=$$(aws cloudformation describe-stack-resources --stack-name $(STACK_NAME) --region $(AWS_REGION) --query "StackResources[?ResourceType=='AWS::CloudFront::Distribution'].PhysicalResourceId" --output text); \
+	CLIENT_ID=$$(aws cloudformation describe-stacks --stack-name $(STACK_NAME) --region $(AWS_REGION) --query "Stacks[0].Outputs[?OutputKey=='CognitoClientId'].OutputValue" --output text); \
 	echo "Target Bucket: $$BUCKET_NAME"; \
 	echo "Target Distribution: $$DIST_ID"; \
-	aws s3 sync frontend/dist s3://$$BUCKET_NAME --delete --cache-control "public, max-age=31536000, immutable" --exclude "index.html"; \
+	echo "Cognito Client ID: $$CLIENT_ID"; \
+	echo "window.__ENV__ = { VITE_COGNITO_CLIENT_ID: '$$CLIENT_ID', VITE_AWS_REGION: '$(AWS_REGION)' };" > frontend/dist/env.js; \
+	aws s3 sync frontend/dist s3://$$BUCKET_NAME --delete --cache-control "public, max-age=31536000, immutable" --exclude "index.html" --exclude "env.js"; \
 	aws s3 cp frontend/dist/index.html s3://$$BUCKET_NAME/index.html --cache-control "no-cache, no-store, must-revalidate"; \
+	aws s3 cp frontend/dist/env.js s3://$$BUCKET_NAME/env.js --cache-control "no-cache, no-store, must-revalidate"; \
 	aws cloudfront create-invalidation --distribution-id $$DIST_ID --paths "/*"
 	@echo "✅ Frontend deployment complete!"
 
-deploy: test build deploy-infra deploy-frontend
+seed-db:
+	@echo "🌱 Populating DynamoDB with initial authentic sculptures..."
+	@cd backend && .venv/bin/python seed_dynamodb.py --table "$(STACK_NAME)-sculptures" --region $(AWS_REGION)
+
+deploy: test build deploy-infra deploy-frontend seed-db
 	@echo "🎉 Naive Art Sculpture Gallery successfully deployed to AWS Free Tier!"
+	@CF_URL=$$(aws cloudformation describe-stacks --stack-name $(STACK_NAME) --region $(AWS_REGION) --query "Stacks[0].Outputs[?OutputKey=='CloudFrontUrl'].OutputValue" --output text); \
+	echo "🌐 Live URL: $$CF_URL"
 
 clean:
 	rm -rf frontend/dist

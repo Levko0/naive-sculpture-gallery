@@ -5,6 +5,7 @@ and local in-memory fallback for development and automated testing.
 import uuid
 import logging
 from datetime import datetime, timezone
+from decimal import Decimal
 from typing import List, Optional, Dict, Any
 import boto3
 from botocore.exceptions import ClientError
@@ -16,6 +17,28 @@ logger = logging.getLogger(__name__)
 
 def _utc_now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+
+def floats_to_decimals(obj: Any) -> Any:
+    """Recursively converts float values to Decimal for DynamoDB storage."""
+    if isinstance(obj, float):
+        return Decimal(str(obj))
+    elif isinstance(obj, dict):
+        return {k: floats_to_decimals(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [floats_to_decimals(v) for v in obj]
+    return obj
+
+
+def decimals_to_floats(obj: Any) -> Any:
+    """Recursively converts Decimal values back to float/int for JSON serialization."""
+    if isinstance(obj, Decimal):
+        return int(obj) if obj % 1 == 0 else float(obj)
+    elif isinstance(obj, dict):
+        return {k: decimals_to_floats(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [decimals_to_floats(v) for v in obj]
+    return obj
 
 
 def get_dynamodb_resource():
@@ -111,6 +134,7 @@ class SculptureRepository:
                     or mat_clean in s.get("material_en", "").lower()
                 ]
 
+            items = [decimals_to_floats(s) for s in items]
             items.sort(key=lambda x: x.get("display_order", 0))
             return items
         except ClientError as e:
@@ -124,7 +148,8 @@ class SculptureRepository:
 
         try:
             response = table.get_item(Key={"id": sculpture_id})
-            return response.get("Item")
+            item = response.get("Item")
+            return decimals_to_floats(item) if item else None
         except ClientError as e:
             logger.error(f"Error fetching sculpture {sculpture_id}: {e}")
             return dev_store.sculptures.get(sculpture_id)
@@ -144,7 +169,7 @@ class SculptureRepository:
                 ExpressionAttributeValues={":slug": slug}
             )
             items = response.get("Items", [])
-            return items[0] if items else None
+            return decimals_to_floats(items[0]) if items else None
         except ClientError as e:
             logger.error(f"Error querying slug {slug}: {e}")
             for s in dev_store.sculptures.values():
@@ -168,7 +193,7 @@ class SculptureRepository:
             return item
 
         try:
-            table.put_item(Item=item)
+            table.put_item(Item=floats_to_decimals(item))
             return item
         except ClientError as e:
             logger.error(f"Error creating sculpture: {e}")
@@ -190,7 +215,7 @@ class SculptureRepository:
             return merged
 
         try:
-            table.put_item(Item=merged)
+            table.put_item(Item=floats_to_decimals(merged))
             return merged
         except ClientError as e:
             logger.error(f"Error updating sculpture {sculpture_id}: {e}")
@@ -255,6 +280,7 @@ class OrderRepository:
             else:
                 response = table.scan()
             items = response.get("Items", [])
+            items = [decimals_to_floats(o) for o in items]
             items.sort(key=lambda x: x.get("created_at", ""), reverse=True)
             return items
         except ClientError as e:
@@ -272,7 +298,8 @@ class OrderRepository:
 
         try:
             resp = table.get_item(Key={"id": order_id})
-            return resp.get("Item")
+            item = resp.get("Item")
+            return decimals_to_floats(item) if item else None
         except ClientError as e:
             logger.error(f"Error fetching order {order_id}: {e}")
             return dev_store.orders.get(order_id)
@@ -399,7 +426,7 @@ class OrderRepository:
         else:
             # For general inquiry, just record order without locking sculpture
             try:
-                table.put_item(Item=order_record)
+                table.put_item(Item=floats_to_decimals(order_record))
                 return order_record
             except ClientError as e:
                 logger.error(f"Error creating inquiry order: {e}")
@@ -443,7 +470,7 @@ class OrderRepository:
             return order
 
         try:
-            table.put_item(Item=order)
+            table.put_item(Item=floats_to_decimals(order))
             return order
         except ClientError as e:
             logger.error(f"Error updating order {order_id}: {e}")

@@ -48,14 +48,14 @@ def generate_presigned_upload_url(filename: str, content_type: str) -> Tuple[str
     unique_id = uuid.uuid4().hex
     file_key = f"media/{unique_id}.{extension}"
 
-    # Public URL via CloudFront CDN or fallback to direct S3 URL
+    # Public URL via CloudFront CDN or relative root path
     if settings.CLOUDFRONT_DOMAIN:
         domain = settings.CLOUDFRONT_DOMAIN.rstrip("/")
         if not domain.startswith("http"):
             domain = f"https://{domain}"
         public_url = f"{domain}/{file_key}"
     else:
-        public_url = f"https://{settings.MEDIA_BUCKET}.s3.{settings.AWS_REGION}.amazonaws.com/{file_key}"
+        public_url = f"/{file_key}"
 
     # If running in local mock mode without AWS credentials, return a mock URL
     try:

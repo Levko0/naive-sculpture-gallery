@@ -33,7 +33,6 @@ Globals:
         SCULPTURES_TABLE: !Ref SculpturesTable
         ORDERS_TABLE: !Ref OrdersTable
         MEDIA_BUCKET: !Ref GalleryBucket
-        CLOUDFRONT_DOMAIN: !GetAtt GalleryDistribution.DomainName
         SNS_TOPIC_ARN: !Ref OrderNotificationsTopic
         COGNITO_USER_POOL_ID: !Ref ArtistUserPool
         COGNITO_CLIENT_ID: !Ref ArtistUserPoolClient
@@ -213,7 +212,8 @@ Resources:
           - Id: S3Origin
             DomainName: !GetAtt GalleryBucket.RegionalDomainName
             OriginAccessControlId: !GetAtt GalleryOAC.Id
-            S3OriginConfig: {}
+            S3OriginConfig:
+              OriginAccessIdentity: ''
           # API Gateway Origin
           - Id: ApiGatewayOrigin
             DomainName: !Sub '${ApiGatewayHttpApi}.execute-api.${AWS::Region}.amazonaws.com'
@@ -250,7 +250,7 @@ Resources:
             # Managed-CachingDisabled Policy ID
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
             # Managed-AllViewerExceptHostHeader Policy ID
-            OriginRequestPolicyId: b684b0cd-4e78-4581-89e4-b77914cb5462
+            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac
         # SPA routing: redirect 403 & 404 to /index.html with status 200
         CustomErrorResponses:
           - ErrorCode: 403
@@ -378,6 +378,12 @@ Resources:
           Properties:
             ApiId: !Ref ApiGatewayHttpApi
             Path: /api/{proxy+}
+            Method: ANY
+        PublicApiRoot:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ApiGatewayHttpApi
+            Path: /api
             Method: ANY
 
   # CloudWatch Logs 7-day retention for cost minimization
