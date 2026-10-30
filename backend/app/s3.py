@@ -24,11 +24,15 @@ PRESIGNED_URL_EXPIRATION_SECONDS = 900
 
 
 def get_s3_client():
-    """Initializes standard S3 client with regional configuration."""
+    """Initializes standard S3 client with regional configuration and virtual host addressing."""
     return boto3.client(
         "s3",
         region_name=settings.AWS_REGION,
-        config=Config(signature_version="s3v4")
+        endpoint_url=f"https://s3.{settings.AWS_REGION}.amazonaws.com",
+        config=Config(
+            signature_version="s3v4",
+            s3={"addressing_style": "virtual"}
+        )
     )
 
 
@@ -66,7 +70,6 @@ def generate_presigned_upload_url(filename: str, content_type: str) -> Tuple[str
                 "Bucket": settings.MEDIA_BUCKET,
                 "Key": file_key,
                 "ContentType": content_type_lower,
-                "CacheControl": "public, max-age=31536000, immutable",
             },
             ExpiresIn=PRESIGNED_URL_EXPIRATION_SECONDS,
             HttpMethod="PUT"

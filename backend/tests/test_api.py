@@ -6,6 +6,10 @@ import pytest
 from fastapi.testclient import TestClient
 from app.main import app
 from app.db import dev_store
+from app.config import settings
+
+# Force local mock store for isolated test suite execution
+settings.USE_LOCAL_MOCK_DATA = True
 
 client = TestClient(app)
 

@@ -73,8 +73,16 @@ dev_store = InMemoryStore()
 # ==============================================================================
 class SculptureRepository:
     def __init__(self):
-        self.use_mock = settings.USE_LOCAL_MOCK_DATA
+        self._fallback_mock = False
         self._table = None
+
+    @property
+    def use_mock(self) -> bool:
+        return settings.USE_LOCAL_MOCK_DATA or self._fallback_mock
+
+    @use_mock.setter
+    def use_mock(self, val: bool):
+        self._fallback_mock = val
 
     def _get_table(self):
         if self._table is None and not self.use_mock:
@@ -116,7 +124,8 @@ class SculptureRepository:
             if status:
                 response = table.query(
                     IndexName="StatusIndex",
-                    KeyConditionExpression="status = :st",
+                    KeyConditionExpression="#st = :st",
+                    ExpressionAttributeNames={"#st": "status"},
                     ExpressionAttributeValues={":st": status}
                 )
                 items = response.get("Items", [])
@@ -245,8 +254,16 @@ class SculptureRepository:
 # ==============================================================================
 class OrderRepository:
     def __init__(self):
-        self.use_mock = settings.USE_LOCAL_MOCK_DATA
+        self._fallback_mock = False
         self._table = None
+
+    @property
+    def use_mock(self) -> bool:
+        return settings.USE_LOCAL_MOCK_DATA or self._fallback_mock
+
+    @use_mock.setter
+    def use_mock(self, val: bool):
+        self._fallback_mock = val
 
     def _get_table(self):
         if self._table is None and not self.use_mock:

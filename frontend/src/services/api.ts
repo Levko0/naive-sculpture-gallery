@@ -279,25 +279,16 @@ export async function getPresignedUploadUrl(
   filename: string,
   contentType: string
 ): Promise<PresignedUploadResponse> {
-  try {
-    const res = await fetch(`${API_BASE}/admin/upload-url`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify({ filename, content_type: contentType }),
-    });
-    if (res.ok) {
-      return await res.json();
-    }
-  } catch (err) {
-    console.warn('API upload-url unavailable, generating simulated URL:', err);
+  const res = await fetch(`${API_BASE}/admin/upload-url`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ filename, content_type: contentType }),
+  });
+  if (!res.ok) {
+    const errText = await res.text().catch(() => '');
+    throw new Error(`Помилка отримання дозволу на завантаження (HTTP ${res.status}): ${errText}`);
   }
-
-  const randomKey = `media/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.webp`;
-  return {
-    upload_url: `/api/mock-upload/${randomKey}`,
-    file_key: randomKey,
-    public_url: `https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1200&q=85`,
-  };
+  return await res.json();
 }
 
 export async function uploadImageDirectToS3(
@@ -314,7 +305,8 @@ export async function uploadImageDirectToS3(
   });
 
   if (!res.ok) {
-    throw new Error(`Не вдалося завантажити фото в сховище: HTTP ${res.status}`);
+    const errBody = await res.text().catch(() => '');
+    throw new Error(`Не вдалося зберегти фото в S3: HTTP ${res.status} ${errBody}`);
   }
 }
 
