@@ -13,15 +13,14 @@ export const Footer: React.FC = () => {
           {/* Col 1: Brand & Philosophy */}
           <div className="md:col-span-2 space-y-4">
             <span className="font-serif text-2xl text-gallery-ink font-medium tracking-tight">
-              НАЇВ
+              НАЇВ • Рустам Жураєв
             </span>
             <p className="text-sm leading-relaxed max-w-md text-gallery-muted font-sans">
-              Камерна галерея та студія оригінальної керамічної пластики.
-              Кожен твір виліплено вручну без використання форм та 3D-технологій.
-              Єдині екземпляри (1/1) у традиціях українського наївного мистецтва.
+              Камерна галерея та студія оригінальної кам'яної та наївної пластики Рустама Жураєва.
+              Кожен твір висічено вручну з дикого каменю в єдиному екземплярі (1/1).
             </p>
             <div className="pt-2 text-xs text-gallery-muted">
-              Київ • Україна • Воздвиженська
+              Львів • Україна
             </div>
           </div>
 
