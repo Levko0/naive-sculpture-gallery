@@ -26,10 +26,11 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 
   const materialOptions = [
     { id: '', label: t.filter.allMaterials },
-    { id: 'шамот', label: t.filter.chamotte },
-    { id: 'глина', label: t.filter.clay },
-    { id: 'дерево', label: t.filter.wood },
-    { id: 'змішана', label: t.filter.mixed },
+    { id: 'пісковик', label: t.filter.sandstone },
+    { id: 'мармур', label: t.filter.marble },
+    { id: 'базальт', label: t.filter.basalt },
+    { id: 'габро', label: t.filter.gabbro },
+    { id: 'лабрадорит', label: t.filter.labradorite },
   ];
 
   return (

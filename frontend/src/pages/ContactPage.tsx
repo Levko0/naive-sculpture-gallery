@@ -3,7 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { Send, Mail, MapPin, PackageCheck, Shield } from 'lucide-react';
 
 export const ContactPage: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
@@ -25,7 +25,7 @@ export const ContactPage: React.FC = () => {
           <div className="p-6 bg-gallery-stone/40 gallery-card-border space-y-6">
             {/* Telegram */}
             <div className="flex items-start space-x-4">
-              <div className="p-3 rounded-full bg-gallery-milk border border-gallery-border text-blue-600">
+              <div className="p-3 rounded-full bg-gallery-milk border border-gallery-border text-gallery-ink">
                 <Send className="w-5 h-5" />
               </div>
               <div>
@@ -74,7 +74,7 @@ export const ContactPage: React.FC = () => {
               </div>
               <div>
                 <div className="text-xs font-semibold uppercase tracking-wider text-gallery-muted">
-                  Майстерня у Києві
+                  {language === 'UA' ? 'Майстерня у Львові' : 'Studio in Lviv'}
                 </div>
                 <div className="text-sm font-medium text-gallery-ink mt-1">
                   {t.contact.studioAddress}

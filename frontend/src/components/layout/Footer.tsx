@@ -88,10 +88,9 @@ export const Footer: React.FC = () => {
 
         <div className="pt-8 border-t border-gallery-border/50 flex flex-col sm:flex-row justify-between items-center text-xs text-gallery-muted gap-4">
           <div>
-            © {currentYear} Naive Art Sculpture Gallery. Всі права захищено.
+            © {currentYear} Рустам Жураєв. Всі права захищено.
           </div>
           <div className="flex items-center space-x-6">
-            <span>AWS Free Tier Architecture</span>
             <Link to="/admin" className="hover:text-gallery-ink transition-colors">
               Панель автора
             </Link>
