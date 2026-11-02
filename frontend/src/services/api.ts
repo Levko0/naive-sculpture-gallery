@@ -13,7 +13,7 @@ function getAuthHeaders(): HeadersInit {
 }
 
 // Local mock storage key
-const STORAGE_SCULPTURES_KEY = 'nsg_sculptures_local';
+const STORAGE_SCULPTURES_KEY = 'nsg_sculptures_local_2026';
 const STORAGE_ORDERS_KEY = 'nsg_orders_local';
 
 function getLocalSculptures(): Sculpture[] {

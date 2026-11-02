@@ -1,322 +1,615 @@
 """
 Initial seed data featuring authentic Naive Art (Наївне мистецтво) sculptures.
-Provides rich cultural context, tactile ceramic & wood forms, and accurate museum descriptions.
+Includes 12 authentic hand-carved stone masterpieces by the artist (2026),
+plus foundational gallery catalog pieces.
 """
 from typing import List, Dict, Any
 
-SEED_SCULPTURES: List[Dict[str, Any]] = [
-    {
-        "id": "sculpt-001",
-        "slug": "zvir-okhoronets-sadu",
-        "title_ua": "Звір-Охоронець Саду",
-        "title_en": "Garden Guardian Beast",
-        "story_ua": (
-            "Створений під враженням від поліських легенд про доброзичливих духів природи. "
-            "Його очі наївні й відкриті до світу, а вигнута спина увібрала тепло вечірнього сонця. "
-            "Кожен вигин форми виконано пальцями без використання стека, зберігаючи живий відбиток долоні майстра. "
-            "Текстура шамотної глини нагадує кору стародавнього дуба, вкритого ніжним мохом."
-        ),
-        "story_en": (
-            "Inspired by Ukrainian Polissya folklore of benevolent nature spirits. "
-            "Its wide eyes are sincere and tender towards the world, and its arched spine absorbed "
-            "the warm rays of the setting sun. Every contour was shaped purely by fingers without tools, "
-            "preserving the tactile trace of the master's touch. The coarse chamotte clay texture evokes "
-            "ancient oak bark kissed by gentle moss."
-        ),
-        "material_ua": "Шамотна глина, молочний випал, ангоби",
-        "material_en": "Coarse chamotte clay, milk firing, raw engobes",
-        "technique_ua": "Ручне ліплення, дворазовий випал при 1050°C, вощіння бджолиним воском",
-        "technique_en": "Hand-pinch sculpture, double firing at 1050°C, natural beeswax finish",
-        "year": 2024,
-        "edition_ua": "Єдиний екземпляр (1/1)",
-        "edition_en": "Unique original (1/1)",
-        "price_uah": 18500,
-        "price_eur": 420,
-        "price_usd": 460,
-        "dimensions": {
-            "height_cm": 34.0,
-            "width_cm": 22.0,
-            "depth_cm": 19.5,
-            "weight_kg": 4.8
-        },
-        "photos": [
-            {
-                "url": "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1200&q=85",
-                "alt_ua": "Звір-Охоронець Саду — фронтальний вигляд скульптури",
-                "alt_en": "Garden Guardian Beast — front angle view",
-                "is_cover": True,
-                "display_order": 0
-            },
-            {
-                "url": "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=1200&q=85",
-                "alt_ua": "Деталь шамотної текстури та ручного ліплення",
-                "alt_en": "Chamotte clay texture detail and hand-sculpted relief",
-                "is_cover": False,
-                "display_order": 1
-            },
-            {
-                "url": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=85",
-                "alt_ua": "Звір-Охоронець Саду в інтер'єрі галереї",
-                "alt_en": "Garden Guardian Beast displayed in gallery space",
-                "is_cover": False,
-                "display_order": 2
-            }
-        ],
-        "status": "AVAILABLE",
-        "display_order": 1,
-        "is_featured": True,
-        "created_at": "2024-04-12T10:00:00Z",
-        "updated_at": "2024-04-12T10:00:00Z"
-    },
-    {
-        "id": "sculpt-002",
-        "slug": "misiachna-kolybel-ptakhy",
-        "title_ua": "Птах, Що Заколисує Місяць",
-        "title_en": "Bird That Cradles the Moon",
-        "story_ua": (
-            "Поетичний наївний образ птаха, який щоночі оберігає небесне світило на своїх крилах. "
-            "Форма навмисно спрощена до чистого дитячого силуету. У глині змішано білий кварцовий пісок із Карпат, "
-            "що створює ледь помітне сяйво під прямим галерейним освітленням."
-        ),
-        "story_en": (
-            "A poetic naive character of a gentle bird watching over the crescent moon upon its wings. "
-            "The silhouette is intentionally minimalist and reminiscent of childhood drawings. "
-            "Blended with white Carpathian quartz sand, the surface gently catches the gallery light."
-        ),
-        "material_ua": "Біла теракота, прозора матова полива, оксиди заліза",
-        "material_en": "White terracotta, matte transparent glaze, iron oxides",
-        "technique_ua": "Пластова техніка, відкритий дров'яний випал, пігменти ручного розтирання",
-        "technique_en": "Slab-building, open wood-kiln firing, hand-ground mineral pigments",
-        "year": 2024,
-        "edition_ua": "Єдиний екземпляр (1/1)",
-        "edition_en": "Unique original (1/1)",
-        "price_uah": 24000,
-        "price_eur": 550,
-        "price_usd": 600,
-        "dimensions": {
-            "height_cm": 42.0,
-            "width_cm": 28.0,
-            "depth_cm": 16.0,
-            "weight_kg": 5.6
-        },
-        "photos": [
-            {
-                "url": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=85",
-                "alt_ua": "Птах, Що Заколисує Місяць — основний план",
-                "alt_en": "Bird That Cradles the Moon — primary view",
-                "is_cover": True,
-                "display_order": 0
-            },
-            {
-                "url": "https://images.unsplash.com/photo-1582562124811-c09040d0a901?auto=format&fit=crop&w=1200&q=85",
-                "alt_ua": "Профіль пташиного крила та місяця",
-                "alt_en": "Side profile of the wing and moon crescent",
-                "is_cover": False,
-                "display_order": 1
-            }
-        ],
-        "status": "AVAILABLE",
-        "display_order": 2,
-        "is_featured": True,
-        "created_at": "2024-05-02T14:30:00Z",
-        "updated_at": "2024-05-02T14:30:00Z"
-    },
-    {
-        "id": "sculpt-003",
-        "slug": "divchyna-z-vesnianym-derevom",
-        "title_ua": "Дівчина з Весняним Деревцем",
-        "title_en": "Girl with a Spring Tree",
-        "story_ua": (
-            "Персонаж народного весняного обряду. В її руках — крихітна розквітла гілка як символ "
-            "непохитної надії та відродження життя. Обличчя спокійне, майже медитативне. "
-            "Ця робота експонувалася у межах кураторської виставки сучасного наїву в Києві."
-        ),
-        "story_en": (
-            "A figure embodying the ancient spring welcoming rite. In her hands she cradles "
-            "a budding tree branch as an unshakable emblem of hope and rebirth. Her serene expression "
-            "radiates quiet meditation. Previously showcased at the curated Naive Art Forum in Kyiv."
-        ),
-        "material_ua": "Червона подільська глина, димлення, охра",
-        "material_en": "Red Podillia clay, wood smoke reduction, natural ochre",
-        "technique_ua": "Скульптурне моделювання, задимлення сосновою тирсою",
-        "technique_en": "Direct modeling, pine-sawdust reduction pit firing",
-        "year": 2023,
-        "edition_ua": "Єдиний екземпляр (1/1)",
-        "edition_en": "Unique original (1/1)",
-        "price_uah": 21000,
-        "price_eur": 480,
-        "price_usd": 525,
-        "dimensions": {
-            "height_cm": 38.5,
-            "width_cm": 18.0,
-            "depth_cm": 15.0,
-            "weight_kg": 3.9
-        },
-        "photos": [
-            {
-                "url": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1200&q=85",
-                "alt_ua": "Дівчина з Весняним Деревцем — скульптура у повний зріст",
-                "alt_en": "Girl with a Spring Tree — full frontal statue",
-                "is_cover": True,
-                "display_order": 0
-            },
-            {
-                "url": "https://images.unsplash.com/photo-1549887534-1541e9326642?auto=format&fit=crop&w=1200&q=85",
-                "alt_ua": "Тонкі деталі обличчя та деревця",
-                "alt_en": "Detail of face and miniature spring tree",
-                "is_cover": False,
-                "display_order": 1
-            }
-        ],
-        "status": "RESERVED",
-        "display_order": 3,
-        "is_featured": False,
-        "created_at": "2024-03-20T11:15:00Z",
-        "updated_at": "2024-03-20T11:15:00Z"
-    },
-    {
-        "id": "sculpt-004",
-        "slug": "stepovyi-lev-soniashnyk",
-        "title_ua": "Степовий Лев-Соняшник",
-        "title_en": "Steppe Sunflower Lion",
-        "story_ua": (
-            "Лев із гривою у формі розкритого соняшника — омаж народним розписам Марії Примаченко. "
-            "Скульптура дихає сонячним оптимізмом, теплом глини та безпосередністю дитячого бачення. "
-            "Поверхня покрита теракотовим ангобом із вкрапленнями польового шпату."
-        ),
-        "story_en": (
-            "A lion whose radiant mane forms a blossoming sunflower — a loving homage to Maria Prymachenko. "
-            "The piece vibrates with sunlit optimism, raw clay warmth, and childlike candor. "
-            "Coated in warm terracotta engobes with subtle feldspar flecks."
-        ),
-        "material_ua": "Глина напівпорцеляна, кольорові ангоби, матова емаль",
-        "material_en": "Semi-porcelain stoneware, colored engobes, satin enamel",
-        "technique_ua": "Ліплення з цільного пласта, гравіювання сграфіто, випал 1220°C",
-        "technique_en": "Single slab construction, sgraffito carving, high firing at 1220°C",
-        "year": 2023,
-        "edition_ua": "Єдиний екземпляр (1/1)",
-        "edition_en": "Unique original (1/1)",
-        "price_uah": 29500,
-        "price_eur": 670,
-        "price_usd": 740,
-        "dimensions": {
-            "height_cm": 29.0,
-            "width_cm": 35.0,
-            "depth_cm": 24.0,
-            "weight_kg": 6.2
-        },
-        "photos": [
-            {
-                "url": "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1200&q=85",
-                "alt_ua": "Степовий Лев-Соняшник — загальний вигляд",
-                "alt_en": "Steppe Sunflower Lion — general museum view",
-                "is_cover": True,
-                "display_order": 0
-            },
-            {
-                "url": "https://images.unsplash.com/photo-1569074187119-c87815b476da?auto=format&fit=crop&w=1200&q=85",
-                "alt_ua": "Крупний план соняшникової гриви",
-                "alt_en": "Close up of sunflower mane details",
-                "is_cover": False,
-                "display_order": 1
-            }
-        ],
-        "status": "SOLD",
-        "display_order": 4,
-        "is_featured": False,
-        "created_at": "2023-11-10T09:00:00Z",
-        "updated_at": "2024-01-15T16:20:00Z"
-    },
-    {
-        "id": "sculpt-005",
-        "slug": "chervona-kolyadnytsia",
-        "title_ua": "Колядниця з Різдвяною Зіркою",
-        "title_en": "Carol Singer with Bethlehem Star",
-        "story_ua": (
-            "Наївна фігура колядниці в автентичній хустці з різдвяною зорею в руках. "
-            "Скульптура наповнена сакральною тишею зимового вечора в українському селі. "
-            "Орнаменти на кожушку видряпані вручну по сирій глині."
-        ),
-        "story_en": (
-            "A naive carol singer wrapped in a folk kerchief, bearing the Christmas star. "
-            "The artwork captures the sacred silence of a winter evening in a Ukrainian village. "
-            "The coat patterns were engraved by hand into wet clay before the first kiln firing."
-        ),
-        "material_ua": "Шамотна кераміка, пічна сажа, сусальне золото (акцент)",
-        "material_en": "Chamotte ceramic, soot patination, gold leaf accent",
-        "technique_ua": "Комбіноване ліплення, тонування натуральними пігментами",
-        "technique_en": "Combined pinch modeling, toned with natural soot and wax",
-        "year": 2024,
-        "edition_ua": "Єдиний екземпляр (1/1)",
-        "edition_en": "Unique original (1/1)",
-        "price_uah": 26000,
-        "price_eur": 590,
-        "price_usd": 650,
-        "dimensions": {
-            "height_cm": 46.0,
-            "width_cm": 20.0,
-            "depth_cm": 18.0,
-            "weight_kg": 5.1
-        },
-        "photos": [
-            {
-                "url": "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1200&q=85",
-                "alt_ua": "Колядниця з Різдвяною Зіркою — фасадний ракурс",
-                "alt_en": "Carol Singer with Bethlehem Star — facade angle",
-                "is_cover": True,
-                "display_order": 0
-            }
-        ],
-        "status": "AVAILABLE",
-        "display_order": 5,
-        "is_featured": True,
-        "created_at": "2024-06-01T12:00:00Z",
-        "updated_at": "2024-06-01T12:00:00Z"
-    },
-    {
-        "id": "sculpt-006",
-        "slug": "kozlyk-derevoryb",
-        "title_ua": "Козлик-Деревориб (Дивосвіт)",
-        "title_en": "Wonder-Goat with Horns of Wood",
-        "story_ua": (
-            "Міфічний характер із серії 'Сни старого гончаря'. Поєднання образу рогатого козлика "
-            "і плавників риби виражає нерозривну єдність землі, води та фантазії. "
-            "Використано традиційну опішнянську глину теплого вохристого кольору."
-        ),
-        "story_en": (
-            "A mythical creature from the 'Old Potter's Dreams' cycle. Merging the horned goat form "
-            "with aquatic fins, representing the primal unity of earth, water, and creative fantasy. "
-            "Crafted using traditional warm ochre Opishnia clay."
-        ),
-        "material_ua": "Опішнянська глина, теракотовий ангоб, попіл",
-        "material_en": "Opishnia terracotta clay, wood ash glaze",
-        "technique_ua": "Гончарний тулуб із доліпленими скульптурними елементами",
-        "technique_en": "Wheel-thrown torso with hand-modeled mythological appendages",
-        "year": 2023,
-        "edition_ua": "Єдиний екземпляр (1/1)",
-        "edition_en": "Unique original (1/1)",
-        "price_uah": 16000,
-        "price_eur": 365,
-        "price_usd": 400,
-        "dimensions": {
-            "height_cm": 28.0,
-            "width_cm": 26.0,
-            "depth_cm": 14.0,
-            "weight_kg": 3.4
-        },
-        "photos": [
-            {
-                "url": "https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=1200&q=85",
-                "alt_ua": "Козлик-Деревориб — ракурс три чверті",
-                "alt_en": "Wonder-Goat — three-quarters view",
-                "is_cover": True,
-                "display_order": 6
-            }
-        ],
-        "status": "SOLD",
-        "display_order": 6,
-        "is_featured": False,
-        "created_at": "2023-10-05T08:30:00Z",
-        "updated_at": "2023-12-01T15:00:00Z"
-    }
-]
+SEED_SCULPTURES: List[Dict[str, Any]] = [   {   'id': 'sculpt-007',
+        'slug': 'anhelyk-marmur',
+        'title_ua': 'Ангелик',
+        'title_en': 'Little Angel',
+        'story_ua': 'Світлий образ ангела-хранителя, висічений з білого мармуру, руки й крила якого здіймаються у '
+                    'тихому ранковому благословенні. Чисті, наївні риси обличчя випромінюють безтурботний спокій та '
+                    'захист. Контраст благородної прохолоди матового мармуру й теплого волокнистого зрізу дубової '
+                    'підставки підкреслює гармонію небесного та земного.',
+        'story_en': 'A luminous guardian angel sculpted from white marble, whose hands and wings ascend in gentle '
+                    'morning blessing. Sincere, naive facial features radiate serene tranquility and eternal solace. '
+                    'The subtle juxtaposition of cool honed marble atop a warm oak pedestal evokes harmony between '
+                    'heaven and earth.',
+        'material_ua': 'Білий мармур, масив дуба, вощіння',
+        'material_en': 'White marble, solid oak pedestal, natural wax finish',
+        'technique_ua': 'Пряме вирубування з цільного мармурового блоку, ручне шліфування, обробка бджолиним воском',
+        'technique_en': 'Direct carving from solid marble block, hand-honed matte finish, natural beeswax sealing',
+        'year': 2026,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 32000,
+        'price_eur': 720,
+        'price_usd': 780,
+        'dimensions': {'height_cm': 38.0, 'width_cm': 14.0, 'depth_cm': 12.0, 'weight_kg': 6.2},
+        'photos': [   {   'url': '/sculptures/anhelyk.webp',
+                          'alt_ua': 'Ангелик — фронтальний вигляд скульптури з білого мармуру',
+                          'alt_en': 'Little Angel — front angle view in white marble',
+                          'is_cover': True,
+                          'display_order': 0}],
+        'status': 'AVAILABLE',
+        'display_order': 1,
+        'is_featured': True,
+        'created_at': '2026-03-10T10:00:00Z',
+        'updated_at': '2026-11-02T12:00:00Z'},
+    {   'id': 'sculpt-008',
+        'slug': 'zamriiana-piskovyk',
+        'title_ua': 'Замріяна',
+        'title_en': 'Daydreaming Maiden',
+        'story_ua': "Лик діви, що народжується просто з товщі вікової кам'яної брили. Її очі заплющені в тихому "
+                    'спогляданні снів, а довгі хвилясті пасма волосся органічно переходять у природні розлами '
+                    'пісковику. Майстер залишив краї каменю первозданно дикими, даруючи відчуття, що камінь сам '
+                    'відкрив свій давній спогад.',
+        'story_en': "A serene maiden's visage emerging directly from the heart of an ancient rock. Her eyes rest "
+                    'closed in quiet reverie, with flowing strands of hair seamlessly dissolving into natural stone '
+                    'fractures. The artist preserved the raw quarry cleavage, as if the stone itself chose to awaken '
+                    'its primordial memory.',
+        'material_ua': 'Природний сірий пісковик, необроблена скельна порода',
+        'material_en': 'Natural grey sandstone with preserved raw quarry edge',
+        'technique_ua': 'Плоскорізьблений барельєф у дикому камені, насічка, ручне карбування',
+        'technique_en': 'Low-relief direct carving into wild stone slab, chisel texturing, hand-engraving',
+        'year': 2026,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 28000,
+        'price_eur': 630,
+        'price_usd': 680,
+        'dimensions': {'height_cm': 44.0, 'width_cm': 26.0, 'depth_cm': 16.0, 'weight_kg': 14.5},
+        'photos': [   {   'url': '/sculptures/zamriiana.webp',
+                          'alt_ua': 'Замріяна — барельєф у сірому пісковику',
+                          'alt_en': 'Daydreaming Maiden — low relief in grey sandstone',
+                          'is_cover': True,
+                          'display_order': 0}],
+        'status': 'AVAILABLE',
+        'display_order': 2,
+        'is_featured': True,
+        'created_at': '2026-03-15T11:00:00Z',
+        'updated_at': '2026-11-02T12:00:00Z'},
+    {   'id': 'sculpt-009',
+        'slug': 'pokrova-piskovyk',
+        'title_ua': 'Покрова',
+        'title_en': 'Pokrova (The Holy Mantle)',
+        'story_ua': "Архаїчна наївна кам'яна ікона Святої Покрови, натхненна придорожніми святинями та народними "
+                    "розписами Поділля. У верхів'ї здіймається милосердний лик Богородиці, чий омофор огортає "
+                    'молільників з піднятими до неба долонями. Глибокі графічні лінії прорізу на темному пісковику '
+                    'випромінюють незламний дух захисту та надії.',
+        'story_en': 'An archaic naive stone icon of the Holy Protection (Pokrova), drawing from rural roadside shrines '
+                    'and folk iconography of Podillia. The benevolent visage of the Theotokos crowns the composition, '
+                    'her veil sheltering souls with uplifted hands. Deep incised lines in dark sandstone embody an '
+                    'enduring mantle of solace and defense.',
+        'material_ua': 'Подільський пісковик, мінеральне тонування',
+        'material_en': 'Podillia sandstone, mineral earth pigment finish',
+        'technique_ua': 'Наївне сакральне різьблення, графічне контурне заглиблення, фактурна вибірка тла',
+        'technique_en': 'Folk sacred stone carving, graphic contour sgraffito, textured negative relief',
+        'year': 2026,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 36000,
+        'price_eur': 810,
+        'price_usd': 880,
+        'dimensions': {'height_cm': 48.0, 'width_cm': 25.0, 'depth_cm': 15.0, 'weight_kg': 16.8},
+        'photos': [   {   'url': '/sculptures/pokrova.webp',
+                          'alt_ua': 'Покрова — сакральний рельєф у пісковику',
+                          'alt_en': 'Pokrova — sacred relief carving in sandstone',
+                          'is_cover': True,
+                          'display_order': 0}],
+        'status': 'AVAILABLE',
+        'display_order': 3,
+        'is_featured': True,
+        'created_at': '2026-03-22T09:30:00Z',
+        'updated_at': '2026-11-02T12:00:00Z'},
+    {   'id': 'sculpt-010',
+        'slug': 'vziav-by-ya-banduru-piskovyk',
+        'title_ua': 'Взяв би я бандуру...',
+        'title_en': 'If I Took a Bandura...',
+        'story_ua': 'Зворушливий наївний образ мандрівного кобзаря, заглибленого в мелодію степової думи. Його повіки '
+                    'замружені, а руки ніжно торкаються струн бандури, деку якої прикрашає традиційна шестипелюсткова '
+                    'солярна розетка. Скульптура встановлена на автентичний зріз дубового стовбура з живою корою, '
+                    "нагадуючи про живий зв'язок української пісні із рідною землею.",
+        'story_en': 'A moving naive sculpture of an itinerant Kobzar absorbed in the song of ancestral epics. With '
+                    'closed eyelids and reverent hands, he gently plucks the strings of a bandura adorned with an '
+                    'ancient solar rosette. Standing upon a rustic round of wild oak bark, it echoes the sacred bond '
+                    'between Ukrainian song and the native soil.',
+        'material_ua': 'Зернистий пісковик, спил дуба з корою',
+        'material_en': 'Textured grainy sandstone, rustic oak trunk slice with bark',
+        'technique_ua': "Кругле об'ємне тесання з цільного пісковику, солярне геометричне різьблення",
+        'technique_en': 'Monolithic free-standing stone chiseling, naive facial relief, solar wood-stone assembly',
+        'year': 2026,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 34000,
+        'price_eur': 770,
+        'price_usd': 830,
+        'dimensions': {'height_cm': 46.0, 'width_cm': 22.0, 'depth_cm': 20.0, 'weight_kg': 13.2},
+        'photos': [   {   'url': '/sculptures/vziav-by-ya-banduru.webp',
+                          'alt_ua': 'Взяв би я бандуру... — кобзар із пісковику на дубовому спилі',
+                          'alt_en': 'If I Took a Bandura... — sandstone kobzar on oak slice',
+                          'is_cover': True,
+                          'display_order': 0}],
+        'status': 'AVAILABLE',
+        'display_order': 4,
+        'is_featured': True,
+        'created_at': '2026-04-02T14:15:00Z',
+        'updated_at': '2026-11-02T12:00:00Z'},
+    {   'id': 'sculpt-011',
+        'slug': 'zhyvotvoriashchyi-khrest-piskovyk',
+        'title_ua': 'Животворящий Хрест',
+        'title_en': 'Life-Giving Cross',
+        'story_ua': "Монументальний трилисий кам'яний хрест у найглибших традиціях козацького бароко та подільського "
+                    "народного каменярства. У верхів'ї викарбувано крилатого херувима, посередині — напис «ІНЦІ», а в "
+                    "центрі розквітає рельєфне Розп'яття в оточенні скорботних постатей Богородиці та Івана. Природні "
+                    'золотаво-вохристі мінеральні прожилки каменю створюють відчуття нетлінного світла.',
+        'story_en': 'A monumental trefoil cross forged in the time-honored tradition of Cossack stonemasonry and '
+                    'Podillian folk shrines. Crowned by a winged cherub above the sacred inscription, its center '
+                    'unfolds into a tender relief of the Crucifixion embraced by mourning figures. Golden ochre '
+                    'mineral veins running naturally through the stone evoke celestial light.',
+        'material_ua': 'Подільський пісковик із природними вохристими прожилками окисів заліза',
+        'material_en': 'Podillia sandstone with natural golden ochre mineral veining',
+        'technique_ua': 'Традиційне тесане різьблення, моделювання трилисих форм, барельєф',
+        'technique_en': 'Traditional folk stone masonry, trefoil architectural shaping, figurative relief',
+        'year': 2026,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 38000,
+        'price_eur': 860,
+        'price_usd': 930,
+        'dimensions': {'height_cm': 52.0, 'width_cm': 32.0, 'depth_cm': 14.0, 'weight_kg': 18.5},
+        'photos': [   {   'url': '/sculptures/zhyvotvoriashchyi-khrest.webp',
+                          'alt_ua': 'Животворящий Хрест — трилисий наївний хрест із пісковику',
+                          'alt_en': 'Life-Giving Cross — trefoil folk sandstone cross',
+                          'is_cover': True,
+                          'display_order': 0}],
+        'status': 'AVAILABLE',
+        'display_order': 5,
+        'is_featured': True,
+        'created_at': '2026-04-10T16:00:00Z',
+        'updated_at': '2026-11-02T12:00:00Z'},
+    {   'id': 'sculpt-012',
+        'slug': 'kozak-drimaie-piskovyk',
+        'title_ua': 'Козак дрімає...',
+        'title_en': 'Cossack Slumbers...',
+        'story_ua': 'Козак-характерник, який після далекої дороги прихилив голову в дрімоті просто посеред неозорого '
+                    'степу. Притиснута до грудей кобза береже невимовлені думи, а довгі хвилясті вуса спадають на '
+                    "камінь. М'яка, тепла округлість пісковика та лаконічні лінії надають твору дивовижної людяності й "
+                    'душевного затишку.',
+        'story_en': 'A legendary Cossack resting peacefully amid the boundless steppe after long travels. Resting '
+                    'close to his chest, the kobza holds unspoken ballads while his sweeping mustache cascades across '
+                    'the rock. The gentle warmth and organic curves of the sandstone lend the artwork profound '
+                    'humanity and quiet companionship.',
+        'material_ua': 'Теплий природний пісковик, точкова патина',
+        'material_en': 'Warm natural sandstone, dotted textural patina',
+        'technique_ua': 'Пряме різьблення по пісковику, наївна стилізація обличчя, карбування',
+        'technique_en': 'Direct sandstone carving, naive figurative styling, punch texturing',
+        'year': 2026,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 29000,
+        'price_eur': 650,
+        'price_usd': 710,
+        'dimensions': {'height_cm': 42.0, 'width_cm': 23.0, 'depth_cm': 21.0, 'weight_kg': 15.0},
+        'photos': [   {   'url': '/sculptures/kozak-drimaie.webp',
+                          'alt_ua': 'Козак дрімає... — скульптура козака з кобзою у пісковику',
+                          'alt_en': 'Cossack Slumbers... — sandstone figure with kobza',
+                          'is_cover': True,
+                          'display_order': 0}],
+        'status': 'AVAILABLE',
+        'display_order': 6,
+        'is_featured': True,
+        'created_at': '2026-04-18T10:45:00Z',
+        'updated_at': '2026-11-02T12:00:00Z'},
+    {   'id': 'sculpt-013',
+        'slug': 'koliadnytskyi-khrest-piskovyk',
+        'title_ua': 'Колядницький Хрест',
+        'title_en': "Carolers' Processional Cross",
+        'story_ua': 'Унікальний обрядовий ручний хрест на циліндричному держаку, створений майстром у традиції '
+                    'колядницьких процесій. У центральному полі викарбувано Святу Родину під сяйвом різдвяної зірки, '
+                    'обабіч — вірні янголи, а внизу висічено ритмічні знаки засіяного зерном поля та викарбувано '
+                    "пам'ятний рік «2026».",
+        'story_en': 'A ceremonial handheld processional cross with a rounded shaft, sculpted in the spirit of winter '
+                    'carolers bringing holiday tidings. The centerpiece features the Holy Family beneath the star '
+                    'accompanied by angels, underscored by rhythmic motifs of tilled grain fields and the deeply '
+                    "inscribed year '2026'.",
+        'material_ua': "Щільний пісковик, циліндричне руків'я, вохриста патина",
+        'material_en': 'Dense sandstone, sculpted round staff handle, mineral ochre patina',
+        'technique_ua': 'Цільнокамінне тесання з моноліту, наївне плоскорельєфне гравірування дати та сакральних '
+                        'образів',
+        'technique_en': 'Monolithic stone masonry, archaic low-relief engraving of sacred figures and calendar year',
+        'year': 2026,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 31000,
+        'price_eur': 700,
+        'price_usd': 760,
+        'dimensions': {'height_cm': 50.0, 'width_cm': 19.0, 'depth_cm': 9.0, 'weight_kg': 8.5},
+        'photos': [   {   'url': '/sculptures/koliadnytskyi-khrest.webp',
+                          'alt_ua': 'Колядницький Хрест — процесійний ручний хрест 2026 року',
+                          'alt_en': "Carolers' Cross — ceremonial processional cross dated 2026",
+                          'is_cover': True,
+                          'display_order': 0}],
+        'status': 'AVAILABLE',
+        'display_order': 7,
+        'is_featured': False,
+        'created_at': '2026-05-01T11:20:00Z',
+        'updated_at': '2026-11-02T12:00:00Z'},
+    {   'id': 'sculpt-014',
+        'slug': 'konyk-piskovyk',
+        'title_ua': 'Коник',
+        'title_en': 'Little Steed',
+        'story_ua': 'Щирий дитячий наїв та вірний супутник української казки. Лаконічний профіль коника з фактурно '
+                    'прорізаною пишною гривою передає відчуття нестримного степового вітру. Скульптура встановлена на '
+                    'монолітний брус соснового дерева, підкреслюючи первозданний контраст живої деревини та шорсткого '
+                    'каменю.',
+        'story_en': 'A charming expression of folk naive imagination celebrating the noble steed of Ukrainian fairy '
+                    'tales. The simplified equine profile with deeply grooved mane evokes the swift winds of the wild '
+                    'steppe. Resting upon a solid pine timber pedestal, it honors the tactile interplay of rough stone '
+                    'and fragrant wood.',
+        'material_ua': 'Фактурний пісковик, підставка з натурального соснового бруса',
+        'material_en': 'Textured sandstone, solid pine timber base',
+        'technique_ua': 'Контурне різьблення, графічна насічка гриви, збереження природних пор каменю',
+        'technique_en': 'Contour relief carving, incised mane striations, open pore preservation',
+        'year': 2026,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 22000,
+        'price_eur': 500,
+        'price_usd': 540,
+        'dimensions': {'height_cm': 35.0, 'width_cm': 20.0, 'depth_cm': 15.0, 'weight_kg': 8.9},
+        'photos': [   {   'url': '/sculptures/konyk.webp',
+                          'alt_ua': "Коник — наївна скульптура коня у пісковику на дерев'яному брусі",
+                          'alt_en': 'Little Steed — naive horse sculpture in sandstone on timber block',
+                          'is_cover': True,
+                          'display_order': 0}],
+        'status': 'AVAILABLE',
+        'display_order': 8,
+        'is_featured': False,
+        'created_at': '2026-05-12T13:00:00Z',
+        'updated_at': '2026-11-02T12:00:00Z'},
+    {   'id': 'sculpt-015',
+        'slug': 'monakh-bazalt',
+        'title_ua': 'Монах',
+        'title_en': 'The Monk',
+        'story_ua': 'Аскетичний образ монаха-пустельника, вирубаний із чорного вулканічного базальту. Темна '
+                    'необроблена кірка породи утворює гостроверхий капюшон, з глибини якого виступає лагідний, '
+                    'зосереджений у внутрішній молитві лик. На грудях ченця висічено простий натільний хрест як знак '
+                    'непохитної відданості духу.',
+        'story_en': 'An ascetic hermit monk hewn from black volcanic basalt. The untouched dark mineral crust shapes a '
+                    'pointed cowl, from whose shadows emerges a serene face absorbed in inward contemplation. A simple '
+                    'cross carved upon his chest stands as an enduring emblem of unyielding spiritual dedication.',
+        'material_ua': 'Вулканічний базальт із природною темною кіркою',
+        'material_en': 'Natural volcanic basalt with dark outer crust',
+        'technique_ua': 'Пряме тесання надтвердого каменю, світле шліфування лику на тлі темної базальтової кірки',
+        'technique_en': 'Direct hardstone sculpting, contrasting face honing against untouched basalt exterior',
+        'year': 2026,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 27000,
+        'price_eur': 610,
+        'price_usd': 660,
+        'dimensions': {'height_cm': 39.0, 'width_cm': 14.0, 'depth_cm': 13.0, 'weight_kg': 9.8},
+        'photos': [   {   'url': '/sculptures/monakh-bazalt.webp',
+                          'alt_ua': 'Монах — скульптура з вулканічного базальту',
+                          'alt_en': 'The Monk — basalt volcanic stone sculpture',
+                          'is_cover': True,
+                          'display_order': 0}],
+        'status': 'AVAILABLE',
+        'display_order': 9,
+        'is_featured': False,
+        'created_at': '2026-06-04T15:30:00Z',
+        'updated_at': '2026-11-02T12:00:00Z'},
+    {   'id': 'sculpt-016',
+        'slug': 'staryi-monakh-habbro',
+        'title_ua': 'Старий Монах',
+        'title_en': 'Elder Monk',
+        'story_ua': "Монументальна кам'яна сповідь: мудрий лик старця, що наче проступає крізь тисячолітню скелю "
+                    'українського габро. Майстер зберіг рвану, грубо сколоту фактуру породи, підкреслюючи непорушність '
+                    'віри. Композиція завершується природною підставкою зі свіжого лісового зрізу деревини із живою '
+                    'смарагдовою корінною патиною.',
+        'story_en': 'A monumental stone testament: the venerable face of an elder sage emerging from a prehistoric '
+                    'boulder of Ukrainian gabbro. Retaining the raw, rough-hewn stone texture, the piece conveys '
+                    'unwavering steadfastness. It rests upon a forest wood round with mossy bark, evoking secluded '
+                    'woodland hermitages.',
+        'material_ua': 'Українське габро (чорний гранітний моноліт), зріз дерева з мохом',
+        'material_en': 'Ukrainian gabbro stone boulder, natural mossy wood trunk pedestal',
+        'technique_ua': 'Рельєфне висікання в дикому уламку габро, точкове карбування, природна фактура зламу',
+        'technique_en': 'Direct relief carving within fractured gabbro block, hand-punch stippling',
+        'year': 2026,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 35000,
+        'price_eur': 790,
+        'price_usd': 860,
+        'dimensions': {'height_cm': 41.0, 'width_cm': 22.0, 'depth_cm': 18.0, 'weight_kg': 16.5},
+        'photos': [   {   'url': '/sculptures/staryi-monakh.webp',
+                          'alt_ua': 'Старий Монах — рельєф у чорному габро на зрізі дерева з мохом',
+                          'alt_en': 'Elder Monk — gabbro stone relief on mossy wooden pedestal',
+                          'is_cover': True,
+                          'display_order': 10}],
+        'status': 'AVAILABLE',
+        'display_order': 10,
+        'is_featured': True,
+        'created_at': '2026-06-20T08:50:00Z',
+        'updated_at': '2026-11-02T12:00:00Z'},
+    {   'id': 'sculpt-017',
+        'slug': 'skhid-zakhid-labradorit',
+        'title_ua': 'Схід-Захід',
+        'title_en': 'East-West (Steppe Stele)',
+        'story_ua': "Архаїчна тотемна стела, навіяна кам'яними бабами та скіфськими святилищами Причорномор'я. "
+                    'Дволикий образ водночас споглядає Схід сонця та його Захід, охоплюючи вічність буття. '
+                    'Монументальні наївні форми бережуть культ родючості, солярної гармонії та незнищенної сили '
+                    'жіночого начала.',
+        'story_en': 'An archaic totem stele paying homage to the ancient Scythian and Polovtsian stone figures of the '
+                    'steppe sanctuaries. Looking in two directions, the Janus-like feminine deity watches over sunrise '
+                    'and sunset alike, guarding fertility, cosmic harmony, and the enduring vitality of the earth.',
+        'material_ua': 'Природний лабрадорит / зернистий кристалічний камінь',
+        'material_en': 'Natural crystalline labradorite / dense grey stone',
+        'technique_ua': 'Кругла монументальна пластика, стилізація під половецькі баби, тонке ручне шліфування граней',
+        'technique_en': 'Monumental freestanding stele sculpture, archaic figurative stylization, hand-smoothed planes',
+        'year': 2026,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 37000,
+        'price_eur': 830,
+        'price_usd': 900,
+        'dimensions': {'height_cm': 49.0, 'width_cm': 17.0, 'depth_cm': 16.0, 'weight_kg': 17.2},
+        'photos': [   {   'url': '/sculptures/skhid-zakhid.webp',
+                          'alt_ua': "Схід-Захід — монументальна кам'яна стела з лабрадориту",
+                          'alt_en': 'East-West — monumental labradorite stele sculpture',
+                          'is_cover': True,
+                          'display_order': 11}],
+        'status': 'AVAILABLE',
+        'display_order': 11,
+        'is_featured': True,
+        'created_at': '2026-07-08T12:10:00Z',
+        'updated_at': '2026-11-02T12:00:00Z'},
+    {   'id': 'sculpt-018',
+        'slug': 'toi-shcho-drimaie-piskovyk',
+        'title_ua': 'Той, що дрімає',
+        'title_en': 'The One Who Dozes',
+        'story_ua': 'Колоритний фольклорний образ господаря, який у сонячний літній день присів у затінку саду та '
+                    'солодко задрімав. Крислатий головний убір, розкішні підкручені вуса та безтурботна усмішка '
+                    'дихають щирим народним гумором і спокоєм. Скульптура покоїться на старовинному дубовому спилі з '
+                    'тріщинами віку.',
+        'story_en': 'A delightful folklore character portraying a village master who paused in the orchard shade on a '
+                    'summer day to enjoy a tranquil nap. His broad brimmed hat, sweeping mustache, and peaceful smile '
+                    'celebrate the gentle warmth and humor of traditional country life, resting upon a weathered oak '
+                    'log round.',
+        'material_ua': 'Жовто-сірий пісковик, старовинний дубовий спіл',
+        'material_en': 'Yellowish-grey sandstone, antique aged oak trunk round',
+        'technique_ua': "Об'ємне ручне висікання, наївне пластичне моделювання, природні відколи",
+        'technique_en': 'Hand-carved figurative sculpture, naive plastic contouring, natural quarry fracturing',
+        'year': 2026,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 26000,
+        'price_eur': 580,
+        'price_usd': 640,
+        'dimensions': {'height_cm': 40.0, 'width_cm': 21.0, 'depth_cm': 19.0, 'weight_kg': 14.8},
+        'photos': [   {   'url': '/sculptures/toi-shcho-drimaie.webp',
+                          'alt_ua': 'Той, що дрімає — наївний бюст чоловіка з вусами у пісковику',
+                          'alt_en': 'The One Who Dozes — sandstone bust of a mustachioed man',
+                          'is_cover': True,
+                          'display_order': 12}],
+        'status': 'AVAILABLE',
+        'display_order': 12,
+        'is_featured': False,
+        'created_at': '2026-07-15T14:40:00Z',
+        'updated_at': '2026-11-02T12:00:00Z'},
+    {   'id': 'sculpt-001',
+        'slug': 'zvir-okhoronets-sadu',
+        'title_ua': 'Звір-Охоронець Саду',
+        'title_en': 'Garden Guardian Beast',
+        'story_ua': 'Створений під враженням від поліських легенд про доброзичливих духів природи. Його очі наївні й '
+                    'відкриті до світу, а вигнута спина увібрала тепло вечірнього сонця. Кожен вигин форми виконано '
+                    'пальцями без використання стека, зберігаючи живий відбиток долоні майстра. Текстура шамотної '
+                    'глини нагадує кору стародавнього дуба, вкритого ніжним мохом.',
+        'story_en': 'Inspired by Ukrainian Polissya folklore of benevolent nature spirits. Its wide eyes are sincere '
+                    'and tender towards the world, and its arched spine absorbed the warm rays of the setting sun. '
+                    'Every contour was shaped purely by fingers without tools, preserving the tactile trace of the '
+                    "master's touch. The coarse chamotte clay texture evokes ancient oak bark kissed by gentle moss.",
+        'material_ua': 'Шамотна глина, молочний випал, ангоби',
+        'material_en': 'Coarse chamotte clay, milk firing, raw engobes',
+        'technique_ua': 'Ручне ліплення, дворазовий випал при 1050°C, вощіння бджолиним воском',
+        'technique_en': 'Hand-pinch sculpture, double firing at 1050°C, natural beeswax finish',
+        'year': 2024,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 18500,
+        'price_eur': 420,
+        'price_usd': 460,
+        'dimensions': {'height_cm': 34.0, 'width_cm': 22.0, 'depth_cm': 19.5, 'weight_kg': 4.8},
+        'photos': [   {   'url': 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1200&q=85',
+                          'alt_ua': 'Звір-Охоронець Саду — фронтальний вигляд скульптури',
+                          'alt_en': 'Garden Guardian Beast — front angle view',
+                          'is_cover': True,
+                          'display_order': 0},
+                      {   'url': 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=1200&q=85',
+                          'alt_ua': 'Деталь шамотної текстури та ручного ліплення',
+                          'alt_en': 'Chamotte clay texture detail and hand-sculpted relief',
+                          'is_cover': False,
+                          'display_order': 1},
+                      {   'url': 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=85',
+                          'alt_ua': "Звір-Охоронець Саду в інтер'єрі галереї",
+                          'alt_en': 'Garden Guardian Beast displayed in gallery space',
+                          'is_cover': False,
+                          'display_order': 2}],
+        'status': 'AVAILABLE',
+        'display_order': 13,
+        'is_featured': True,
+        'created_at': '2024-04-12T10:00:00Z',
+        'updated_at': '2024-04-12T10:00:00Z'},
+    {   'id': 'sculpt-002',
+        'slug': 'misiachna-kolybel-ptakhy',
+        'title_ua': 'Птах, Що Заколисує Місяць',
+        'title_en': 'Bird That Cradles the Moon',
+        'story_ua': 'Поетичний наївний образ птаха, який щоночі оберігає небесне світило на своїх крилах. Форма '
+                    'навмисно спрощена до чистого дитячого силуету. У глині змішано білий кварцовий пісок із Карпат, '
+                    'що створює ледь помітне сяйво під прямим галерейним освітленням.',
+        'story_en': 'A poetic naive character of a gentle bird watching over the crescent moon upon its wings. The '
+                    'silhouette is intentionally minimalist and reminiscent of childhood drawings. Blended with white '
+                    'Carpathian quartz sand, the surface gently catches the gallery light.',
+        'material_ua': 'Біла теракота, прозора матова полива, оксиди заліза',
+        'material_en': 'White terracotta, matte transparent glaze, iron oxides',
+        'technique_ua': "Пластова техніка, відкритий дров'яний випал, пігменти ручного розтирання",
+        'technique_en': 'Slab-building, open wood-kiln firing, hand-ground mineral pigments',
+        'year': 2024,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 24000,
+        'price_eur': 550,
+        'price_usd': 600,
+        'dimensions': {'height_cm': 42.0, 'width_cm': 28.0, 'depth_cm': 16.0, 'weight_kg': 5.6},
+        'photos': [   {   'url': 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=85',
+                          'alt_ua': 'Птах, Що Заколисує Місяць — основний план',
+                          'alt_en': 'Bird That Cradles the Moon — primary view',
+                          'is_cover': True,
+                          'display_order': 0},
+                      {   'url': 'https://images.unsplash.com/photo-1582562124811-c09040d0a901?auto=format&fit=crop&w=1200&q=85',
+                          'alt_ua': 'Профіль пташиного крила та місяця',
+                          'alt_en': 'Side profile of the wing and moon crescent',
+                          'is_cover': False,
+                          'display_order': 1}],
+        'status': 'AVAILABLE',
+        'display_order': 14,
+        'is_featured': True,
+        'created_at': '2024-05-02T14:30:00Z',
+        'updated_at': '2024-05-02T14:30:00Z'},
+    {   'id': 'sculpt-003',
+        'slug': 'divchyna-z-vesnianym-derevom',
+        'title_ua': 'Дівчина з Весняним Деревцем',
+        'title_en': 'Girl with a Spring Tree',
+        'story_ua': 'Персонаж народного весняного обряду. В її руках — крихітна розквітла гілка як символ непохитної '
+                    'надії та відродження життя. Обличчя спокійне, майже медитативне. Ця робота експонувалася у межах '
+                    'кураторської виставки сучасного наїву в Києві.',
+        'story_en': 'A figure embodying the ancient spring welcoming rite. In her hands she cradles a budding tree '
+                    'branch as an unshakable emblem of hope and rebirth. Her serene expression radiates quiet '
+                    'meditation. Previously showcased at the curated Naive Art Forum in Kyiv.',
+        'material_ua': 'Червона подільська глина, димлення, охра',
+        'material_en': 'Red Podillia clay, wood smoke reduction, natural ochre',
+        'technique_ua': 'Скульптурне моделювання, задимлення сосновою тирсою',
+        'technique_en': 'Direct modeling, pine-sawdust reduction pit firing',
+        'year': 2023,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 21000,
+        'price_eur': 480,
+        'price_usd': 525,
+        'dimensions': {'height_cm': 38.5, 'width_cm': 18.0, 'depth_cm': 15.0, 'weight_kg': 3.9},
+        'photos': [   {   'url': 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1200&q=85',
+                          'alt_ua': 'Дівчина з Весняним Деревцем — скульптура у повний зріст',
+                          'alt_en': 'Girl with a Spring Tree — full frontal statue',
+                          'is_cover': True,
+                          'display_order': 0},
+                      {   'url': 'https://images.unsplash.com/photo-1549887534-1541e9326642?auto=format&fit=crop&w=1200&q=85',
+                          'alt_ua': 'Тонкі деталі обличчя та деревця',
+                          'alt_en': 'Detail of face and miniature spring tree',
+                          'is_cover': False,
+                          'display_order': 1}],
+        'status': 'RESERVED',
+        'display_order': 15,
+        'is_featured': False,
+        'created_at': '2024-03-20T11:15:00Z',
+        'updated_at': '2024-03-20T11:15:00Z'},
+    {   'id': 'sculpt-004',
+        'slug': 'stepovyi-lev-soniashnyk',
+        'title_ua': 'Степовий Лев-Соняшник',
+        'title_en': 'Steppe Sunflower Lion',
+        'story_ua': 'Лев із гривою у формі розкритого соняшника — омаж народним розписам Марії Примаченко. Скульптура '
+                    'дихає сонячним оптимізмом, теплом глини та безпосередністю дитячого бачення. Поверхня покрита '
+                    'теракотовим ангобом із вкрапленнями польового шпату.',
+        'story_en': 'A lion whose radiant mane forms a blossoming sunflower — a loving homage to Maria Prymachenko. '
+                    'The piece vibrates with sunlit optimism, raw clay warmth, and childlike candor. Coated in warm '
+                    'terracotta engobes with subtle feldspar flecks.',
+        'material_ua': 'Глина напівпорцеляна, кольорові ангоби, матова емаль',
+        'material_en': 'Semi-porcelain stoneware, colored engobes, satin enamel',
+        'technique_ua': 'Ліплення з цільного пласта, гравіювання сграфіто, випал 1220°C',
+        'technique_en': 'Single slab construction, sgraffito carving, high firing at 1220°C',
+        'year': 2023,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 29500,
+        'price_eur': 670,
+        'price_usd': 740,
+        'dimensions': {'height_cm': 29.0, 'width_cm': 35.0, 'depth_cm': 24.0, 'weight_kg': 6.2},
+        'photos': [   {   'url': 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1200&q=85',
+                          'alt_ua': 'Степовий Лев-Соняшник — загальний вигляд',
+                          'alt_en': 'Steppe Sunflower Lion — general museum view',
+                          'is_cover': True,
+                          'display_order': 0},
+                      {   'url': 'https://images.unsplash.com/photo-1569074187119-c87815b476da?auto=format&fit=crop&w=1200&q=85',
+                          'alt_ua': 'Крупний план соняшникової гриви',
+                          'alt_en': 'Close up of sunflower mane details',
+                          'is_cover': False,
+                          'display_order': 1}],
+        'status': 'SOLD',
+        'display_order': 16,
+        'is_featured': False,
+        'created_at': '2023-11-10T09:00:00Z',
+        'updated_at': '2024-01-15T16:20:00Z'},
+    {   'id': 'sculpt-005',
+        'slug': 'chervona-kolyadnytsia',
+        'title_ua': 'Колядниця з Різдвяною Зіркою',
+        'title_en': 'Carol Singer with Bethlehem Star',
+        'story_ua': 'Наївна фігура колядниці в автентичній хустці з різдвяною зорею в руках. Скульптура наповнена '
+                    'сакральною тишею зимового вечора в українському селі. Орнаменти на кожушку видряпані вручну по '
+                    'сирій глині.',
+        'story_en': 'A naive carol singer wrapped in a folk kerchief, bearing the Christmas star. The artwork captures '
+                    'the sacred silence of a winter evening in a Ukrainian village. The coat patterns were engraved by '
+                    'hand into wet clay before the first kiln firing.',
+        'material_ua': 'Шамотна кераміка, пічна сажа, сусальне золото (акцент)',
+        'material_en': 'Chamotte ceramic, soot patination, gold leaf accent',
+        'technique_ua': 'Комбіноване ліплення, тонування натуральними пігментами',
+        'technique_en': 'Combined pinch modeling, toned with natural soot and wax',
+        'year': 2024,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 26000,
+        'price_eur': 590,
+        'price_usd': 650,
+        'dimensions': {'height_cm': 46.0, 'width_cm': 20.0, 'depth_cm': 18.0, 'weight_kg': 5.1},
+        'photos': [   {   'url': 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1200&q=85',
+                          'alt_ua': 'Колядниця з Різдвяною Зіркою — фасадний ракурс',
+                          'alt_en': 'Carol Singer with Bethlehem Star — facade angle',
+                          'is_cover': True,
+                          'display_order': 0}],
+        'status': 'AVAILABLE',
+        'display_order': 17,
+        'is_featured': True,
+        'created_at': '2024-06-01T12:00:00Z',
+        'updated_at': '2024-06-01T12:00:00Z'},
+    {   'id': 'sculpt-006',
+        'slug': 'kozlyk-derevoryb',
+        'title_ua': 'Козлик-Деревориб (Дивосвіт)',
+        'title_en': 'Wonder-Goat with Horns of Wood',
+        'story_ua': "Міфічний характер із серії 'Сни старого гончаря'. Поєднання образу рогатого козлика і плавників "
+                    'риби виражає нерозривну єдність землі, води та фантазії. Використано традиційну опішнянську глину '
+                    'теплого вохристого кольору.',
+        'story_en': "A mythical creature from the 'Old Potter's Dreams' cycle. Merging the horned goat form with "
+                    'aquatic fins, representing the primal unity of earth, water, and creative fantasy. Crafted using '
+                    'traditional warm ochre Opishnia clay.',
+        'material_ua': 'Опішнянська глина, теракотовий ангоб, попіл',
+        'material_en': 'Opishnia terracotta clay, wood ash glaze',
+        'technique_ua': 'Гончарний тулуб із доліпленими скульптурними елементами',
+        'technique_en': 'Wheel-thrown torso with hand-modeled mythological appendages',
+        'year': 2023,
+        'edition_ua': 'Єдиний екземпляр (1/1)',
+        'edition_en': 'Unique original (1/1)',
+        'price_uah': 16000,
+        'price_eur': 365,
+        'price_usd': 400,
+        'dimensions': {'height_cm': 28.0, 'width_cm': 26.0, 'depth_cm': 14.0, 'weight_kg': 3.4},
+        'photos': [   {   'url': 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=1200&q=85',
+                          'alt_ua': 'Козлик-Деревориб — ракурс три чверті',
+                          'alt_en': 'Wonder-Goat — three-quarters view',
+                          'is_cover': True,
+                          'display_order': 6}],
+        'status': 'SOLD',
+        'display_order': 18,
+        'is_featured': False,
+        'created_at': '2023-10-05T08:30:00Z',
+        'updated_at': '2023-12-01T15:00:00Z'}]
