@@ -337,6 +337,12 @@ class OrderRepository:
         is_inquiry = order_input.get("is_inquiry", False)
         sculpture_id = sculpture["id"]
 
+        contact_channel_raw = order_input.get("contact_channel", "EMAIL")
+        if hasattr(contact_channel_raw, "value"):
+            contact_channel = contact_channel_raw.value
+        else:
+            contact_channel = str(contact_channel_raw).strip().split(".")[-1].upper()
+
         order_record = {
             "id": order_id,
             "reservation_code": reservation_code,
@@ -346,7 +352,7 @@ class OrderRepository:
             "price_uah": sculpture.get("price_uah", 0),
             "is_inquiry": is_inquiry,
             "buyer_name": order_input["buyer_name"],
-            "contact_channel": order_input["contact_channel"],
+            "contact_channel": contact_channel,
             "telegram_handle": order_input.get("telegram_handle"),
             "email": order_input.get("email"),
             "delivery_city_country": order_input["delivery_city_country"],

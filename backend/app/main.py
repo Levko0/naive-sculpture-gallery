@@ -143,7 +143,7 @@ async def create_order(order_data: OrderCreate, request: Request):
 
     try:
         order_record = order_repo.create_order_atomic(
-            order_input=order_data.model_dump(),
+            order_input=order_data.model_dump(mode="json"),
             sculpture=sculpture
         )
     except ValueError as e:

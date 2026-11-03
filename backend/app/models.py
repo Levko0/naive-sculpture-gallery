@@ -3,7 +3,7 @@ Data models and Pydantic v2 schemas for Naive Art Sculpture Gallery.
 Includes validations, multilingual support (UA/EN), and strict typing.
 """
 from enum import Enum
-from typing import List, Optional
+from typing import List, Optional, Any
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 
@@ -153,6 +153,15 @@ class OrderResponse(BaseModel):
     admin_notes: Optional[str] = None
     created_at: str
     updated_at: str
+
+    @field_validator("contact_channel", mode="before")
+    @classmethod
+    def normalize_contact_channel(cls, v: Any) -> Any:
+        if isinstance(v, str):
+            clean = v.strip().split(".")[-1].upper()
+            if clean in ("TELEGRAM", "EMAIL"):
+                return clean
+        return v
 
 
 class OrderStatusUpdateRequest(BaseModel):
