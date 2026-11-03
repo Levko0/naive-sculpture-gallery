@@ -15,7 +15,7 @@ Parameters:
   
   ArtistNotificationEmail:
     Type: String
-    Default: artist@naive-sculptures.art
+    Default: sculptures.zh@gmail.com
     Description: Email address for instant SNS reservation & inquiry notifications.
     AllowedPattern: '^.+@.+\..+$'
     ConstraintDescription: Must be a valid email address.

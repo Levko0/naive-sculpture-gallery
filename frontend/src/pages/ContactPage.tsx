@@ -9,7 +9,7 @@ export const ContactPage: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
       <div className="max-w-3xl mb-16 space-y-4">
         <div className="text-xs font-semibold uppercase tracking-museum text-gallery-muted">
-          Прямий зв'язок
+          {language === 'UA' ? "Прямий зв'язок" : "Direct Contact"}
         </div>
         <h1 className="font-serif text-4xl sm:text-6xl text-gallery-ink font-medium leading-tight">
           {t.contact.title}
@@ -41,7 +41,9 @@ export const ContactPage: React.FC = () => {
                   @naive_sculptures
                 </a>
                 <p className="text-xs text-gallery-muted mt-1">
-                  Найшвидший спосіб узгодження деталей та надсилання відео скульптури
+                  {language === 'UA'
+                    ? 'Найшвидший спосіб узгодження деталей та надсилання відео скульптури'
+                    : 'Fastest way to coordinate details and receive videos of the sculpture'}
                 </p>
               </div>
             </div>
@@ -56,13 +58,15 @@ export const ContactPage: React.FC = () => {
                   {t.contact.emailLabel}
                 </div>
                 <a
-                  href="mailto:artist@naive-sculptures.art"
+                  href="mailto:sculptures.zh@gmail.com"
                   className="font-serif text-xl text-gallery-ink hover:underline block mt-1"
                 >
-                  artist@naive-sculptures.art
+                  sculptures.zh@gmail.com
                 </a>
                 <p className="text-xs text-gallery-muted mt-1">
-                  Для офіційних запитів, співпраці з галереями та кураторами
+                  {language === 'UA'
+                    ? 'Основна пошта для замовлень, офіційних запитів та співпраці'
+                    : 'Primary email for orders, curatorial inquiries, and collaboration'}
                 </p>
               </div>
             </div>
@@ -80,7 +84,9 @@ export const ContactPage: React.FC = () => {
                   {t.contact.studioAddress}
                 </div>
                 <p className="text-xs text-gallery-muted mt-1">
-                  Індивідуальні візити за попередньою домовленістю
+                  {language === 'UA'
+                    ? 'Індивідуальні візити за попередньою домовленістю'
+                    : 'Private visits by prior appointment'}
                 </p>
               </div>
             </div>
@@ -105,11 +111,13 @@ export const ContactPage: React.FC = () => {
             <div className="flex items-center space-x-3 text-gallery-ink">
               <Shield className="w-5 h-5" />
               <h3 className="font-serif text-2xl font-medium">
-                Пряма оплата та безпека
+                {language === 'UA' ? 'Пряма оплата та безпека' : 'Direct Payment & Security'}
               </h3>
             </div>
             <p className="text-sm text-gallery-muted leading-relaxed font-light">
-              Оплата здійснюється безпосередньо на офіційну картку / рахунок ФОП автора після фото/відеофіксації стану скульптури перед пакуванням. Ви отримуєте фіскальний чек та сертифікат автентичності.
+              {language === 'UA'
+                ? 'Оплата здійснюється безпосередньо на офіційну картку / рахунок ФОП автора після фото/відеофіксації стану скульптури перед пакуванням. Ви отримуєте фіскальний чек та сертифікат автентичності.'
+                : 'Payment is completed directly to the artist’s official card/bank account after photo/video verification of the sculpture before packaging. A formal receipt and certificate of authenticity are provided.'}
             </p>
           </div>
         </div>

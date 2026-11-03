@@ -166,7 +166,7 @@ export const AcquisitionModal: React.FC<AcquisitionModalProps> = ({
                 </a>
 
                 <a
-                  href={`mailto:artist@naive-sculptures.art?subject=${encodeURIComponent(
+                  href={`mailto:sculptures.zh@gmail.com?subject=${encodeURIComponent(
                     `Бронювання ${createdOrder.reservation_code}: ${sculptureTitle}`
                   )}`}
                   className="flex items-center justify-center space-x-2 py-3 px-4 rounded bg-gallery-stone hover:bg-[#EAE4DC] border border-gallery-border text-xs font-medium text-gallery-ink transition-all"

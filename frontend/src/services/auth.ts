@@ -58,7 +58,7 @@ export async function loginArtist(email: string, password: string): Promise<Auth
   if (password === 'naive-art-2024' || password === 'admin' || password.length >= 6) {
     const session: AuthSession = {
       token: `dev-admin-token-${Date.now()}`,
-      email: email || 'artist@naive-sculptures.art',
+      email: email || 'sculptures.zh@gmail.com',
       expiresAt: Date.now() + 86400 * 1000,
     };
     localStorage.setItem(TOKEN_KEY, session.token);
@@ -76,7 +76,7 @@ export function getStoredSession(): AuthSession | null {
 
   return {
     token,
-    email: email || 'artist@naive-sculptures.art',
+    email: email || 'sculptures.zh@gmail.com',
     expiresAt: Date.now() + 86400 * 1000,
   };
 }

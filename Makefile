@@ -5,7 +5,7 @@ export SAM_CLI_TELEMETRY := 0
 
 STACK_NAME ?= naive-sculpture-gallery
 AWS_REGION ?= eu-central-1
-ARTIST_EMAIL ?= zhuraiev.pn@ucu.edu.ua
+ARTIST_EMAIL ?= sculptures.zh@gmail.com
 
 help:
 	@echo "🎨 Naive Art Sculpture Gallery & Storefront — Makefile"

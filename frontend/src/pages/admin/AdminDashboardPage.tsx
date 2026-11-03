@@ -105,7 +105,7 @@ export const AdminDashboardPage: React.FC = () => {
             {t.admin.title}
           </h1>
           <p className="text-xs text-gallery-muted mt-0.5">
-            Сесія: {session?.email || 'artist@naive-sculptures.art'}
+            Сесія: {session?.email || 'sculptures.zh@gmail.com'}
           </p>
         </div>
 

@@ -21,7 +21,7 @@ class Settings(BaseSettings):
 
     # Amazon SNS
     SNS_TOPIC_ARN: str = ""
-    ARTIST_NOTIFICATION_EMAIL: str = "artist@naive-sculptures.art"
+    ARTIST_NOTIFICATION_EMAIL: str = "sculptures.zh@gmail.com"
 
     # Amazon Cognito
     COGNITO_USER_POOL_ID: str = ""

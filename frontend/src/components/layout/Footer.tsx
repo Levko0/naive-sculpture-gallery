@@ -71,10 +71,10 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <a
-                  href="mailto:artist@naive-sculptures.art"
+                  href="mailto:sculptures.zh@gmail.com"
                   className="hover:text-gallery-ink transition-colors"
                 >
-                  artist@naive-sculptures.art
+                  sculptures.zh@gmail.com
                 </a>
               </li>
               <li>

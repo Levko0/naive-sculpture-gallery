@@ -10,7 +10,7 @@ export const AdminLoginPage: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('artist@naive-sculptures.art');
+  const [email, setEmail] = useState('sculptures.zh@gmail.com');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
