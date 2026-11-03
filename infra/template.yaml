@@ -281,7 +281,7 @@ Resources:
           RequireLowercase: true
           RequireNumbers: true
           RequireSymbols: false
-          RequireUppercase: true
+          RequireUppercase: false
       MfaConfiguration: 'OFF'
       AccountRecoverySetting:
         RecoveryMechanisms:
