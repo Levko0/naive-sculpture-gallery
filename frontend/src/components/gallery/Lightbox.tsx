@@ -132,6 +132,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
             <button
               key={idx}
               type="button"
+              aria-label={`Перейти до фото ${idx + 1}`}
               onClick={() => {
                 setCurrentIndex(idx);
                 setIsZoomed(false);

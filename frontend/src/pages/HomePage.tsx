@@ -1,18 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Sculpture } from '../types';
-import { fetchSculptures } from '../services/api';
+import { fetchSculptures, getLocalSculptures } from '../services/api';
 import { SculptureGrid } from '../components/gallery/SculptureGrid';
 import { FilterBar } from '../components/gallery/FilterBar';
+import { SEO } from '../components/common/SEO';
 import { ArrowDown } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
-  const [sculptures, setSculptures] = useState<Sculpture[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [sculptures, setSculptures] = useState<Sculpture[]>(() => getLocalSculptures());
+  const [isLoading, setIsLoading] = useState(false);
   const [statusFilter, setStatusFilter] = useState('');
   const [materialFilter, setMaterialFilter] = useState('');
+
+  const personJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Рустам Жураєв",
+    "jobTitle": language === 'UA' ? 'Скульптор' : 'Sculptor',
+    "description": language === 'UA'
+      ? "Скульптор у традиції українського наївного мистецтва. Оригінальна авторська кам'яна пластика ручної роботи (1/1)."
+      : "Ukrainian naive art sculptor. Original handcrafted stone sculptures (1/1 edition).",
+    "url": "/",
+    "sameAs": [
+      "https://t.me/naive_sculptures",
+      "https://www.youtube.com/watch?v=2qI5Dl5ZJ5o"
+    ]
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -30,7 +46,7 @@ export const HomePage: React.FC = () => {
         if (isMounted) setIsLoading(false);
       });
 
-    return () => {
+  return () => {
       isMounted = false;
     };
   }, [statusFilter, materialFilter]);
@@ -44,6 +60,15 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title={language === 'UA' ? "Рустам Жураєв | Галерея наївної кам'яної скульптури" : "Rustam Zhuraiev | Naive Stone Sculpture Gallery"}
+        description={language === 'UA'
+          ? "Онлайн-галерея оригінальних кам'яних скульптур Рустама Жураєва у традиції українського наїву. Пісковик, мармур, базальт, габро — унікальні екземпляри (1/1)."
+          : "Online gallery of original handcrafted naive stone sculptures by Rustam Zhuraiev. Sandstone, marble, basalt, gabbro — unique pieces (1/1)."}
+        url="/"
+        image="/sculptures/anhelyk.webp"
+        jsonLd={personJsonLd}
+      />
       {/* ==================================================================== */}
       {/* HERO SECTION: "LIGHT MUSEUM MINIMALISM" WITH PLENTY OF BREATHING ROOM */}
       {/* ==================================================================== */}
@@ -69,7 +94,8 @@ export const HomePage: React.FC = () => {
             <button
               type="button"
               onClick={scrollToCatalog}
-              className="inline-flex items-center space-x-2 text-xs font-semibold uppercase tracking-museum text-gallery-ink hover:text-neutral-600 transition-colors py-2 px-4 border-b border-gallery-ink"
+              aria-label={t.hero.viewCatalog}
+              className="inline-flex items-center min-h-[44px] space-x-2 text-xs font-semibold uppercase tracking-museum text-gallery-ink hover:text-neutral-600 transition-colors py-2.5 px-4 border-b border-gallery-ink"
             >
               <span>{t.hero.viewCatalog}</span>
               <ArrowDown className="w-3.5 h-3.5" />
@@ -82,6 +108,12 @@ export const HomePage: React.FC = () => {
       {/* CATALOG GALLERY SECTION */}
       {/* ==================================================================== */}
       <section id="catalog-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="mb-4">
+          <h2 className="font-serif text-2xl sm:text-3xl text-gallery-ink font-normal tracking-tight">
+            {language === 'UA' ? 'Колекція наявних робіт' : 'Available Collection'}
+          </h2>
+        </div>
+
         <FilterBar
           statusFilter={statusFilter}
           onStatusChange={setStatusFilter}

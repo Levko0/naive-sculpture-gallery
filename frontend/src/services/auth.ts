@@ -70,6 +70,7 @@ export async function loginArtist(email: string, password: string): Promise<Auth
 }
 
 export function getStoredSession(): AuthSession | null {
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') return null;
   const token = localStorage.getItem(TOKEN_KEY);
   const email = localStorage.getItem(EMAIL_KEY);
   if (!token) return null;
@@ -82,6 +83,8 @@ export function getStoredSession(): AuthSession | null {
 }
 
 export function logoutArtist(): void {
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(EMAIL_KEY);
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(EMAIL_KEY);
+  }
 }

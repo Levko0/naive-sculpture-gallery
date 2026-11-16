@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 interface ImageWithFallbackProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallbackSrc?: string;
+  fetchPriority?: 'high' | 'low' | 'auto';
 }
 
 export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
@@ -9,20 +10,28 @@ export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
   alt,
   fallbackSrc = 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1200&q=85',
   className = '',
+  loading = 'lazy',
+  fetchPriority = 'auto',
+  width = 800,
+  height = 1000,
   ...props
 }) => {
   const [hasError, setHasError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <div className="relative overflow-hidden bg-gallery-stone w-full h-full">
+    <div className="relative overflow-hidden bg-gallery-stone w-full h-full aspect-[4/5]">
       {!isLoaded && (
         <div className="absolute inset-0 bg-gallery-stone animate-pulse" />
       )}
       <img
         src={hasError ? fallbackSrc : src}
-        alt={alt || 'Naive art sculpture'}
-        loading="lazy"
+        alt={alt || 'Скульптура ручної роботи Рустама Жураєва'}
+        loading={loading}
+        // @ts-expect-error fetchpriority is a modern HTML attribute supported in React 18 / browsers
+        fetchpriority={fetchPriority}
+        width={width}
+        height={height}
         onLoad={() => setIsLoaded(true)}
         onError={() => setHasError(true)}
         className={`w-full h-full object-cover transition-opacity duration-500 ${

@@ -13,6 +13,7 @@ import { Button } from '../../components/common/Button';
 import { StatusBadge } from '../../components/common/Badge';
 import { SculptureEditorModal } from './SculptureEditorModal';
 import { OrdersManager } from './OrdersManager';
+import { SEO } from '../../components/common/SEO';
 import {
   Plus,
   Edit2,
@@ -95,6 +96,7 @@ export const AdminDashboardPage: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+      <SEO title="Панель автора | Рустам Жураєв" noindex={true} />
       {/* Admin Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-8 border-b border-gallery-border mb-8">
         <div>

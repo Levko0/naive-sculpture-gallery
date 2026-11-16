@@ -46,7 +46,7 @@ export const dictionaries = {
       inquireBtn: "Запитати про схожу роботу",
       reservedNotice: "Цю скульптуру наразі зарезервовано іншим шанувальником наїву.",
       soldNotice: "Ця робота знайшла свій дім у приватній колекції.",
-      backToWorks: "← Повернутися до експозиції",
+      backToWorks: "Повернутися до експозиції",
       lightboxHint: "Натисніть на фото для перегляду текстури на повний екран",
     },
     order: {
@@ -215,7 +215,7 @@ export const dictionaries = {
       inquireBtn: "Inquire About Similar Piece",
       reservedNotice: "This sculpture is currently reserved by another art lover.",
       soldNotice: "This artwork has found its home in a private collection.",
-      backToWorks: "← Back to exhibition",
+      backToWorks: "Back to exhibition",
       lightboxHint: "Click photo to inspect tactile clay texture in full-screen",
     },
     order: {

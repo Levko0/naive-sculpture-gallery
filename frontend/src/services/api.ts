@@ -5,7 +5,7 @@ const API_BASE = '/api';
 
 // Helper to retrieve auth header
 function getAuthHeaders(): HeadersInit {
-  const token = localStorage.getItem('nsg_admin_token');
+  const token = typeof window !== 'undefined' && typeof localStorage !== 'undefined' ? localStorage.getItem('nsg_admin_token') : null;
   return {
     'Content-Type': 'application/json',
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -16,7 +16,10 @@ function getAuthHeaders(): HeadersInit {
 const STORAGE_SCULPTURES_KEY = 'nsg_sculptures_local_2026';
 const STORAGE_ORDERS_KEY = 'nsg_orders_local';
 
-function getLocalSculptures(): Sculpture[] {
+export function getLocalSculptures(): Sculpture[] {
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+    return INITIAL_MOCK_SCULPTURES;
+  }
   const saved = localStorage.getItem(STORAGE_SCULPTURES_KEY);
   if (saved) {
     try {
@@ -29,10 +32,15 @@ function getLocalSculptures(): Sculpture[] {
 }
 
 function saveLocalSculptures(items: Sculpture[]) {
-  localStorage.setItem(STORAGE_SCULPTURES_KEY, JSON.stringify(items));
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    localStorage.setItem(STORAGE_SCULPTURES_KEY, JSON.stringify(items));
+  }
 }
 
 function getLocalOrders(): Order[] {
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+    return [];
+  }
   const saved = localStorage.getItem(STORAGE_ORDERS_KEY);
   if (saved) {
     try {
@@ -45,7 +53,9 @@ function getLocalOrders(): Order[] {
 }
 
 function saveLocalOrders(items: Order[]) {
-  localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(items));
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(items));
+  }
 }
 
 // =============================================================================

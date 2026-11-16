@@ -7,9 +7,10 @@ import { ImageWithFallback } from '../common/ImageWithFallback';
 
 interface SculptureCardProps {
   sculpture: Sculpture;
+  index?: number;
 }
 
-export const SculptureCard: React.FC<SculptureCardProps> = ({ sculpture }) => {
+export const SculptureCard: React.FC<SculptureCardProps> = ({ sculpture, index }) => {
   const { language } = useLanguage();
 
   const title = language === 'UA' ? sculpture.title_ua : sculpture.title_en;
@@ -21,6 +22,12 @@ export const SculptureCard: React.FC<SculptureCardProps> = ({ sculpture }) => {
 
   const { height_cm, width_cm, depth_cm } = sculpture.dimensions;
 
+  const isAboveTheFold = index !== undefined && index < 4;
+  const altText =
+    language === 'UA'
+      ? `Кам'яна скульптура «${title}», ${material}, автор Рустам Жураєв`
+      : `Stone sculpture "${title}", ${material}, by Rustam Zhuraiev`;
+
   return (
     <article className="group flex flex-col bg-gallery-stone/30 gallery-card-border p-4 transition-all duration-300 hover:shadow-subtle hover:bg-gallery-stone/60">
       <Link
@@ -29,7 +36,11 @@ export const SculptureCard: React.FC<SculptureCardProps> = ({ sculpture }) => {
       >
         <ImageWithFallback
           src={coverPhoto}
-          alt={title}
+          alt={altText}
+          loading={isAboveTheFold ? 'eager' : 'lazy'}
+          fetchPriority={isAboveTheFold ? 'high' : 'auto'}
+          width={800}
+          height={1000}
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
 

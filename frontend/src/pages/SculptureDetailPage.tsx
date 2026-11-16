@@ -2,20 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { Sculpture, PhotoItem } from '../types';
-import { fetchSculptureBySlug } from '../services/api';
+import { fetchSculptureBySlug, getLocalSculptures } from '../services/api';
 import { StatusBadge } from '../components/common/Badge';
 import { Button } from '../components/common/Button';
 import { Lightbox } from '../components/gallery/Lightbox';
 import { AcquisitionModal } from '../components/order/AcquisitionModal';
 import { ImageWithFallback } from '../components/common/ImageWithFallback';
+import { SEO } from '../components/common/SEO';
 import { ZoomIn, ArrowLeft, ShieldCheck, Truck, Sparkles } from 'lucide-react';
 
 export const SculptureDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const { language, t } = useLanguage();
 
-  const [sculpture, setSculpture] = useState<Sculpture | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [sculpture, setSculpture] = useState<Sculpture | null>(() => {
+    if (slug) {
+      const items = getLocalSculptures();
+      return items.find((s) => s.slug === slug) || null;
+    }
+    return null;
+  });
+  const [isLoading, setIsLoading] = useState(() => !sculpture);
   const [error, setError] = useState<string | null>(null);
 
   // Lightbox state
@@ -87,15 +94,58 @@ export const SculptureDetailPage: React.FC = () => {
     setIsLightboxOpen(true);
   };
 
+  const artworkJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "VisualArtwork",
+    "name": title,
+    "alternateName": language === 'UA' ? sculpture.title_en : sculpture.title_ua,
+    "artist": {
+      "@type": "Person",
+      "name": "Рустам Жураєв"
+    },
+    "artMedium": material,
+    "artform": "Sculpture",
+    "description": story,
+    "image": sculpture.photos[0]?.url,
+    "width": {
+      "@type": "Distance",
+      "name": `${sculpture.dimensions.width_cm} см`
+    },
+    "height": {
+      "@type": "Distance",
+      "name": `${sculpture.dimensions.height_cm} см`
+    },
+    "depth": {
+      "@type": "Distance",
+      "name": `${sculpture.dimensions.depth_cm} см`
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": sculpture.price_uah,
+      "priceCurrency": "UAH",
+      "availability": isAvailable ? "https://schema.org/InStock" : "https://schema.org/SoldOut"
+    }
+  };
+
+  const seoDescription = `${title} (${sculpture.year}) — ${edition}. ${material}. ${story.slice(0, 140)}...`;
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+      <SEO
+        title={`${title} | Рустам Жураєв`}
+        description={seoDescription}
+        image={sculpture.photos[0]?.url}
+        url={`/sculpture/${sculpture.slug}`}
+        type="article"
+        jsonLd={artworkJsonLd}
+      />
       {/* Breadcrumb / Back button */}
       <div className="mb-8">
         <Link
           to="/"
-          className="inline-flex items-center text-xs text-gallery-muted hover:text-gallery-ink transition-colors tracking-wide space-x-1.5"
+          className="inline-flex items-center min-h-[44px] py-2 px-1 text-xs text-gallery-muted hover:text-gallery-ink transition-colors tracking-wide space-x-2 -ml-1"
         >
-          <ArrowLeft className="w-3.5 h-3.5" />
+          <ArrowLeft className="w-4 h-4 shrink-0" />
           <span>{t.sculpture.backToWorks}</span>
         </Link>
       </div>
@@ -106,39 +156,49 @@ export const SculptureDetailPage: React.FC = () => {
         {/* ================================================================== */}
         <div className="lg:col-span-7 space-y-6">
           {/* Main Primary View */}
-          <div
-            className="relative aspect-[4/5] bg-gallery-stone/40 gallery-card-border overflow-hidden cursor-zoom-in group"
+          <button
+            type="button"
+            className="w-full text-left relative aspect-[4/5] bg-gallery-stone/40 gallery-card-border overflow-hidden cursor-zoom-in group focus:outline-none"
             onClick={() => openLightboxAt(0)}
+            aria-label={language === 'UA' ? `Збільшити фото скульптури ${title}` : `Enlarge photo of sculpture ${title}`}
           >
             <ImageWithFallback
               src={sculpture.photos[0]?.url}
-              alt={sculpture.photos[0]?.alt_ua || title}
+              alt={language === 'UA' ? `Кам'яна скульптура «${title}» — ${material}, автор Рустам Жураєв` : `Stone sculpture "${title}" — ${material}, by Rustam Zhuraiev`}
+              loading="eager"
+              fetchPriority="high"
+              width={800}
+              height={1000}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-102"
             />
             {/* Zoom Hint Overlay */}
             <div className="absolute bottom-4 right-4 bg-gallery-ink/80 backdrop-blur-sm text-gallery-milk p-2.5 rounded-full shadow-md opacity-90 group-hover:opacity-100 transition-opacity">
               <ZoomIn className="w-4 h-4" />
             </div>
-          </div>
+          </button>
 
           {/* Secondary angles gallery strip */}
           {sculpture.photos.length > 1 && (
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {sculpture.photos.slice(1).map((photo: PhotoItem, idx: number) => (
-                <div
+                <button
                   key={idx + 1}
-                  className="relative aspect-square bg-gallery-stone/40 gallery-card-border overflow-hidden cursor-zoom-in group"
+                  type="button"
+                  className="relative aspect-square bg-gallery-stone/40 gallery-card-border overflow-hidden cursor-zoom-in group focus:outline-none"
                   onClick={() => openLightboxAt(idx + 1)}
+                  aria-label={language === 'UA' ? `Переглянути ракурс ${idx + 2} скульптури ${title}` : `View angle ${idx + 2} of sculpture ${title}`}
                 >
                   <ImageWithFallback
                     src={photo.url}
-                    alt={photo.alt_ua || `${title} angle ${idx + 2}`}
+                    alt={language === 'UA' ? `Скульптура «${title}», ракурс ${idx + 2}` : `Sculpture "${title}", angle ${idx + 2}`}
+                    width={400}
+                    height={400}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gallery-ink/0 group-hover:bg-gallery-ink/10 transition-colors flex items-center justify-center">
                     <ZoomIn className="w-4 h-4 text-white opacity-0 group-hover:opacity-90 transition-opacity" />
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           )}
@@ -215,9 +275,9 @@ export const SculptureDetailPage: React.FC = () => {
 
           {/* Museum Label Specifications Table */}
           <div className="pt-4 border-t border-gallery-border space-y-4">
-            <div className="text-xs uppercase tracking-museum font-semibold text-gallery-ink">
+            <h2 className="text-xs uppercase tracking-museum font-semibold text-gallery-ink">
               Паспорт твору
-            </div>
+            </h2>
 
             <dl className="grid grid-cols-2 gap-y-3.5 text-xs text-gallery-ink">
               <dt className="text-gallery-muted font-normal">{t.sculpture.year}</dt>
@@ -243,9 +303,9 @@ export const SculptureDetailPage: React.FC = () => {
 
           {/* Artist Story / Concept */}
           <div className="pt-6 border-t border-gallery-border space-y-2">
-            <div className="text-xs uppercase tracking-museum font-semibold text-gallery-ink">
+            <h2 className="text-xs uppercase tracking-museum font-semibold text-gallery-ink">
               {t.sculpture.story}
-            </div>
+            </h2>
             <p className="text-xs sm:text-sm text-gallery-muted leading-relaxed font-light font-sans">
               {story}
             </p>

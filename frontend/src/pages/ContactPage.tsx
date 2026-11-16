@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { SEO } from '../components/common/SEO';
 import { Send, Mail, MapPin, PackageCheck, Shield } from 'lucide-react';
 
 export const ContactPage: React.FC = () => {
@@ -7,6 +8,13 @@ export const ContactPage: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <SEO
+        title={language === 'UA' ? "Контакти майстерні | Рустам Жураєв" : "Studio Contacts | Rustam Zhuraiev"}
+        description={language === 'UA'
+          ? "Зв'яжіться зі скульптором Рустамом Жураєвим у Telegram або електронною поштою для придбання та узгодження доставки кам'яних скульптур."
+          : "Contact naive art sculptor Rustam Zhuraiev via Telegram or email for acquisitions, studio visits in Lviv, and international delivery."}
+        url="/contact"
+      />
       <div className="max-w-3xl mb-16 space-y-4">
         <div className="text-xs font-semibold uppercase tracking-museum text-gallery-muted">
           {language === 'UA' ? "Прямий зв'язок" : "Direct Contact"}
@@ -98,9 +106,9 @@ export const ContactPage: React.FC = () => {
           <div className="p-6 bg-gallery-stone/30 gallery-card-border space-y-4">
             <div className="flex items-center space-x-3 text-gallery-ink">
               <PackageCheck className="w-5 h-5" />
-              <h3 className="font-serif text-2xl font-medium">
+              <h2 className="font-serif text-2xl font-medium">
                 {t.contact.deliveryInfoTitle}
-              </h3>
+              </h2>
             </div>
             <p className="text-sm text-gallery-muted leading-relaxed font-light">
               {t.contact.deliveryInfoText}
@@ -110,9 +118,9 @@ export const ContactPage: React.FC = () => {
           <div className="p-6 bg-gallery-stone/30 gallery-card-border space-y-4">
             <div className="flex items-center space-x-3 text-gallery-ink">
               <Shield className="w-5 h-5" />
-              <h3 className="font-serif text-2xl font-medium">
+              <h2 className="font-serif text-2xl font-medium">
                 {language === 'UA' ? 'Пряма оплата та безпека' : 'Direct Payment & Security'}
-              </h3>
+              </h2>
             </div>
             <p className="text-sm text-gallery-muted leading-relaxed font-light">
               {language === 'UA'

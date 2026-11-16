@@ -12,18 +12,27 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>(() => {
-    const saved = localStorage.getItem('nsg_lang');
-    return (saved === 'EN' || saved === 'UA') ? saved : 'UA'; // Ukrainian is default
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      const saved = localStorage.getItem('nsg_lang');
+      return (saved === 'EN' || saved === 'UA') ? saved : 'UA'; // Ukrainian is default
+    }
+    return 'UA';
   });
+
+  const getHtmlLangCode = (lang: Language) => (lang === 'UA' ? 'uk' : 'en');
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem('nsg_lang', lang);
-    document.documentElement.lang = lang.toLowerCase();
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      localStorage.setItem('nsg_lang', lang);
+      document.documentElement.lang = getHtmlLangCode(lang);
+    }
   };
 
   useEffect(() => {
-    document.documentElement.lang = language.toLowerCase();
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = getHtmlLangCode(language);
+    }
   }, [language]);
 
   const t = dictionaries[language];

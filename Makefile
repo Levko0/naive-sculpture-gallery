@@ -73,9 +73,10 @@ deploy-frontend:
 	echo "Target Distribution: $$DIST_ID"; \
 	echo "Cognito Client ID: $$CLIENT_ID"; \
 	echo "window.__ENV__ = { VITE_COGNITO_CLIENT_ID: '$$CLIENT_ID', VITE_AWS_REGION: '$(AWS_REGION)' };" > frontend/dist/env.js; \
-	aws s3 sync frontend/dist s3://$$BUCKET_NAME --delete --cache-control "public, max-age=31536000, immutable" --exclude "index.html" --exclude "env.js" --exclude "media/*"; \
-	aws s3 cp frontend/dist/index.html s3://$$BUCKET_NAME/index.html --cache-control "no-cache, no-store, must-revalidate"; \
+	aws s3 sync frontend/dist s3://$$BUCKET_NAME --delete --cache-control "public, max-age=31536000, immutable" --exclude "*.html" --exclude "env.js" --exclude "media/*"; \
+	aws s3 sync frontend/dist s3://$$BUCKET_NAME --exclude "*" --include "*.html" --cache-control "no-cache, no-store, must-revalidate"; \
 	aws s3 cp frontend/dist/env.js s3://$$BUCKET_NAME/env.js --cache-control "no-cache, no-store, must-revalidate"; \
+	node frontend/scripts/sync-routes.mjs; \
 	aws cloudfront create-invalidation --distribution-id $$DIST_ID --paths "/*"
 	@echo "✅ Frontend deployment complete!"
 

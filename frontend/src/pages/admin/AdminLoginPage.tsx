@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { Button } from '../../components/common/Button';
+import { SEO } from '../../components/common/SEO';
 import { Shield, Lock, ArrowLeft } from 'lucide-react';
 
 export const AdminLoginPage: React.FC = () => {
@@ -32,6 +33,7 @@ export const AdminLoginPage: React.FC = () => {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-16">
+      <SEO title="Вхід | Панель автора" noindex={true} />
       <div className="w-full max-w-md bg-gallery-stone/40 gallery-card-border p-8 sm:p-10 space-y-6">
         <div className="text-center space-y-2">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gallery-ink text-gallery-milk mb-2">

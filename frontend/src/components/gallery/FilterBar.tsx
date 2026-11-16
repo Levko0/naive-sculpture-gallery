@@ -35,7 +35,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-6 border-b border-gallery-border mb-8">
-      {/* Status Segmented Buttons */}
+      {/* Status Segmented Buttons (>= 44px touch target) */}
       <div className="inline-flex rounded-full border border-gallery-border p-1 bg-gallery-stone/40 self-start">
         {statusOptions.map((opt) => {
           const isSelected = statusFilter === opt.id;
@@ -44,7 +44,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               key={opt.id}
               type="button"
               onClick={() => onStatusChange(opt.id)}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
+              className={`min-h-[44px] px-4 py-2 rounded-full text-xs font-medium inline-flex items-center justify-center transition-all ${
                 isSelected
                   ? 'bg-gallery-ink text-gallery-milk shadow-sm'
                   : 'text-gallery-muted hover:text-gallery-ink'
@@ -56,13 +56,13 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         })}
       </div>
 
-      {/* Material filter & Count */}
+      {/* Material filter & Count (>= 44px touch target) */}
       <div className="flex items-center space-x-4">
         {/* Material select dropdown */}
         <select
           value={materialFilter}
           onChange={(e) => onMaterialChange(e.target.value)}
-          className="text-xs bg-gallery-milk border border-gallery-border rounded px-3 py-1.5 text-gallery-ink focus:outline-none focus:ring-1 focus:ring-gallery-ink"
+          className="min-h-[44px] text-xs bg-gallery-milk border border-gallery-border rounded-lg px-3 py-2 text-gallery-ink focus:outline-none focus:ring-1 focus:ring-gallery-ink"
           aria-label={t.filter.filterByMaterial}
         >
           {materialOptions.map((mat) => (

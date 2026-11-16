@@ -68,9 +68,9 @@ export const SculptureGrid: React.FC<SculptureGridProps> = ({
       animate="visible"
       className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10"
     >
-      {sculptures.map((sculpture) => (
+      {sculptures.map((sculpture, idx) => (
         <motion.div key={sculpture.id} variants={itemVariants}>
-          <SculptureCard sculpture={sculpture} />
+          <SculptureCard sculpture={sculpture} index={idx} />
         </motion.div>
       ))}
     </motion.div>

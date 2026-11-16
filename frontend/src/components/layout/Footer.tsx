@@ -29,24 +29,36 @@ export const Footer: React.FC = () => {
             <div className="text-xs font-semibold uppercase tracking-museum text-gallery-ink">
               Експозиція
             </div>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-1 text-sm">
               <li>
-                <Link to="/" className="hover:text-gallery-ink transition-colors">
+                <Link
+                  to="/"
+                  className="min-h-[44px] inline-flex items-center py-2 text-gallery-muted hover:text-gallery-ink transition-colors"
+                >
                   {t.nav.works}
                 </Link>
               </li>
               <li>
-                <Link to="/archive" className="hover:text-gallery-ink transition-colors">
+                <Link
+                  to="/archive"
+                  className="min-h-[44px] inline-flex items-center py-2 text-gallery-muted hover:text-gallery-ink transition-colors"
+                >
                   {t.nav.archive}
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="hover:text-gallery-ink transition-colors">
+                <Link
+                  to="/about"
+                  className="min-h-[44px] inline-flex items-center py-2 text-gallery-muted hover:text-gallery-ink transition-colors"
+                >
                   {t.nav.about}
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-gallery-ink transition-colors">
+                <Link
+                  to="/contact"
+                  className="min-h-[44px] inline-flex items-center py-2 text-gallery-muted hover:text-gallery-ink transition-colors"
+                >
                   {t.nav.contact}
                 </Link>
               </li>
@@ -58,13 +70,13 @@ export const Footer: React.FC = () => {
             <div className="text-xs font-semibold uppercase tracking-museum text-gallery-ink">
               Зв'язок з автором
             </div>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-1 text-sm">
               <li>
                 <a
                   href="https://t.me/naive_sculptures"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-gallery-ink transition-colors"
+                  className="min-h-[44px] inline-flex items-center py-2 text-gallery-muted hover:text-gallery-ink transition-colors"
                 >
                   Telegram: @naive_sculptures
                 </a>
@@ -72,13 +84,13 @@ export const Footer: React.FC = () => {
               <li>
                 <a
                   href="mailto:sculptures.zh@gmail.com"
-                  className="hover:text-gallery-ink transition-colors"
+                  className="min-h-[44px] inline-flex items-center py-2 text-gallery-muted hover:text-gallery-ink transition-colors"
                 >
                   sculptures.zh@gmail.com
                 </a>
               </li>
               <li>
-                <span className="text-xs text-gallery-muted block pt-1">
+                <span className="text-xs text-gallery-muted block pt-1 leading-relaxed">
                   Пряма оплата на картку майстра. Доставка Новою Поштою або DHL.
                 </span>
               </li>
@@ -90,10 +102,8 @@ export const Footer: React.FC = () => {
           <div>
             © {currentYear} Рустам Жураєв. Всі права захищено.
           </div>
-          <div className="flex items-center space-x-6">
-            <Link to="/admin" className="hover:text-gallery-ink transition-colors">
-              Панель автора
-            </Link>
+          <div className="text-[11px] text-gallery-muted/70">
+            Кам'яна наївна пластика ручної роботи (1/1)
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { ImageWithFallback } from '../components/common/ImageWithFallback';
+import { SEO } from '../components/common/SEO';
 import { ArrowRight, ExternalLink, Video, Newspaper, Quote } from 'lucide-react';
 
 export const AboutPage: React.FC = () => {
@@ -14,8 +15,34 @@ export const AboutPage: React.FC = () => {
     { val: t.about.stat4Val, label: t.about.stat4Label },
   ];
 
+  const personJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Рустам Жураєв",
+    "jobTitle": language === 'UA' ? 'Скульптор' : 'Sculptor',
+    "description": language === 'UA'
+      ? "Український скульптор у стилі наївного мистецтва. Виставка Першообрази, персональні кам'яні скульптури."
+      : "Ukrainian naive stone sculptor. Exhibition First Images, handcrafted stone sculptures.",
+    "url": "/about",
+    "image": "/author/rustam-zhuraiev.webp",
+    "sameAs": [
+      "https://t.me/naive_sculptures",
+      "https://www.youtube.com/watch?v=2qI5Dl5ZJ5o",
+      "https://risu.ua/pershoobrazi-u-lvovi-predstavlena-vistavka-skulptur-rustama-zhurayeva_n165335"
+    ]
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <SEO
+        title={language === 'UA' ? "Про автора — Рустам Жураєв | Наївна скульптура" : "About the Artist — Rustam Zhuraiev | Naive Sculpture"}
+        description={language === 'UA'
+          ? "Біографія та творчий шлях скульптора Рустама Жураєва. Праця з диким каменем, виставка «Першообрази» у Львові, філософія наївного мистецтва."
+          : "Biography and creative journey of sculptor Rustam Zhuraiev. Working with raw stone, exhibition First Images in Lviv, Ukrainian naive art."}
+        url="/about"
+        image="/author/rustam-zhuraiev.webp"
+        jsonLd={personJsonLd}
+      />
       {/* Editorial Header */}
       <div className="max-w-3xl mb-16 space-y-4">
         <div className="text-xs font-semibold uppercase tracking-museum text-gallery-muted">
