@@ -456,5 +456,43 @@ export const INITIAL_MOCK_SCULPTURES: Sculpture[] = [
     "is_featured": false,
     "created_at": "2026-07-15T14:40:00Z",
     "updated_at": "2026-11-02T12:00:00Z"
+  },
+  {
+    "id": "sculpt-019",
+    "slug": "kozak-vapniak",
+    "title_ua": "Козак",
+    "title_en": "Cossack",
+    "story_ua": "Образ українського лицаря-козака, висічений з природного вапняку у традиції наївного мистецтва. Лаконічна монументальна пластика втілює внутрішню силу, спокій та незламний дух. Пориста, тепла фактура білого вапняку зберігає первозданне дихання породи та живі сліди ручного різця майстра.",
+    "story_en": "The archetypal figure of a Ukrainian Cossack knight carved from natural limestone in the naive art tradition. The minimalist monumental form embodies inner fortitude, dignity, and indomitable spirit. The warm, porous texture of stone preserves the primordial grain and the tactile marks of the artist's chisel.",
+    "material_ua": "Природний білий вапняк",
+    "material_en": "Natural white limestone",
+    "technique_ua": "Пряме ручне вирубування з цільного вапнякового моноліту, фактурне карбування",
+    "technique_en": "Direct hand carving from solid limestone block, textural chisel detailing",
+    "year": 2026,
+    "edition_ua": "Єдиний екземпляр (1/1)",
+    "edition_en": "Unique original (1/1)",
+    "price_uah": 30000,
+    "price_eur": 680,
+    "price_usd": 730,
+    "dimensions": {
+      "height_cm": 42.0,
+      "width_cm": 18.0,
+      "depth_cm": 16.0,
+      "weight_kg": 6.5
+    },
+    "photos": [
+      {
+        "url": "/sculptures/kozak-vapniak.webp",
+        "alt_ua": "Козак — кам'яна скульптура з вапняку, автор Рустам Жураєв",
+        "alt_en": "Cossack — limestone sculpture by Rustam Zhuraiev",
+        "is_cover": true,
+        "display_order": 0
+      }
+    ],
+    "status": "AVAILABLE",
+    "display_order": 13,
+    "is_featured": true,
+    "created_at": "2026-11-16T12:00:00Z",
+    "updated_at": "2026-11-16T12:00:00Z"
   }
 ];
