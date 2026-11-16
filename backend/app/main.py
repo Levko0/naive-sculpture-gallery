@@ -26,7 +26,7 @@ from app.models import (
 )
 from app.db import sculpture_repo, order_repo
 from app.s3 import generate_presigned_upload_url
-from app.notifications import send_order_notification
+from app.notifications import send_order_notification, send_buyer_confirmation_email
 from app.auth import get_current_admin
 
 # Setup structured logging
@@ -152,8 +152,9 @@ async def create_order(order_data: OrderCreate, request: Request):
             detail=str(e)
         )
 
-    # Dispatch SNS alert in background
+    # Dispatch SNS alert to artist and confirmation email to buyer
     send_order_notification(order_record)
+    send_buyer_confirmation_email(order_record)
 
     return order_record
 

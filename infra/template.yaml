@@ -371,6 +371,12 @@ Resources:
             TopicName: !GetAtt OrderNotificationsTopic.TopicName
         - S3CrudPolicy:
             BucketName: !Ref GalleryBucket
+        - Statement:
+            - Effect: Allow
+              Action:
+                - ses:SendEmail
+                - ses:SendRawEmail
+              Resource: "*"
       Events:
         # Public API route (Storefront catalog & reservation)
         PublicApiRoutes:

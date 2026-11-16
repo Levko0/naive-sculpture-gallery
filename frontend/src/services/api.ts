@@ -171,6 +171,7 @@ export async function submitOrder(input: OrderInput): Promise<Order> {
     delivery_city_country: input.delivery_city_country,
     delivery_method: input.delivery_method,
     comment: input.comment,
+    locale: input.locale || 'ua',
     status: 'PENDING_COORDINATION',
     created_at: now,
     updated_at: now,

@@ -83,10 +83,11 @@ export interface Order {
   buyer_name: string;
   contact_channel: ContactChannel;
   telegram_handle?: string;
-  email?: string;
+  email: string;
   delivery_city_country: string;
   delivery_method: string;
   comment?: string;
+  locale?: string;
   status: OrderStatus;
   admin_notes?: string;
   created_at: string;
@@ -99,10 +100,11 @@ export interface OrderInput {
   buyer_name: string;
   contact_channel: ContactChannel;
   telegram_handle?: string;
-  email?: string;
+  email: string;
   delivery_city_country: string;
   delivery_method: string;
   comment?: string;
+  locale?: 'ua' | 'en';
   website_hp?: string;
 }
 

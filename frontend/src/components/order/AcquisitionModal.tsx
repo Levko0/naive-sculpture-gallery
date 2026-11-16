@@ -47,19 +47,19 @@ export const AcquisitionModal: React.FC<AcquisitionModalProps> = ({
       setError(language === 'UA' ? "Будь ласка, вкажіть ваше ім'я" : "Please enter your name");
       return;
     }
+    if (!email.trim() || !email.includes('@') || !email.includes('.')) {
+      setError(
+        language === 'UA'
+          ? "Вкажіть дійсну адресу електронної пошти для отримання підтвердження"
+          : "Please provide a valid email address to receive order confirmation"
+      );
+      return;
+    }
     if (contactChannel === 'TELEGRAM' && !telegramHandle.trim()) {
       setError(
         language === 'UA'
           ? "Вкажіть ваш Telegram username або номер телефону"
           : "Please provide your Telegram handle or phone number"
-      );
-      return;
-    }
-    if (contactChannel === 'EMAIL' && (!email.trim() || !email.includes('@'))) {
-      setError(
-        language === 'UA'
-          ? "Вкажіть дійсну адресу електронної пошти"
-          : "Please provide a valid email address"
       );
       return;
     }
@@ -81,10 +81,11 @@ export const AcquisitionModal: React.FC<AcquisitionModalProps> = ({
         buyer_name: name.trim(),
         contact_channel: contactChannel,
         telegram_handle: telegramHandle.trim() || undefined,
-        email: email.trim() || undefined,
+        email: email.trim(),
         delivery_city_country: delivery.trim(),
         delivery_method: delivery.trim(),
         comment: comment.trim() || undefined,
+        locale: language.toLowerCase() as 'ua' | 'en',
         website_hp: honeypot || undefined,
       });
 
@@ -141,6 +142,16 @@ export const AcquisitionModal: React.FC<AcquisitionModalProps> = ({
               <span className="font-semibold text-gallery-ink font-mono text-sm">
                 {createdOrder.reservation_code}
               </span>
+            </div>
+
+            <div className="bg-gallery-stone/70 border border-gallery-border px-4 py-3 rounded text-xs text-left max-w-md mx-auto space-y-1">
+              <div className="flex items-center space-x-2 text-badge-green font-semibold">
+                <Mail className="w-4 h-4 shrink-0" />
+                <span>{t.order.emailSentNotice}</span>
+              </div>
+              <div className="font-mono text-gallery-ink font-medium pl-6 break-all">
+                {createdOrder.email}
+              </div>
             </div>
 
             <p className="text-sm leading-relaxed text-gallery-muted max-w-md mx-auto">
@@ -250,6 +261,24 @@ export const AcquisitionModal: React.FC<AcquisitionModalProps> = ({
               />
             </div>
 
+            {/* Buyer Email (Always mandatory for order confirmation) */}
+            <div>
+              <label className="block text-xs font-semibold text-gallery-ink uppercase tracking-wider mb-1.5">
+                {t.order.emailLabel} <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={t.order.emailPlaceholder}
+                className="w-full text-sm bg-gallery-milk border border-gallery-border rounded px-3.5 py-2.5 text-gallery-ink placeholder-gallery-muted/60 focus:outline-none focus:ring-1 focus:ring-gallery-ink"
+              />
+              <p className="text-[11px] text-gallery-muted mt-1">
+                {t.order.emailHelper}
+              </p>
+            </div>
+
             {/* Preferred Contact Channel Toggle */}
             <div>
               <label className="block text-xs font-semibold text-gallery-ink uppercase tracking-wider mb-2">
@@ -283,7 +312,7 @@ export const AcquisitionModal: React.FC<AcquisitionModalProps> = ({
               </div>
             </div>
 
-            {/* Telegram or Email dynamic inputs */}
+            {/* Telegram handle input or Email coordination reassurance */}
             {contactChannel === 'TELEGRAM' ? (
               <div>
                 <label className="block text-xs font-semibold text-gallery-ink uppercase tracking-wider mb-1.5">
@@ -299,18 +328,9 @@ export const AcquisitionModal: React.FC<AcquisitionModalProps> = ({
                 />
               </div>
             ) : (
-              <div>
-                <label className="block text-xs font-semibold text-gallery-ink uppercase tracking-wider mb-1.5">
-                  {t.order.emailLabel} <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder={t.order.emailPlaceholder}
-                  className="w-full text-sm bg-gallery-milk border border-gallery-border rounded px-3.5 py-2.5 text-gallery-ink placeholder-gallery-muted/60 focus:outline-none focus:ring-1 focus:ring-gallery-ink"
-                />
+              <div className="p-3 bg-gallery-stone/40 border border-gallery-border/70 rounded text-xs text-gallery-muted flex items-center space-x-2">
+                <Mail className="w-4 h-4 text-gallery-ink shrink-0" />
+                <span>{t.order.emailCoordinationNotice}</span>
               </div>
             )}
 

@@ -23,6 +23,15 @@ class Settings(BaseSettings):
     SNS_TOPIC_ARN: str = ""
     ARTIST_NOTIFICATION_EMAIL: str = "sculptures.zh@gmail.com"
 
+    # Customer Email Notifications (Amazon SES / SMTP)
+    SES_SENDER_EMAIL: str = "sculptures.zh@gmail.com"
+    SES_REGION: str = "eu-central-1"
+    SMTP_HOST: str = ""
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_USE_TLS: bool = True
+
     # Amazon Cognito
     COGNITO_USER_POOL_ID: str = ""
     COGNITO_CLIENT_ID: str = ""

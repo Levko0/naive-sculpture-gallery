@@ -1,10 +1,11 @@
 """
 Comprehensive automated tests for Naive Art Sculpture Gallery backend.
-Tests catalog, atomic reservation logic, honeypot protection, admin CRUD, and upload URLs.
+Tests catalog, atomic reservation logic, honeypot protection, mandatory buyer email,
+localized customer confirmations (UA/EN), admin CRUD, and upload URLs.
 """
 import pytest
 from fastapi.testclient import TestClient
-from app.main import app
+from app.main import app, _order_ip_tracker
 from app.db import dev_store
 from app.config import settings
 
@@ -18,6 +19,7 @@ client = TestClient(app)
 def reset_store():
     """Resets in-memory dev store before each test."""
     dev_store.reset()
+    _order_ip_tracker.clear()
 
 
 def test_health_check():
@@ -32,7 +34,7 @@ def test_list_sculptures_public():
     response = client.get("/api/sculptures")
     assert response.status_code == 200
     items = response.json()
-    assert len(items) >= 4
+    assert len(items) >= 12
     first = items[0]
     assert "title_ua" in first
     assert "title_en" in first
@@ -50,20 +52,20 @@ def test_filter_sculptures_by_status():
 
 
 def test_filter_sculptures_by_material():
-    response = client.get("/api/sculptures?material=шамот")
+    response = client.get("/api/sculptures?material=мармур")
     assert response.status_code == 200
     items = response.json()
     assert len(items) > 0
     for item in items:
-        assert "шамот" in item["material_ua"].lower() or "chamotte" in item["material_en"].lower()
+        assert "мармур" in item["material_ua"].lower() or "marble" in item["material_en"].lower()
 
 
 def test_get_sculpture_by_slug():
-    response = client.get("/api/sculptures/slug/zvir-okhoronets-sadu")
+    response = client.get("/api/sculptures/slug/anhelyk-marmur")
     assert response.status_code == 200
     sculpture = response.json()
-    assert sculpture["slug"] == "zvir-okhoronets-sadu"
-    assert "Звір-Охоронець" in sculpture["title_ua"]
+    assert sculpture["slug"] == "anhelyk-marmur"
+    assert "Ангелик" in sculpture["title_ua"]
 
 
 def test_get_nonexistent_sculpture_slug():
@@ -71,12 +73,14 @@ def test_get_nonexistent_sculpture_slug():
     assert response.status_code == 404
 
 
-def test_order_atomic_reservation_success_telegram():
+def test_order_atomic_reservation_success_with_email_and_locale_ua():
     payload = {
-        "sculpture_id": "sculpt-001",
+        "sculpture_id": "sculpt-007",
         "buyer_name": "Оксана Шевченко",
         "contact_channel": "TELEGRAM",
         "telegram_handle": "@oksana_art",
+        "email": "oksana@artgallery.ua",
+        "locale": "ua",
         "delivery_city_country": "Київ, Україна",
         "delivery_method": "Нова Пошта (Відділення 42)",
         "comment": "Прошу надіслати додаткові фото пакування."
@@ -84,21 +88,71 @@ def test_order_atomic_reservation_success_telegram():
     response = client.post("/api/orders", json=payload)
     assert response.status_code == 200
     order = response.json()
-    assert order["sculpture_id"] == "sculpt-001"
+    assert order["sculpture_id"] == "sculpt-007"
+    assert order["email"] == "oksana@artgallery.ua"
+    assert order["locale"] == "ua"
     assert order["status"] == "PENDING_COORDINATION"
     assert order["reservation_code"].startswith("NSG-")
 
     # Verify sculpture status was atomically flipped to RESERVED
-    sculpture_resp = client.get("/api/sculptures/sculpt-001")
+    sculpture_resp = client.get("/api/sculptures/sculpt-007")
     assert sculpture_resp.json()["status"] == "RESERVED"
+
+
+def test_order_reservation_english_locale():
+    payload = {
+        "sculpture_id": "sculpt-008",
+        "buyer_name": "David Miller",
+        "contact_channel": "EMAIL",
+        "email": "david.miller@collectors.uk",
+        "locale": "en",
+        "delivery_city_country": "London, United Kingdom",
+        "delivery_method": "DHL Express International",
+        "comment": "Please advise on international wooden crate shipping."
+    }
+    response = client.post("/api/orders", json=payload)
+    assert response.status_code == 200
+    order = response.json()
+    assert order["email"] == "david.miller@collectors.uk"
+    assert order["locale"] == "en"
+    assert order["sculpture_title_en"] == "Daydreaming Maiden"
+
+
+def test_order_missing_mandatory_email_rejected():
+    payload = {
+        "sculpture_id": "sculpt-009",
+        "buyer_name": "Тарас",
+        "contact_channel": "TELEGRAM",
+        "telegram_handle": "@taras",
+        "delivery_city_country": "Львів",
+        "delivery_method": "Нова Пошта"
+        # email is missing!
+    }
+    response = client.post("/api/orders", json=payload)
+    assert response.status_code == 422
+
+
+def test_order_invalid_email_format_rejected():
+    payload = {
+        "sculpture_id": "sculpt-009",
+        "buyer_name": "Тарас",
+        "contact_channel": "TELEGRAM",
+        "telegram_handle": "@taras",
+        "email": "not-an-email-at-all",
+        "delivery_city_country": "Львів",
+        "delivery_method": "Нова Пошта"
+    }
+    response = client.post("/api/orders", json=payload)
+    assert response.status_code == 422
 
 
 def test_order_atomic_reservation_duplicate_conflict():
     payload1 = {
-        "sculpture_id": "sculpt-002",
+        "sculpture_id": "sculpt-010",
         "buyer_name": "Тарас",
         "contact_channel": "TELEGRAM",
         "telegram_handle": "@taras_folk",
+        "email": "taras@example.com",
         "delivery_city_country": "Львів",
         "delivery_method": "Нова Пошта"
     }
@@ -107,7 +161,7 @@ def test_order_atomic_reservation_duplicate_conflict():
 
     # Second buyer tries to reserve the exact same sculpture
     payload2 = {
-        "sculpture_id": "sculpt-002",
+        "sculpture_id": "sculpt-010",
         "buyer_name": "Андрій",
         "contact_channel": "EMAIL",
         "email": "andriy@example.com",
@@ -120,7 +174,7 @@ def test_order_atomic_reservation_duplicate_conflict():
 
 def test_order_honeypot_spam_rejection():
     payload = {
-        "sculpture_id": "sculpt-005",
+        "sculpture_id": "sculpt-011",
         "buyer_name": "SpamBot",
         "contact_channel": "EMAIL",
         "email": "bot@spammer.org",
@@ -132,10 +186,9 @@ def test_order_honeypot_spam_rejection():
     assert response.status_code == 422  # Validation error rejected by Pydantic
 
 
-def test_order_inquiry_on_sold_artwork():
-    # sculpt-004 is SOLD in seed data
+def test_order_inquiry_on_artwork():
     payload = {
-        "sculpture_id": "sculpt-004",
+        "sculpture_id": "sculpt-012",
         "is_inquiry": True,
         "buyer_name": "Марія",
         "contact_channel": "EMAIL",
@@ -148,19 +201,22 @@ def test_order_inquiry_on_sold_artwork():
     assert response.status_code == 200
     order = response.json()
     assert order["is_inquiry"] is True
-    assert order["sculpture_id"] == "sculpt-004"
+    assert order["sculpture_id"] == "sculpt-012"
+    assert order["email"] == "maria@artcollectors.com"
 
 
 def test_admin_order_status_workflow():
-    # Reserve sculpt-001
+    # Reserve sculpt-013
     order_resp = client.post("/api/orders", json={
-        "sculpture_id": "sculpt-001",
+        "sculpture_id": "sculpt-013",
         "buyer_name": "Олена",
         "contact_channel": "TELEGRAM",
         "telegram_handle": "@olena_art",
+        "email": "olena@art.ua",
         "delivery_city_country": "Полтава",
         "delivery_method": "Нова Пошта"
     })
+    assert order_resp.status_code == 200
     order_id = order_resp.json()["id"]
 
     # Admin marks order as PAID -> sculpture should become SOLD
@@ -174,7 +230,7 @@ def test_admin_order_status_workflow():
     assert patch_resp.json()["status"] == "PAID"
 
     # Check sculpture status is now SOLD
-    sculpture = client.get("/api/sculptures/sculpt-001").json()
+    sculpture = client.get("/api/sculptures/sculpt-013").json()
     assert sculpture["status"] == "SOLD"
 
     # Now simulate cancelled order -> sculpture should return to AVAILABLE
@@ -184,8 +240,47 @@ def test_admin_order_status_workflow():
         headers=auth_headers
     )
     assert patch_cancel.status_code == 200
-    sculpture_after = client.get("/api/sculptures/sculpt-001").json()
+    sculpture_after = client.get("/api/sculptures/sculpt-013").json()
     assert sculpture_after["status"] == "AVAILABLE"
+
+
+def test_artist_notification_email_formatting_and_destination():
+    from app.notifications import (
+        format_order_notification_email,
+        format_artist_order_notification_html,
+        send_order_notification
+    )
+    sample_order = {
+        "id": "ord-test-123",
+        "reservation_code": "NSG-ARTIST",
+        "sculpture_title_ua": "Ангелик",
+        "sculpture_title_en": "Little Angel",
+        "price_uah": 32000,
+        "is_inquiry": False,
+        "buyer_name": "Михайло",
+        "contact_channel": "TELEGRAM",
+        "telegram_handle": "@mykhailo",
+        "email": "mykhailo@example.com",
+        "delivery_city_country": "Львів",
+        "delivery_method": "Нова Пошта",
+        "comment": "Дякую майстру!",
+        "locale": "ua",
+        "created_at": "2026-11-16T19:50:00Z"
+    }
+    assert settings.ARTIST_NOTIFICATION_EMAIL == "sculptures.zh@gmail.com"
+
+    text = format_order_notification_email(sample_order)
+    assert "NSG-ARTIST" in text
+    assert "mykhailo@example.com" in text
+    assert "@mykhailo" in text
+
+    html = format_artist_order_notification_html(sample_order)
+    assert "NSG-ARTIST" in html
+    assert "mykhailo@example.com" in html
+    assert "Ангелик" in html
+
+    res = send_order_notification(sample_order)
+    assert res is True
 
 
 def test_presigned_upload_url_mime_validation():

@@ -114,11 +114,29 @@ class OrderCreate(BaseModel):
     buyer_name: str = Field(min_length=2, max_length=100)
     contact_channel: ContactChannel = ContactChannel.TELEGRAM
     telegram_handle: Optional[str] = None
-    email: Optional[str] = None
+    email: str = Field(min_length=5, max_length=150, description="Mandatory buyer email for confirmation")
     delivery_city_country: str = Field(min_length=2, max_length=200)
     delivery_method: str = Field(min_length=2, max_length=100)
     comment: Optional[str] = Field(default=None, max_length=1000)
+    locale: str = Field(default="ua", description="Site language: 'ua' or 'en' for buyer notification")
     website_hp: Optional[str] = None  # Anti-spam Honeypot field
+
+    @field_validator("email")
+    @classmethod
+    def validate_email_format(cls, v: str) -> str:
+        clean = v.strip().lower()
+        import re
+        if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", clean):
+            raise ValueError("Необхідно вказати дійсну адресу електронної пошти")
+        return clean
+
+    @field_validator("locale")
+    @classmethod
+    def validate_locale(cls, v: str) -> str:
+        clean = v.strip().lower()
+        if clean in ("en", "eng", "english"):
+            return "en"
+        return "ua"
 
     @model_validator(mode="after")
     def validate_contact_channel_requirements(self) -> "OrderCreate":
@@ -128,9 +146,6 @@ class OrderCreate(BaseModel):
         if self.contact_channel == ContactChannel.TELEGRAM:
             if not self.telegram_handle or not self.telegram_handle.strip():
                 raise ValueError("Telegram username or phone number is required when Telegram is chosen")
-        elif self.contact_channel == ContactChannel.EMAIL:
-            if not self.email or "@" not in self.email:
-                raise ValueError("Valid email address is required when Email is chosen")
         return self
 
 
@@ -145,10 +160,11 @@ class OrderResponse(BaseModel):
     buyer_name: str
     contact_channel: ContactChannel
     telegram_handle: Optional[str] = None
-    email: Optional[str] = None
+    email: str
     delivery_city_country: str
     delivery_method: str
     comment: Optional[str] = None
+    locale: Optional[str] = "ua"
     status: OrderStatus
     admin_notes: Optional[str] = None
     created_at: str
