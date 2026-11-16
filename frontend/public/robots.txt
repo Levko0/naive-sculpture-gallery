@@ -1,8 +1,0 @@
-# Robots.txt for Rustam Zhuraiev Naive Art Sculpture Gallery
-User-agent: *
-Allow: /
-Disallow: /admin
-Disallow: /admin/
-Disallow: /admin/*
-
-Sitemap: https://rustamzhuraiev.art/sitemap.xml

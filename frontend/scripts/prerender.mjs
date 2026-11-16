@@ -20,7 +20,20 @@ if (jsonMatch) {
   }
 }
 
-const DOMAIN = 'https://rustamzhuraiev.art';
+// Public site URL. Override with SITE_URL env var once a custom domain is connected.
+const DOMAIN = (process.env.SITE_URL || 'https://dwlekbm7g0cs5.cloudfront.net').replace(/\/$/, '');
+
+// Social preview image: prefer a JPEG from /og/ (universally supported by Telegram, Viber, WhatsApp, Facebook)
+function toOgImage(imagePath) {
+  if (!imagePath) imagePath = '/sculptures/anhelyk.webp';
+  if (imagePath.startsWith('http')) return { url: imagePath, type: null };
+  const base = path.basename(imagePath).replace(/\.(webp|png|jpe?g)$/i, '');
+  const ogRel = `/og/${base}.jpg`;
+  if (fs.existsSync(toAbsolute(`dist${ogRel}`))) {
+    return { url: `${DOMAIN}${ogRel}`, type: 'image/jpeg' };
+  }
+  return { url: `${DOMAIN}${imagePath}`, type: null };
+}
 
 const routes = [
   {
@@ -149,15 +162,17 @@ for (const route of routes) {
 
   // Build Head tags
   const canonicalUrl = `${DOMAIN}${route.url === '/' ? '' : route.url}`;
-  const imagePath = route.image || '/sculptures/anhelyk.webp';
-  const imageUrl = imagePath.startsWith('http') ? imagePath : `${DOMAIN}${imagePath}`;
+  const og = toOgImage(route.image);
+  const imageUrl = og.url;
 
   let headTags = `
     <link rel="canonical" href="${canonicalUrl}" />
     <meta name="description" content="${route.description.replace(/"/g, '&quot;')}" />
     <meta property="og:title" content="${route.title.replace(/"/g, '&quot;')}" />
     <meta property="og:description" content="${route.description.replace(/"/g, '&quot;')}" />
-    <meta property="og:image" content="${imageUrl}" />
+    <meta property="og:image" content="${imageUrl}" />${og.type ? `
+    <meta property="og:image:type" content="${og.type}" />` : ''}
+    <meta property="og:locale" content="uk_UA" />
     <meta property="og:url" content="${canonicalUrl}" />
     <meta property="og:type" content="${route.type || 'website'}" />
     <meta property="og:site_name" content="Рустам Жураєв | Галерея наївного мистецтва" />
@@ -195,5 +210,27 @@ for (const route of routes) {
   fs.writeFileSync(filePath, pageHtml, 'utf-8');
   console.log(`✓ Pre-rendered: ${route.url} -> ${path.relative(toAbsolute('dist'), filePath)} (${(pageHtml.length / 1024).toFixed(1)} KB)`);
 }
+
+// Generate sitemap.xml and robots.txt for the current DOMAIN
+const today = new Date().toISOString().slice(0, 10);
+const sitemapEntries = routes
+  .filter((r) => !r.noindex)
+  .map((r) => {
+    const loc = `${DOMAIN}${r.url === '/' ? '/' : r.url}`;
+    const priority = r.url === '/' ? '1.0' : r.url.startsWith('/sculpture/') ? '0.9' : '0.8';
+    return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${today}</lastmod>\n    <priority>${priority}</priority>\n  </url>`;
+  })
+  .join('\n');
+fs.writeFileSync(
+  toAbsolute('dist/sitemap.xml'),
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapEntries}\n</urlset>\n`,
+  'utf-8'
+);
+fs.writeFileSync(
+  toAbsolute('dist/robots.txt'),
+  `User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: ${DOMAIN}/sitemap.xml\n`,
+  'utf-8'
+);
+console.log(`✓ Generated sitemap.xml and robots.txt for ${DOMAIN}`);
 
 console.log('SSG Pre-rendering completed successfully!');
