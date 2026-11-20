@@ -12,7 +12,7 @@ export const dictionaries = {
       subtitle: "Авторська кам'яна скульптура у традиції українського наїву",
       description: "Простір тихого споглядання. Кожну скульптуру Рустама Жураєва висічено вручну з пісковику, мармуру, базальту чи габро в єдиному екземплярі (1/1) — зі збереженням живої фактури каменю та щирого характеру українського фольклору.",
       viewCatalog: "Переглянути колекцію",
-      philosophyBadge: "Чистий наїв • Живий камінь • 1/1",
+      philosophyBadge: "Оригінальні роботи • Природний камінь • 1/1",
     },
     filter: {
       all: "Всі роботи",
@@ -184,7 +184,7 @@ export const dictionaries = {
       subtitle: "Original hand-carved stone sculpture in the Ukrainian naive tradition",
       description: "A serene museum sanctuary. Each sculpture by Rustam Zhuraiev is hand-carved from sandstone, marble, basalt or gabbro as a unique 1/1 original — preserving the living texture of stone and the candid character of Ukrainian folk imagination.",
       viewCatalog: "Explore Collection",
-      philosophyBadge: "Authentic Naive • Living Stone • 1/1",
+      philosophyBadge: "Original Works • Natural Stone • 1/1",
     },
     filter: {
       all: "All Works",
