@@ -41,7 +41,7 @@ export const SEO: React.FC<SEOProps> = ({
     setMeta('name', 'robots', noindex ? 'noindex, nofollow' : 'index, follow');
 
     // Canonical Link
-    const currentOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://dwlekbm7g0cs5.cloudfront.net';
+    const currentOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://zhurayev.com';
     const canonicalHref = url ? (url.startsWith('http') ? url : `${currentOrigin}${url}`) : (typeof window !== 'undefined' ? window.location.href : currentOrigin);
     let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!canonical) {

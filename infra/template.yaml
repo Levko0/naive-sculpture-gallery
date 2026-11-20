@@ -204,12 +204,23 @@ Resources:
       Name: !Sub '${AWS::StackName}-url-rewrite'
       AutoPublish: true
       FunctionConfig:
-        Comment: Strip trailing slashes on clean SSG routes so /about/ resolves to /about
+        Comment: Redirect www/cloudfront to zhurayev.com and strip trailing slashes on clean SSG routes
         Runtime: cloudfront-js-2.0
       FunctionCode: |
         function handler(event) {
           var request = event.request;
+          var host = request.headers.host ? request.headers.host.value : '';
           var uri = request.uri;
+          if (host && host !== 'zhurayev.com') {
+            var cleanUri = (uri.length > 1 && uri.endsWith('/')) ? uri.slice(0, -1) : uri;
+            return {
+              statusCode: 301,
+              statusDescription: 'Moved Permanently',
+              headers: {
+                location: { value: 'https://zhurayev.com' + cleanUri }
+              }
+            };
+          }
           if (uri.length > 1 && uri.endsWith('/')) {
             request.uri = uri.slice(0, -1);
           }
@@ -222,6 +233,13 @@ Resources:
       DistributionConfig:
         Enabled: true
         Comment: Naive Art Sculpture Gallery Global CDN (Free Tier 1TB/mo)
+        Aliases:
+          - zhurayev.com
+          - www.zhurayev.com
+        ViewerCertificate:
+          AcmCertificateArn: arn:aws:acm:us-east-1:219040782795:certificate/5a983cfa-35d3-44c0-b72a-d020dfba4a6e
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2021
         DefaultRootObject: index.html
         PriceClass: PriceClass_100
         HttpVersion: http2and3

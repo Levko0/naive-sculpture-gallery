@@ -8,8 +8,8 @@ const toAbsolute = (p) => path.resolve(__dirname, '..', p);
 const template = fs.readFileSync(toAbsolute('dist/index.html'), 'utf-8');
 const { render } = await import(toAbsolute('dist-ssr/entry-server.js'));
 
-// Public site URL. Override with SITE_URL env var once a custom domain is connected.
-const DOMAIN = (process.env.SITE_URL || 'https://dwlekbm7g0cs5.cloudfront.net').replace(/\/$/, '');
+// Public site URL. Override with SITE_URL env var if needed.
+const DOMAIN = (process.env.SITE_URL || 'https://zhurayev.com').replace(/\/$/, '');
 
 // Read sculptures from live API if available (optional, falls back to mockData.ts)
 let sculptures = [];
