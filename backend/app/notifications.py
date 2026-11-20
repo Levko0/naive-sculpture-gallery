@@ -285,7 +285,7 @@ WHAT HAPPENS NEXT:
 The sculptor, Rustam Zhuraiev, will personally contact you shortly via {channel_desc} to coordinate custom shockproof crating, courier logistics, and direct card/transfer payment details. Zero payment is processed automatically on the website.
 
 ARTIST DIRECT CONTACTS:
-- Telegram: https://t.me/naive_sculptures (@naive_sculptures)
+- Telegram: https://t.me/zhsculptures (@zhsculptures)
 - Email: {settings.SES_SENDER_EMAIL}
 
 Warm regards,
@@ -354,7 +354,7 @@ Rustam Zhuraiev Stone Sculpture Gallery
 
     <div style="margin-top: 32px; padding-top: 20px; border-top: 1px solid #E4DFD7; font-size: 12px; color: #71717A;">
       <p style="margin: 4px 0;"><strong>Need immediate assistance?</strong></p>
-      <p style="margin: 4px 0;">Telegram: <a href="https://t.me/naive_sculptures" style="color: #18181B; font-weight: 500;">@naive_sculptures</a> &bull; Email: <a href="mailto:{settings.SES_SENDER_EMAIL}" style="color: #18181B; font-weight: 500;">{settings.SES_SENDER_EMAIL}</a></p>
+      <p style="margin: 4px 0;">Telegram: <a href="https://t.me/zhsculptures" style="color: #18181B; font-weight: 500;">@zhsculptures</a> &bull; Email: <a href="mailto:{settings.SES_SENDER_EMAIL}" style="color: #18181B; font-weight: 500;">{settings.SES_SENDER_EMAIL}</a></p>
     </div>
 
   </div>
@@ -395,7 +395,7 @@ Rustam Zhuraiev Stone Sculpture Gallery
 Скульптор Рустам Жураєв найближчим часом особисто зв'яжеться з вами через {channel_desc}, щоб узгодити безпечне музейне пакування, терміни доставки та надати реквізити для оплати на картку. На сайті жодних автоматичних списань не здійснюється.
 
 ПРЯМІ КОНТАКТИ АВТОРА:
-- Telegram: https://t.me/naive_sculptures (@naive_sculptures)
+- Telegram: https://t.me/zhsculptures (@zhsculptures)
 - Email: {settings.SES_SENDER_EMAIL}
 
 З повагою,
@@ -464,7 +464,7 @@ Rustam Zhuraiev Stone Sculpture Gallery
 
     <div style="margin-top: 32px; padding-top: 20px; border-top: 1px solid #E4DFD7; font-size: 12px; color: #71717A;">
       <p style="margin: 4px 0;"><strong>Бажаєте зв'язатися з автором напряму?</strong></p>
-      <p style="margin: 4px 0;">Telegram: <a href="https://t.me/naive_sculptures" style="color: #18181B; font-weight: 500;">@naive_sculptures</a> &bull; Email: <a href="mailto:{settings.SES_SENDER_EMAIL}" style="color: #18181B; font-weight: 500;">{settings.SES_SENDER_EMAIL}</a></p>
+      <p style="margin: 4px 0;">Telegram: <a href="https://t.me/zhsculptures" style="color: #18181B; font-weight: 500;">@zhsculptures</a> &bull; Email: <a href="mailto:{settings.SES_SENDER_EMAIL}" style="color: #18181B; font-weight: 500;">{settings.SES_SENDER_EMAIL}</a></p>
     </div>
 
   </div>

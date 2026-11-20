@@ -41,12 +41,12 @@ export const ContactPage: React.FC = () => {
                   {t.contact.telegramLabel}
                 </div>
                 <a
-                  href="https://t.me/naive_sculptures"
+                  href="https://t.me/zhsculptures"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-serif text-xl text-gallery-ink hover:underline block mt-1"
                 >
-                  @naive_sculptures
+                  @zhsculptures
                 </a>
                 <p className="text-xs text-gallery-muted mt-1">
                   {language === 'UA'

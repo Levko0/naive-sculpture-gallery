@@ -165,7 +165,7 @@ export const AcquisitionModal: React.FC<AcquisitionModalProps> = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <a
-                  href={`https://t.me/naive_sculptures?text=${encodeURIComponent(
+                  href={`https://t.me/zhsculptures?text=${encodeURIComponent(
                     `Вітаю! Я щойно оформив(ла) замовлення ${createdOrder.reservation_code} на скульптуру "${sculptureTitle}".`
                   )}`}
                   target="_blank"

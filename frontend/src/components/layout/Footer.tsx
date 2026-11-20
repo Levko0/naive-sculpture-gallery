@@ -75,12 +75,12 @@ export const Footer: React.FC = () => {
             <ul className="space-y-1 text-sm">
               <li>
                 <a
-                  href="https://t.me/naive_sculptures"
+                  href="https://t.me/zhsculptures"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="min-h-[44px] inline-flex items-center py-2 text-gallery-muted hover:text-gallery-ink transition-colors"
                 >
-                  Telegram: @naive_sculptures
+                  Telegram: @zhsculptures
                 </a>
               </li>
               <li>

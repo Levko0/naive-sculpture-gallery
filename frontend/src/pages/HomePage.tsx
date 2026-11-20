@@ -25,7 +25,7 @@ export const HomePage: React.FC = () => {
       : "Ukrainian naive art sculptor. Original handcrafted stone sculptures (1/1 edition).",
     "url": "/",
     "sameAs": [
-      "https://t.me/naive_sculptures",
+      "https://t.me/zhsculptures",
       "https://www.youtube.com/watch?v=2qI5Dl5ZJ5o"
     ]
   };

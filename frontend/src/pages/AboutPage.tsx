@@ -26,7 +26,7 @@ export const AboutPage: React.FC = () => {
     "url": "/about",
     "image": "/author/rustam-zhuraiev.webp",
     "sameAs": [
-      "https://t.me/naive_sculptures",
+      "https://t.me/zhsculptures",
       "https://www.youtube.com/watch?v=2qI5Dl5ZJ5o",
       "https://risu.ua/pershoobrazi-u-lvovi-predstavlena-vistavka-skulptur-rustama-zhurayeva_n165335"
     ]
