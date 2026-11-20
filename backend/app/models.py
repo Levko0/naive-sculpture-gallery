@@ -53,8 +53,8 @@ class SculptureBase(BaseModel):
     technique_ua: str = Field(default="Ручне ліплення, випал, ангоби, глазур")
     technique_en: str = Field(default="Hand-sculpted, kiln-fired, engobes, glaze")
     year: int = Field(ge=2000, le=2050, default=2024)
-    edition_ua: str = Field(default="Єдиний екземпляр (1/1)")
-    edition_en: str = Field(default="Unique original (1/1)")
+    edition_ua: str = Field(default="Єдиний екземпляр")
+    edition_en: str = Field(default="Unique original")
     price_uah: int = Field(gt=0, description="Price in Ukrainian Hryvnia")
     price_eur: Optional[int] = None
     price_usd: Optional[int] = None

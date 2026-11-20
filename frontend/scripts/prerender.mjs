@@ -90,14 +90,14 @@ const routes = [
   {
     url: '/',
     title: "Рустам Жураєв | Галерея наївної кам'яної скульптури",
-    description: "Онлайн-галерея оригінальних кам'яних скульптур Рустама Жураєва у традиції українського наїву. Пісковик, мармур, базальт, габро — унікальні екземпляри (1/1).",
+    description: "Онлайн-галерея оригінальних кам'яних скульптур Рустама Жураєва у традиції українського наїву. Пісковик, мармур, базальт, габро — унікальні авторські екземпляри.",
     image: '/sculptures/anhelyk.webp',
     jsonLd: {
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Рустам Жураєв",
       "jobTitle": "Скульптор",
-      "description": "Скульптор у традиції українського наївного мистецтва. Оригінальна авторська кам'яна пластика ручної роботи (1/1).",
+      "description": "Скульптор у традиції українського наївного мистецтва. Оригінальна авторська кам'яна пластика ручної роботи.",
       "url": `${DOMAIN}/`,
       "sameAs": [
         "https://t.me/zhsculptures",
@@ -152,7 +152,7 @@ for (const s of sculptures) {
   routes.push({
     url: `/sculpture/${s.slug}`,
     title: `${s.title_ua} | Рустам Жураєв`,
-    description: `${s.title_ua} (${s.year}) — ${s.edition_ua || 'унікальний оригінал 1/1'}. ${s.material_ua}. ${s.story_ua ? s.story_ua.slice(0, 140) + '...' : ''}`,
+    description: `${s.title_ua} (${s.year}) — ${s.edition_ua || 'унікальний оригінал'}. ${s.material_ua}. ${s.story_ua ? s.story_ua.slice(0, 140) + '...' : ''}`,
     image: s.photos?.[0]?.url || '/sculptures/anhelyk.webp',
     type: 'article',
     jsonLd: {

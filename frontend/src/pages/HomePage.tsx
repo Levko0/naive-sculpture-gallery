@@ -21,8 +21,8 @@ export const HomePage: React.FC = () => {
     "name": "Рустам Жураєв",
     "jobTitle": language === 'UA' ? 'Скульптор' : 'Sculptor',
     "description": language === 'UA'
-      ? "Скульптор у традиції українського наївного мистецтва. Оригінальна авторська кам'яна пластика ручної роботи (1/1)."
-      : "Ukrainian naive art sculptor. Original handcrafted stone sculptures (1/1 edition).",
+      ? "Скульптор у традиції українського наївного мистецтва. Оригінальна авторська кам'яна пластика ручної роботи."
+      : "Ukrainian naive art sculptor. Original handcrafted stone sculptures.",
     "url": "/",
     "sameAs": [
       "https://t.me/zhsculptures",
@@ -63,8 +63,8 @@ export const HomePage: React.FC = () => {
       <SEO
         title={language === 'UA' ? "Рустам Жураєв | Галерея наївної кам'яної скульптури" : "Rustam Zhuraiev | Naive Stone Sculpture Gallery"}
         description={language === 'UA'
-          ? "Онлайн-галерея оригінальних кам'яних скульптур Рустама Жураєва у традиції українського наїву. Пісковик, мармур, базальт, габро — унікальні екземпляри (1/1)."
-          : "Online gallery of original handcrafted naive stone sculptures by Rustam Zhuraiev. Sandstone, marble, basalt, gabbro — unique pieces (1/1)."}
+          ? "Онлайн-галерея оригінальних кам'яних скульптур Рустама Жураєва у традиції українського наїву. Пісковик, мармур, базальт, габро — унікальні авторські екземпляри."
+          : "Online gallery of original handcrafted naive stone sculptures by Rustam Zhuraiev. Sandstone, marble, basalt, gabbro — unique pieces."}
         url="/"
         image="/sculptures/anhelyk.webp"
         jsonLd={personJsonLd}

@@ -18,8 +18,8 @@ export const Footer: React.FC = () => {
             </span>
             <p className="text-sm leading-relaxed max-w-md text-gallery-muted font-sans">
               {isUA
-                ? "Камерна галерея та студія оригінальної кам'яної та наївної пластики Рустама Жураєва. Кожен твір висічено вручну з дикого каменю в єдиному екземплярі (1/1)."
-                : "Intimate gallery and studio of original naive stone sculpture by Rustam Zhuraiev. Each artwork is hand-carved from raw stone as a unique one-of-a-kind piece (1/1)."}
+                ? "Камерна галерея та студія оригінальної кам'яної та наївної пластики Рустама Жураєва. Кожен твір висічено вручну з дикого каменю в єдиному екземплярі."
+                : "Intimate gallery and studio of original naive stone sculpture by Rustam Zhuraiev. Each artwork is hand-carved from raw stone as a unique one-of-a-kind piece."}
             </p>
             <div className="pt-2 text-xs text-gallery-muted">
               {isUA ? 'Львів • Україна' : 'Lviv • Ukraine'}
@@ -110,8 +110,8 @@ export const Footer: React.FC = () => {
           </div>
           <div className="text-[11px] text-gallery-muted/70">
             {isUA
-              ? "Кам'яна наївна пластика ручної роботи (1/1)"
-              : 'Hand-carved naive stone sculpture (1/1)'}
+              ? "Кам'яна наївна пластика ручної роботи"
+              : 'Hand-carved naive stone sculpture'}
           </div>
         </div>
       </div>
