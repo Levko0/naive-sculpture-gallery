@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 
 export const Footer: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const isUA = language === 'UA';
   const currentYear = new Date().getFullYear();
 
   return (
@@ -13,21 +14,22 @@ export const Footer: React.FC = () => {
           {/* Col 1: Brand & Philosophy */}
           <div className="md:col-span-2 space-y-4">
             <span className="font-serif text-2xl text-gallery-ink font-medium tracking-tight">
-              НАЇВ • Рустам Жураєв
+              {isUA ? 'НАЇВ • Рустам Жураєв' : 'NAIV • Rustam Zhuraiev'}
             </span>
             <p className="text-sm leading-relaxed max-w-md text-gallery-muted font-sans">
-              Камерна галерея та студія оригінальної кам'яної та наївної пластики Рустама Жураєва.
-              Кожен твір висічено вручну з дикого каменю в єдиному екземплярі (1/1).
+              {isUA
+                ? "Камерна галерея та студія оригінальної кам'яної та наївної пластики Рустама Жураєва. Кожен твір висічено вручну з дикого каменю в єдиному екземплярі (1/1)."
+                : "Intimate gallery and studio of original naive stone sculpture by Rustam Zhuraiev. Each artwork is hand-carved from raw stone as a unique one-of-a-kind piece (1/1)."}
             </p>
             <div className="pt-2 text-xs text-gallery-muted">
-              Львів • Україна
+              {isUA ? 'Львів • Україна' : 'Lviv • Ukraine'}
             </div>
           </div>
 
           {/* Col 2: Navigation */}
           <div className="space-y-3">
             <div className="text-xs font-semibold uppercase tracking-museum text-gallery-ink">
-              Експозиція
+              {isUA ? 'Експозиція' : 'Exhibition'}
             </div>
             <ul className="space-y-1 text-sm">
               <li>
@@ -68,7 +70,7 @@ export const Footer: React.FC = () => {
           {/* Col 3: Direct contact & Acquisition */}
           <div className="space-y-3">
             <div className="text-xs font-semibold uppercase tracking-museum text-gallery-ink">
-              Зв'язок з автором
+              {isUA ? "Зв'язок з автором" : 'Contact the Artist'}
             </div>
             <ul className="space-y-1 text-sm">
               <li>
@@ -91,7 +93,9 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <span className="text-xs text-gallery-muted block pt-1 leading-relaxed">
-                  Пряма оплата на картку майстра. Доставка Новою Поштою або DHL.
+                  {isUA
+                    ? 'Пряма оплата на картку майстра. Доставка Новою Поштою або DHL.'
+                    : 'Direct payment to the artist. Delivery via Nova Poshta or DHL worldwide.'}
                 </span>
               </li>
             </ul>
@@ -100,10 +104,14 @@ export const Footer: React.FC = () => {
 
         <div className="pt-8 border-t border-gallery-border/50 flex flex-col sm:flex-row justify-between items-center text-xs text-gallery-muted gap-4">
           <div>
-            © {currentYear} Рустам Жураєв. Всі права захищено.
+            {isUA
+              ? `© ${currentYear} Рустам Жураєв. Всі права захищено.`
+              : `© ${currentYear} Rustam Zhuraiev. All rights reserved.`}
           </div>
           <div className="text-[11px] text-gallery-muted/70">
-            Кам'яна наївна пластика ручної роботи (1/1)
+            {isUA
+              ? "Кам'яна наївна пластика ручної роботи (1/1)"
+              : 'Hand-carved naive stone sculpture (1/1)'}
           </div>
         </div>
       </div>

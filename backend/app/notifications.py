@@ -2,6 +2,7 @@
 SNS and SES/SMTP notification publisher for artist alerts and buyer confirmations.
 Zero-config email dispatch within the AWS Free Tier.
 """
+import html
 import logging
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -96,29 +97,31 @@ def format_order_notification_email(order: Dict[str, Any]) -> str:
 
 def format_artist_order_notification_html(order: Dict[str, Any]) -> str:
     """Formats an elegant, detailed HTML alert for the artist's inbox."""
-    reservation_code = order.get("reservation_code", "UNKNOWN")
-    buyer_name = order.get("buyer_name", "Anonymous")
-    sculpture_title_ua = order.get("sculpture_title_ua", "Скульптура")
-    sculpture_title_en = order.get("sculpture_title_en", "Sculpture")
+    reservation_code = html.escape(str(order.get("reservation_code", "UNKNOWN")))
+    buyer_name = html.escape(str(order.get("buyer_name", "Anonymous")))
+    sculpture_title_ua = html.escape(str(order.get("sculpture_title_ua", "Скульптура")))
+    sculpture_title_en = html.escape(str(order.get("sculpture_title_en", "Sculpture")))
     price_uah = order.get("price_uah", 0)
     is_inquiry = order.get("is_inquiry", False)
-    contact_channel = order.get("contact_channel", "TELEGRAM")
-    telegram_handle = order.get("telegram_handle", "")
-    email = order.get("email", "")
-    locale = order.get("locale", "ua")
-    delivery_city = order.get("delivery_city_country", "Не вказано")
-    delivery_method = order.get("delivery_method", "Нова Пошта")
-    comment = order.get("comment", "") or "Без додаткових коментарів."
-    created_at = order.get("created_at", "")
+    contact_channel = html.escape(str(order.get("contact_channel", "TELEGRAM")))
+    raw_telegram = str(order.get("telegram_handle", "") or "")
+    telegram_handle = html.escape(raw_telegram)
+    raw_email = str(order.get("email", "") or "")
+    email = html.escape(raw_email)
+    locale = html.escape(str(order.get("locale", "ua") or "ua"))
+    delivery_city = html.escape(str(order.get("delivery_city_country", "Не вказано")))
+    delivery_method = html.escape(str(order.get("delivery_method", "Нова Пошта")))
+    comment = html.escape(str(order.get("comment", "") or "Без додаткових коментарів."))
+    created_at = html.escape(str(order.get("created_at", "")))
 
     action_type = "ЗАПИТ ПРО СХОЖУ РОБОТУ" if is_inquiry else "НОВА БРОНЬ СКУЛЬПТУРИ"
     badge_bg = "#B47820" if is_inquiry else "#2E5A36"
 
-    telegram_clean = telegram_handle.replace("@", "").strip() if telegram_handle else ""
-    telegram_link = f"https://t.me/{telegram_clean}" if telegram_clean else ""
+    telegram_clean = raw_telegram.replace("@", "").strip()
+    telegram_link = html.escape(f"https://t.me/{telegram_clean}") if telegram_clean else ""
     mailto_link = (
-        f"mailto:{email}?subject=Галерея Наївного Мистецтва: Замовлення {reservation_code}"
-        if email else ""
+        html.escape(f"mailto:{raw_email}?subject=Галерея Наївного Мистецтва: Замовлення {reservation_code}")
+        if raw_email else ""
     )
 
     telegram_button = (
@@ -241,6 +244,12 @@ def format_buyer_confirmation_email(order: Dict[str, Any]) -> Dict[str, str]:
     is_inquiry = order.get("is_inquiry", False)
 
     channel_desc = f"Telegram ({telegram_handle})" if contact_channel == "TELEGRAM" and telegram_handle else f"Email ({email})"
+    h_buyer_name = html.escape(str(buyer_name))
+    h_sculpture_title = html.escape(str(sculpture_title))
+    h_reservation_code = html.escape(str(reservation_code))
+    h_delivery_city = html.escape(str(delivery_city))
+    h_delivery_method = html.escape(str(delivery_method))
+    h_channel_desc = html.escape(str(channel_desc))
 
     if is_en:
         subject = f"[Rustam Zhuraiev Gallery] Reservation Confirmed: {sculpture_title} ({reservation_code})"
@@ -283,11 +292,16 @@ Warm regards,
 Rustam Zhuraiev Stone Sculpture Gallery
 """
 
+        h_status_text = (
+            f"Your inquiry regarding a custom piece based on «{h_sculpture_title}» has been received."
+            if is_inquiry
+            else f"The original sculpture «{h_sculpture_title}» has been successfully reserved for you."
+        )
         html_body = f"""<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <title>{subject}</title>
+  <title>{html.escape(subject)}</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #FAF8F5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #18181B; line-height: 1.6;">
   <div style="max-width: 600px; margin: 40px auto; background-color: #FFFFFF; border: 1px solid #E4DFD7; padding: 40px 32px; border-radius: 4px;">
@@ -298,7 +312,7 @@ Rustam Zhuraiev Stone Sculpture Gallery
     </div>
 
     <div style="display: inline-block; background-color: #F3EFEA; border: 1px solid #E4DFD7; padding: 4px 12px; font-size: 12px; font-weight: 600; font-family: monospace; color: #18181B; margin-bottom: 20px; border-radius: 2px;">
-      Code: {reservation_code}
+      Code: {h_reservation_code}
     </div>
 
     <h2 style="font-family: Georgia, serif; font-size: 20px; font-weight: 500; margin-top: 0; margin-bottom: 12px; color: #2E5A36;">
@@ -306,15 +320,15 @@ Rustam Zhuraiev Stone Sculpture Gallery
     </h2>
 
     <p style="font-size: 14px; color: #3F3F46; margin-bottom: 20px;">
-      Dear <strong>{buyer_name}</strong>,<br>
-      Thank you for your appreciation of handcrafted stone sculpture in the Ukrainian Naive Art tradition. {status_text}
+      Dear <strong>{h_buyer_name}</strong>,<br>
+      Thank you for your appreciation of handcrafted stone sculpture in the Ukrainian Naive Art tradition. {h_status_text}
     </p>
 
     <div style="background-color: #FAF8F5; border: 1px solid #E4DFD7; padding: 20px; margin: 24px 0; border-radius: 4px;">
       <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
         <tr>
           <td style="padding: 6px 0; color: #71717A; width: 40%;">Artwork:</td>
-          <td style="padding: 6px 0; font-weight: 600; color: #18181B;">{sculpture_title}</td>
+          <td style="padding: 6px 0; font-weight: 600; color: #18181B;">{h_sculpture_title}</td>
         </tr>
         <tr>
           <td style="padding: 6px 0; color: #71717A;">Price:</td>
@@ -322,11 +336,11 @@ Rustam Zhuraiev Stone Sculpture Gallery
         </tr>
         <tr>
           <td style="padding: 6px 0; color: #71717A;">Delivery:</td>
-          <td style="padding: 6px 0; color: #18181B;">{delivery_city} ({delivery_method})</td>
+          <td style="padding: 6px 0; color: #18181B;">{h_delivery_city} ({h_delivery_method})</td>
         </tr>
         <tr>
           <td style="padding: 6px 0; color: #71717A;">Coordination:</td>
-          <td style="padding: 6px 0; color: #18181B;">{channel_desc}</td>
+          <td style="padding: 6px 0; color: #18181B;">{h_channel_desc}</td>
         </tr>
       </table>
     </div>
@@ -334,7 +348,7 @@ Rustam Zhuraiev Stone Sculpture Gallery
     <div style="border-left: 2px solid #2E5A36; padding-left: 16px; margin: 24px 0;">
       <h3 style="font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #71717A; margin: 0 0 6px 0;">What happens next:</h3>
       <p style="font-size: 13px; color: #52525B; margin: 0;">
-        The sculptor will personally reach out to you via <strong>{channel_desc}</strong> to arrange secure shockproof crating, courier shipping, and direct payment details.
+        The sculptor will personally reach out to you via <strong>{h_channel_desc}</strong> to arrange secure shockproof crating, courier shipping, and direct payment details.
       </p>
     </div>
 
@@ -388,11 +402,16 @@ Rustam Zhuraiev Stone Sculpture Gallery
 Галерея кам'яної скульптури Рустама Жураєва
 """
 
+        h_status_text = (
+            f"Ваш запит на створення авторської варіації за мотивами скульптури «{h_sculpture_title}» успішно зареєстровано."
+            if is_inquiry
+            else f"Оригінальну скульптуру «{h_sculpture_title}» успішно зарезервовано за вами."
+        )
         html_body = f"""<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <title>{subject}</title>
+  <title>{html.escape(subject)}</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #FAF8F5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #18181B; line-height: 1.6;">
   <div style="max-width: 600px; margin: 40px auto; background-color: #FFFFFF; border: 1px solid #E4DFD7; padding: 40px 32px; border-radius: 4px;">
@@ -403,7 +422,7 @@ Rustam Zhuraiev Stone Sculpture Gallery
     </div>
 
     <div style="display: inline-block; background-color: #F3EFEA; border: 1px solid #E4DFD7; padding: 4px 12px; font-size: 12px; font-weight: 600; font-family: monospace; color: #18181B; margin-bottom: 20px; border-radius: 2px;">
-      Код замовлення: {reservation_code}
+      Код замовлення: {h_reservation_code}
     </div>
 
     <h2 style="font-family: Georgia, serif; font-size: 20px; font-weight: 500; margin-top: 0; margin-bottom: 12px; color: #2E5A36;">
@@ -411,15 +430,15 @@ Rustam Zhuraiev Stone Sculpture Gallery
     </h2>
 
     <p style="font-size: 14px; color: #3F3F46; margin-bottom: 20px;">
-      Шановний(-а) <strong>{buyer_name}</strong>,<br>
-      Дякуємо за ваш інтерес до авторської кам'яної пластики ручної роботи. {status_text}
+      Шановний(-а) <strong>{h_buyer_name}</strong>,<br>
+      Дякуємо за ваш інтерес до авторської кам'яної пластики ручної роботи. {h_status_text}
     </p>
 
     <div style="background-color: #FAF8F5; border: 1px solid #E4DFD7; padding: 20px; margin: 24px 0; border-radius: 4px;">
       <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
         <tr>
           <td style="padding: 6px 0; color: #71717A; width: 40%;">Скульптура:</td>
-          <td style="padding: 6px 0; font-weight: 600; color: #18181B;">{sculpture_title}</td>
+          <td style="padding: 6px 0; font-weight: 600; color: #18181B;">{h_sculpture_title}</td>
         </tr>
         <tr>
           <td style="padding: 6px 0; color: #71717A;">Сума:</td>
@@ -427,11 +446,11 @@ Rustam Zhuraiev Stone Sculpture Gallery
         </tr>
         <tr>
           <td style="padding: 6px 0; color: #71717A;">Доставка:</td>
-          <td style="padding: 6px 0; color: #18181B;">{delivery_city} ({delivery_method})</td>
+          <td style="padding: 6px 0; color: #18181B;">{h_delivery_city} ({h_delivery_method})</td>
         </tr>
         <tr>
           <td style="padding: 6px 0; color: #71717A;">Зв'язок:</td>
-          <td style="padding: 6px 0; color: #18181B;">{channel_desc}</td>
+          <td style="padding: 6px 0; color: #18181B;">{h_channel_desc}</td>
         </tr>
       </table>
     </div>
@@ -439,7 +458,7 @@ Rustam Zhuraiev Stone Sculpture Gallery
     <div style="border-left: 2px solid #2E5A36; padding-left: 16px; margin: 24px 0;">
       <h3 style="font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #71717A; margin: 0 0 6px 0;">Що відбувається далі:</h3>
       <p style="font-size: 13px; color: #52525B; margin: 0;">
-        Автор особисто зв'яжеться з вами через <strong>{channel_desc}</strong> для узгодження безпечного транспортування каменю, деталей пакування та реквізитів оплати на картку.
+        Автор особисто зв'яжеться з вами через <strong>{h_channel_desc}</strong> для узгодження безпечного транспортування каменю, деталей пакування та реквізитів оплати на картку.
       </p>
     </div>
 

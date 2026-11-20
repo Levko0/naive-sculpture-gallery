@@ -66,8 +66,28 @@ export const SEO: React.FC<SEOProps> = ({
     setMeta('name', 'twitter:description', description);
     setMeta('name', 'twitter:image', fullImageUrl);
 
-    // 5. JSON-LD Structured Data
+    // 5. JSON-LD Structured Data (normalize relative URLs & prevent duplicates)
+    const normalizeUrls = (obj: any): any => {
+      if (Array.isArray(obj)) return obj.map(normalizeUrls);
+      if (obj && typeof obj === 'object') {
+        const res: Record<string, any> = {};
+        for (const [k, v] of Object.entries(obj)) {
+          if ((k === 'url' || k === 'image' || k === 'item') && typeof v === 'string' && v.startsWith('/')) {
+            res[k] = `${currentOrigin}${v}`;
+          } else {
+            res[k] = normalizeUrls(v);
+          }
+        }
+        return res;
+      }
+      return obj;
+    };
+
     const SCRIPT_ID = 'seo-structured-data';
+    // Remove any legacy prerendered JSON-LD scripts without our managed ID
+    document.querySelectorAll('script[type="application/ld+json"]').forEach((el) => {
+      if (el.id !== SCRIPT_ID) el.remove();
+    });
     let scriptTag = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null;
     if (jsonLd) {
       if (!scriptTag) {
@@ -76,7 +96,7 @@ export const SEO: React.FC<SEOProps> = ({
         scriptTag.type = 'application/ld+json';
         document.head.appendChild(scriptTag);
       }
-      scriptTag.textContent = JSON.stringify(jsonLd);
+      scriptTag.textContent = JSON.stringify(normalizeUrls(jsonLd));
     } else if (scriptTag) {
       scriptTag.remove();
     }

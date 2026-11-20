@@ -18,10 +18,10 @@ export const Header: React.FC = () => {
             className="flex flex-col group transition-transform active:scale-[0.99] py-2"
           >
             <span className="font-serif text-2xl sm:text-3xl tracking-tight text-gallery-ink font-medium">
-              НАЇВ
+              {language === 'UA' ? 'НАЇВ' : 'NAIV'}
             </span>
             <span className="text-[10px] tracking-museum uppercase text-gallery-muted font-sans -mt-1 group-hover:text-gallery-ink transition-colors">
-              Скульптурна Майстерня
+              {language === 'UA' ? 'Скульптурна Майстерня' : 'Sculpture Studio'}
             </span>
           </Link>
 

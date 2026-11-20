@@ -306,3 +306,55 @@ def test_presigned_upload_url_mime_validation():
         headers=auth_headers
     )
     assert invalid_resp.status_code == 422
+
+
+def test_prod_rejects_dev_admin_token():
+    """In production mode, dev/mock admin tokens must never be accepted."""
+    prev_mock = settings.USE_LOCAL_MOCK_DATA
+    prev_env = settings.ENVIRONMENT
+    prev_pool = settings.COGNITO_USER_POOL_ID
+    try:
+        settings.USE_LOCAL_MOCK_DATA = False
+        settings.ENVIRONMENT = "prod"
+        settings.COGNITO_USER_POOL_ID = ""
+
+        resp = client.get(
+            "/api/admin/orders",
+            headers={"Authorization": "Bearer dev-admin-token-12345"}
+        )
+        assert resp.status_code in (401, 503)
+
+        resp2 = client.get(
+            "/api/admin/orders",
+            headers={"Authorization": "Bearer mock-admin-token"}
+        )
+        assert resp2.status_code in (401, 503)
+    finally:
+        settings.USE_LOCAL_MOCK_DATA = prev_mock
+        settings.ENVIRONMENT = prev_env
+        settings.COGNITO_USER_POOL_ID = prev_pool
+
+
+def test_notification_html_escaping():
+    from app.notifications import format_artist_order_notification_html, format_buyer_confirmation_email
+    xss_order = {
+        "reservation_code": "NSG-XSS",
+        "sculpture_title_ua": "Ангелик",
+        "sculpture_title_en": "Little Angel",
+        "price_uah": 1000,
+        "buyer_name": "<script>alert(1)</script>",
+        "contact_channel": "EMAIL",
+        "email": "test@example.com",
+        "delivery_city_country": "<b>Lviv</b>",
+        "delivery_method": "Nova Poshta",
+        "comment": "<img src=x onerror=alert(1)>",
+        "locale": "ua",
+    }
+    artist_html = format_artist_order_notification_html(xss_order)
+    assert "<script>" not in artist_html
+    assert "&lt;script&gt;" in artist_html
+    assert "<img src=x" not in artist_html
+
+    buyer_email = format_buyer_confirmation_email(xss_order)
+    assert "<script>" not in buyer_email["html"]
+    assert "&lt;script&gt;" in buyer_email["html"]

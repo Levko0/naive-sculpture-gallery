@@ -79,9 +79,6 @@ export const AdminLoginPage: React.FC = () => {
               placeholder="••••••••"
               className="w-full text-sm bg-gallery-milk border border-gallery-border rounded px-3.5 py-2.5 text-gallery-ink focus:outline-none focus:ring-1 focus:ring-gallery-ink"
             />
-            <span className="text-[10px] text-gallery-muted block mt-1">
-              Підказка: використовуйте пароль Cognito або тестовий пароль для перегляду.
-            </span>
           </div>
 
           <div className="pt-2">

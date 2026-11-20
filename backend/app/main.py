@@ -33,12 +33,15 @@ from app.auth import get_current_admin
 logging.basicConfig(level=settings.LOG_LEVEL)
 logger = logging.getLogger("naive_sculptures_api")
 
+is_prod = settings.ENVIRONMENT == "prod" and not settings.USE_LOCAL_MOCK_DATA
+
 app = FastAPI(
     title="Naive Art Sculpture Gallery API",
     description="Museum-grade serverless backend for original handcrafted naive sculptures.",
     version="1.0.0",
-    docs_url="/api/docs",
-    openapi_url="/api/openapi.json",
+    docs_url=None if is_prod else "/api/docs",
+    redoc_url=None if is_prod else "/api/redoc",
+    openapi_url=None if is_prod else "/api/openapi.json",
 )
 
 # CORS Middleware configuration
@@ -264,6 +267,8 @@ async def admin_update_order_status(
 @app.put("/api/mock-upload/{file_key:path}", tags=["Dev"])
 async def mock_upload_sink(file_key: str):
     """Simulates S3 PUT endpoint during offline local development."""
+    if settings.ENVIRONMENT == "prod" and not settings.USE_LOCAL_MOCK_DATA:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")
     return JSONResponse(
         status_code=200,
         content={"message": f"Simulated upload for {file_key} accepted."}

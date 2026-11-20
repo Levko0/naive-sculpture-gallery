@@ -59,35 +59,38 @@ async def get_current_admin(
         )
 
     token = credentials.credentials
+    is_local_dev = settings.USE_LOCAL_MOCK_DATA or settings.ENVIRONMENT != "prod"
 
-    # Local development bypass / demo token
-    if token.startswith("dev-admin-token-") or token == "mock-admin-token":
+    # Local development bypass / demo token (strictly disabled in production)
+    if is_local_dev and (token.startswith("dev-admin-token-") or token == "mock-admin-token"):
         return {
             "sub": "mock-artist-id",
             "email": settings.ARTIST_NOTIFICATION_EMAIL,
             "role": "admin"
         }
 
-    # If Cognito is not configured, permit dev tokens
+    # If Cognito is not configured, permit dev tokens only in local/non-prod mode
     if not settings.COGNITO_USER_POOL_ID:
-        logger.info("Cognito User Pool ID not configured; accepting bearer token in dev mode.")
-        return {
-            "sub": "local-dev-user",
-            "email": settings.ARTIST_NOTIFICATION_EMAIL,
-            "role": "admin"
-        }
+        if is_local_dev:
+            logger.info("Cognito User Pool ID not configured; accepting bearer token in dev mode.")
+            return {
+                "sub": "local-dev-user",
+                "email": settings.ARTIST_NOTIFICATION_EMAIL,
+                "role": "admin"
+            }
+        logger.error("COGNITO_USER_POOL_ID is not configured in production environment.")
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Authentication service is not configured",
+        )
 
     jwks = await get_cognito_jwks()
     if not jwks:
-        # Fallback if JWKS could not be fetched
-        try:
-            claims = jwt.get_unverified_claims(token)
-            return claims
-        except Exception:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Unable to verify token credentials"
-            )
+        logger.error("Failed to fetch Cognito JWKS; rejecting token.")
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Unable to verify authentication keys",
+        )
 
     try:
         headers = jwt.get_unverified_header(token)

@@ -19,43 +19,43 @@ export async function loginArtist(email: string, password: string): Promise<Auth
   const cognitoRegion = (window as any).__ENV__?.VITE_AWS_REGION || 'eu-central-1';
 
   if (cognitoClientId) {
-    try {
-      const res = await fetch(`https://cognito-idp.${cognitoRegion}.amazonaws.com/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-amz-json-1.1',
-          'X-Amz-Target': 'AWSCognitoIdentityProviderService.InitiateAuth',
+    const res = await fetch(`https://cognito-idp.${cognitoRegion}.amazonaws.com/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-amz-json-1.1',
+        'X-Amz-Target': 'AWSCognitoIdentityProviderService.InitiateAuth',
+      },
+      body: JSON.stringify({
+        AuthFlow: 'USER_PASSWORD_AUTH',
+        ClientId: cognitoClientId,
+        AuthParameters: {
+          USERNAME: email,
+          PASSWORD: password,
         },
-        body: JSON.stringify({
-          AuthFlow: 'USER_PASSWORD_AUTH',
-          ClientId: cognitoClientId,
-          AuthParameters: {
-            USERNAME: email,
-            PASSWORD: password,
-          },
-        }),
-      });
+      }),
+    });
 
-      const data = await res.json();
-      if (res.ok && data.AuthenticationResult) {
-        const token = data.AuthenticationResult.IdToken || data.AuthenticationResult.AccessToken;
-        const session: AuthSession = {
-          token,
-          email,
-          expiresAt: Date.now() + (data.AuthenticationResult.ExpiresIn || 3600) * 1000,
-        };
-        localStorage.setItem(TOKEN_KEY, session.token);
-        localStorage.setItem(EMAIL_KEY, session.email);
-        return session;
-      }
-    } catch (err) {
-      console.warn('Cognito login failed, checking local credentials:', err);
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.AuthenticationResult) {
+      const token = data.AuthenticationResult.IdToken || data.AuthenticationResult.AccessToken;
+      const session: AuthSession = {
+        token,
+        email,
+        expiresAt: Date.now() + (data.AuthenticationResult.ExpiresIn || 3600) * 1000,
+      };
+      localStorage.setItem(TOKEN_KEY, session.token);
+      localStorage.setItem(EMAIL_KEY, session.email);
+      return session;
     }
+
+    throw new Error(data.message || 'Невірний логін або пароль. Перевірте введені дані.');
   }
 
-  // Local / Demo admin credentials
-  // Allows testing out of the box with standard artist password
-  if (password === 'naive-art-2024' || password === 'admin' || password.length >= 6) {
+  // Local development only (when Cognito is not configured in env.js)
+  const isLocalDev =
+    Boolean((import.meta as any).env?.DEV) &&
+    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+  if (isLocalDev && password.length >= 6) {
     const session: AuthSession = {
       token: `dev-admin-token-${Date.now()}`,
       email: email || 'sculptures.zh@gmail.com',

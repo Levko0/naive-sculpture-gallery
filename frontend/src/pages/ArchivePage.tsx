@@ -35,14 +35,15 @@ export const ArchivePage: React.FC = () => {
       />
       <div className="max-w-3xl mb-12 space-y-4">
         <div className="text-xs font-semibold uppercase tracking-museum text-gallery-muted">
-          Колекційний архів
+          {language === 'UA' ? 'Колекційний архів' : 'Collection Archive'}
         </div>
         <h1 className="font-serif text-4xl sm:text-5xl text-gallery-ink font-medium leading-tight">
           {t.nav.archive}
         </h1>
         <p className="text-sm text-gallery-muted leading-relaxed font-light">
-          Роботи, що знайшли свій дім у приватних колекціях України, Європи та світу.
-          Якщо вам сподобалася певна форма чи персонаж із архіву, ви можете надіслати запит автору на створення схожої авторської скульптури на замовлення.
+          {language === 'UA'
+            ? 'Роботи, що знайшли свій дім у приватних колекціях України, Європи та світу. Якщо вам сподобалася певна форма чи персонаж із архіву, ви можете надіслати запит автору на створення схожої авторської скульптури на замовлення.'
+            : 'Artworks that have found their home in private collections across Ukraine, Europe, and worldwide. If a particular form or character speaks to you, you may send an inquiry to commission a similar original stone sculpture.'}
         </p>
       </div>
 

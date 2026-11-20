@@ -269,14 +269,16 @@ export const SculptureDetailPage: React.FC = () => {
               </div>
             )}
             <p className="text-[11px] text-gallery-muted text-center leading-normal">
-              Пряме узгодження з автором без посередників • Оплата на картку
+              {language === 'UA'
+                ? 'Пряме узгодження з автором без посередників • Оплата на картку'
+                : 'Direct coordination with the artist • Card or bank transfer payment'}
             </p>
           </div>
 
           {/* Museum Label Specifications Table */}
           <div className="pt-4 border-t border-gallery-border space-y-4">
             <h2 className="text-xs uppercase tracking-museum font-semibold text-gallery-ink">
-              Паспорт твору
+              {language === 'UA' ? 'Паспорт твору' : 'Artwork Specifications'}
             </h2>
 
             <dl className="grid grid-cols-2 gap-y-3.5 text-xs text-gallery-ink">
@@ -316,13 +318,29 @@ export const SculptureDetailPage: React.FC = () => {
             <div className="flex items-start space-x-2.5">
               <ShieldCheck className="w-4 h-4 text-gallery-ink shrink-0 mt-0.5" />
               <span>
-                <strong>100% Авторський оригінал:</strong> Робота супроводжується підписаним сертифікатом автентичності від автора.
+                {language === 'UA' ? (
+                  <>
+                    <strong>100% Авторський оригінал:</strong> Робота супроводжується підписаним сертифікатом автентичності від автора.
+                  </>
+                ) : (
+                  <>
+                    <strong>100% Original Artwork:</strong> Accompanied by a signed certificate of authenticity from the artist.
+                  </>
+                )}
               </span>
             </div>
             <div className="flex items-start space-x-2.5">
               <Truck className="w-4 h-4 text-gallery-ink shrink-0 mt-0.5" />
               <span>
-                <strong>Надійне пакування:</strong> Спеціальний ударостійкий короб із м'яким ложементом. Страхування перевезення.
+                {language === 'UA' ? (
+                  <>
+                    <strong>Надійне пакування:</strong> Спеціальний ударостійкий короб із м'яким ложементом. Страхування перевезення.
+                  </>
+                ) : (
+                  <>
+                    <strong>Museum-Grade Packaging:</strong> Custom shockproof crate with padded insert and insured worldwide shipping.
+                  </>
+                )}
               </span>
             </div>
           </div>

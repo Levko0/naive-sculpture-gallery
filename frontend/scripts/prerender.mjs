@@ -8,31 +8,82 @@ const toAbsolute = (p) => path.resolve(__dirname, '..', p);
 const template = fs.readFileSync(toAbsolute('dist/index.html'), 'utf-8');
 const { render } = await import(toAbsolute('dist-ssr/entry-server.js'));
 
-// Read mock sculptures
-const mockFile = fs.readFileSync(toAbsolute('src/services/mockData.ts'), 'utf-8');
-const jsonMatch = mockFile.match(/INITIAL_MOCK_SCULPTURES:\s*Sculpture\[\]\s*=\s*(\[[\s\S]*?\]);/);
+// Public site URL. Override with SITE_URL env var once a custom domain is connected.
+const DOMAIN = (process.env.SITE_URL || 'https://dwlekbm7g0cs5.cloudfront.net').replace(/\/$/, '');
+
+// Read sculptures from live API if available (optional, falls back to mockData.ts)
 let sculptures = [];
-if (jsonMatch) {
+if (process.env.API_URL || process.env.SYNC_LIVE_API === '1') {
+  const apiUrl = (process.env.API_URL || `${DOMAIN}/api/sculptures`).replace(/\/$/, '');
   try {
-    sculptures = JSON.parse(jsonMatch[1]);
-  } catch {
-    console.warn('Failed to parse mockData as JSON, using fallback regex');
+    const resp = await fetch(apiUrl, { signal: AbortSignal.timeout(5000) });
+    if (resp.ok) {
+      const liveData = await resp.json();
+      if (Array.isArray(liveData) && liveData.length > 0) {
+        sculptures = liveData;
+        console.log(`✓ Loaded ${sculptures.length} sculptures from live API (${apiUrl})`);
+      }
+    }
+  } catch (err) {
+    console.warn(`Could not fetch live sculptures from ${apiUrl}, falling back to mockData.ts:`, err.message);
   }
 }
 
-// Public site URL. Override with SITE_URL env var once a custom domain is connected.
-const DOMAIN = (process.env.SITE_URL || 'https://dwlekbm7g0cs5.cloudfront.net').replace(/\/$/, '');
+if (sculptures.length === 0) {
+  const mockFile = fs.readFileSync(toAbsolute('src/services/mockData.ts'), 'utf-8');
+  const jsonMatch = mockFile.match(/INITIAL_MOCK_SCULPTURES:\s*Sculpture\[\]\s*=\s*(\[[\s\S]*?\]);/);
+  if (jsonMatch) {
+    try {
+      sculptures = JSON.parse(jsonMatch[1]);
+    } catch {
+      console.warn('Failed to parse mockData as JSON, using fallback regex');
+    }
+  }
+}
+
+// Parse JPEG width/height from file buffer (SOF0/SOF2 markers)
+function getJpegDimensions(filePath) {
+  try {
+    const buf = fs.readFileSync(filePath);
+    let i = 2; // skip 0xFFD8
+    while (i + 9 < buf.length) {
+      if (buf[i] !== 0xff) {
+        i++;
+        continue;
+      }
+      const marker = buf[i + 1];
+      if (marker === 0xc0 || marker === 0xc2) {
+        const height = buf.readUInt16BE(i + 5);
+        const width = buf.readUInt16BE(i + 7);
+        return { width, height };
+      }
+      if (marker === 0xd9 || marker === 0xda) break;
+      const len = buf.readUInt16BE(i + 2);
+      i += 2 + len;
+    }
+  } catch {
+    // ignore
+  }
+  return null;
+}
 
 // Social preview image: prefer a JPEG from /og/ (universally supported by Telegram, Viber, WhatsApp, Facebook)
 function toOgImage(imagePath) {
   if (!imagePath) imagePath = '/sculptures/anhelyk.webp';
-  if (imagePath.startsWith('http')) return { url: imagePath, type: null };
+  if (imagePath.startsWith('http')) return { url: imagePath, type: null, width: null, height: null };
   const base = path.basename(imagePath).replace(/\.(webp|png|jpe?g)$/i, '');
   const ogRel = `/og/${base}.jpg`;
-  if (fs.existsSync(toAbsolute(`dist${ogRel}`))) {
-    return { url: `${DOMAIN}${ogRel}`, type: 'image/jpeg' };
+  const ogAbs = toAbsolute(`dist${ogRel}`);
+  if (fs.existsSync(ogAbs)) {
+    const dims = getJpegDimensions(ogAbs);
+    return {
+      url: `${DOMAIN}${ogRel}`,
+      type: 'image/jpeg',
+      width: dims?.width || null,
+      height: dims?.height || null,
+    };
   }
-  return { url: `${DOMAIN}${imagePath}`, type: null };
+  return { url: `${DOMAIN}${imagePath}`, type: null, width: null, height: null };
 }
 
 const routes = [
@@ -97,6 +148,7 @@ const routes = [
 // Add each sculpture
 for (const s of sculptures) {
   const isAvailable = s.status === 'AVAILABLE';
+  const sculptureUrl = `${DOMAIN}/sculpture/${s.slug}`;
   routes.push({
     url: `/sculpture/${s.slug}`,
     title: `${s.title_ua} | Рустам Жураєв`,
@@ -105,35 +157,60 @@ for (const s of sculptures) {
     type: 'article',
     jsonLd: {
       "@context": "https://schema.org",
-      "@type": "VisualArtwork",
-      "name": s.title_ua,
-      "alternateName": s.title_en,
-      "artist": {
-        "@type": "Person",
-        "name": "Рустам Жураєв"
-      },
-      "artMedium": s.material_ua,
-      "artform": "Sculpture",
-      "description": s.story_ua,
-      "image": s.photos?.[0]?.url ? `${DOMAIN}${s.photos[0].url}` : undefined,
-      "width": {
-        "@type": "Distance",
-        "name": `${s.dimensions?.width_cm || ''} см`
-      },
-      "height": {
-        "@type": "Distance",
-        "name": `${s.dimensions?.height_cm || ''} см`
-      },
-      "depth": {
-        "@type": "Distance",
-        "name": `${s.dimensions?.depth_cm || ''} см`
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": s.price_uah,
-        "priceCurrency": "UAH",
-        "availability": isAvailable ? "https://schema.org/InStock" : "https://schema.org/SoldOut"
-      }
+      "@graph": [
+        {
+          "@type": "VisualArtwork",
+          "name": s.title_ua,
+          "alternateName": s.title_en,
+          "url": sculptureUrl,
+          "artist": {
+            "@type": "Person",
+            "name": "Рустам Жураєв",
+            "url": `${DOMAIN}/about`
+          },
+          "artMedium": s.material_ua,
+          "artform": "Sculpture",
+          "description": s.story_ua,
+          "image": s.photos?.[0]?.url ? (s.photos[0].url.startsWith('http') ? s.photos[0].url : `${DOMAIN}${s.photos[0].url}`) : undefined,
+          "width": {
+            "@type": "Distance",
+            "name": `${s.dimensions?.width_cm || ''} см`
+          },
+          "height": {
+            "@type": "Distance",
+            "name": `${s.dimensions?.height_cm || ''} см`
+          },
+          "depth": {
+            "@type": "Distance",
+            "name": `${s.dimensions?.depth_cm || ''} см`
+          },
+          "offers": {
+            "@type": "Offer",
+            "url": sculptureUrl,
+            "price": s.price_uah,
+            "priceCurrency": "UAH",
+            "itemCondition": "https://schema.org/NewCondition",
+            "availability": isAvailable ? "https://schema.org/InStock" : "https://schema.org/SoldOut"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Галерея",
+              "item": `${DOMAIN}/`
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": s.title_ua,
+              "item": sculptureUrl
+            }
+          ]
+        }
+      ]
     }
   });
 }
@@ -171,7 +248,9 @@ for (const route of routes) {
     <meta property="og:title" content="${route.title.replace(/"/g, '&quot;')}" />
     <meta property="og:description" content="${route.description.replace(/"/g, '&quot;')}" />
     <meta property="og:image" content="${imageUrl}" />${og.type ? `
-    <meta property="og:image:type" content="${og.type}" />` : ''}
+    <meta property="og:image:type" content="${og.type}" />` : ''}${og.width && og.height ? `
+    <meta property="og:image:width" content="${og.width}" />
+    <meta property="og:image:height" content="${og.height}" />` : ''}
     <meta property="og:locale" content="uk_UA" />
     <meta property="og:url" content="${canonicalUrl}" />
     <meta property="og:type" content="${route.type || 'website'}" />
@@ -187,7 +266,7 @@ for (const route of routes) {
   }
 
   if (route.jsonLd) {
-    headTags += `\n    <script type="application/ld+json">${JSON.stringify(route.jsonLd)}</script>`;
+    headTags += `\n    <script id="seo-structured-data" type="application/ld+json">${JSON.stringify(route.jsonLd)}</script>`;
   }
 
   // Inject before </head>

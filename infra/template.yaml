@@ -198,6 +198,24 @@ Resources:
         SigningBehavior: always
         SigningProtocol: sigv4
 
+  UrlRewriteFunction:
+    Type: AWS::CloudFront::Function
+    Properties:
+      Name: !Sub '${AWS::StackName}-url-rewrite'
+      AutoPublish: true
+      FunctionConfig:
+        Comment: Strip trailing slashes on clean SSG routes so /about/ resolves to /about
+        Runtime: cloudfront-js-2.0
+      FunctionCode: |
+        function handler(event) {
+          var request = event.request;
+          var uri = request.uri;
+          if (uri.length > 1 && uri.endsWith('/')) {
+            request.uri = uri.slice(0, -1);
+          }
+          return request;
+        }
+
   GalleryDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -232,6 +250,11 @@ Resources:
           Compress: true
           # Managed-CachingOptimized Policy ID
           CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+          # Managed-SecurityHeadersPolicy ID (HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy)
+          ResponseHeadersPolicyId: 67f7725c-6f97-4210-82d7-5512b31e9d03
+          FunctionAssociations:
+            - EventType: viewer-request
+              FunctionARN: !GetAtt UrlRewriteFunction.FunctionARN
         CacheBehaviors:
           # High-Res Media behavior: Immutable long-term caching
           - PathPattern: 'media/*'
