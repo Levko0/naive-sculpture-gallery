@@ -17,8 +17,11 @@ client = TestClient(app)
 
 @pytest.fixture(autouse=True)
 def reset_store():
-    """Resets in-memory dev store before each test."""
+    """Resets in-memory dev store before each test and keeps reservation test fixtures AVAILABLE."""
     dev_store.reset()
+    for sid in ("sculpt-007", "sculpt-008", "sculpt-009", "sculpt-010", "sculpt-011", "sculpt-013"):
+        if sid in dev_store.sculptures:
+            dev_store.sculptures[sid]["status"] = "AVAILABLE"
     _order_ip_tracker.clear()
 
 
