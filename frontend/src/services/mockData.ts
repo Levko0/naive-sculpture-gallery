@@ -494,5 +494,271 @@ export const INITIAL_MOCK_SCULPTURES: Sculpture[] = [
     "is_featured": true,
     "created_at": "2026-11-16T12:00:00Z",
     "updated_at": "2026-11-16T12:00:00Z"
+  },
+  {
+    "id": "sculpt-020",
+    "slug": "tsar-piskovyk-55",
+    "title_ua": "Цар",
+    "title_en": "The King",
+    "story_ua": "Архаїчний образ увінчаного короною царя, висічений із теплого червоного пісковику. Заплющені очі та зосереджене обличчя передають тиху гідність і мудрість правителя, зануреного у внутрішній спокій. Природні мінеральні переходи та мохова патина на необробленій основі каменю підкреслюють зв’язок твору з віковічною землею.",
+    "story_en": "An archaic portrait of a crowned king carved from warm reddish sandstone. Closed eyes and a serene bearded visage convey quiet dignity and timeless wisdom. Natural mineral variations and subtle mossy patina along the raw stone base anchor the figure in primordial earth.",
+    "material_ua": "Пісковик",
+    "material_en": "Sandstone",
+    "technique_ua": "Пряме ручне вирубування з цільного блоку пісковику, фактурне карбування різцем",
+    "technique_en": "Direct hand carving from solid sandstone block, textured chisel detailing",
+    "year": 2026,
+    "edition_ua": "Єдиний екземпляр",
+    "edition_en": "Unique original",
+    "price_uah": 34000,
+    "price_eur": 770,
+    "price_usd": 830,
+    "dimensions": {
+      "height_cm": 55.0,
+      "width_cm": 15.0,
+      "depth_cm": 14.0,
+      "weight_kg": 16.0
+    },
+    "photos": [
+      {
+        "url": "/sculptures/tsar-55.webp",
+        "alt_ua": "Цар — кам'яна скульптура з червоного пісковику, 55×15 см",
+        "alt_en": "The King — reddish sandstone sculpture, 55×15 cm",
+        "is_cover": true,
+        "display_order": 0
+      }
+    ],
+    "status": "SOLD",
+    "display_order": 14,
+    "is_featured": true,
+    "created_at": "2026-11-24T22:40:00Z",
+    "updated_at": "2026-11-24T22:40:00Z"
+  },
+  {
+    "id": "sculpt-021",
+    "slug": "tsar-piskovyk-153",
+    "title_ua": "Цар",
+    "title_en": "The King",
+    "story_ua": "Монументальна вертикальна стела зі світлого пісковику, встановлена на круглій кам’яній основі. Витягнуті наївні пропорції, стримане обличчя із заплющеними повіками та руки, що міцно тримають жезл, відсилають до давніх придорожніх фігур та козацької кам’яної пластики. Грубо сколотий моноліт нижньої частини зберігає первісну міць дикого каменю.",
+    "story_en": "A monumental vertical stele hewn from pale sandstone atop a circular stone plinth. Elongated naive proportions, tranquil closed eyes, and hands clasping a scepter evoke ancient roadside guardians and folk stone pillars, rising from a raw, rough-hewn monolithic column.",
+    "material_ua": "Пісковик",
+    "material_en": "Sandstone",
+    "technique_ua": "Монументальне пряме тесання з цільної брили пісковику, поєднання шліфованої та дикої фактури",
+    "technique_en": "Monumental direct chiseling from monolithic sandstone slab, contrasting smooth and raw textures",
+    "year": 2026,
+    "edition_ua": "Єдиний екземпляр",
+    "edition_en": "Unique original",
+    "price_uah": 68000,
+    "price_eur": 1540,
+    "price_usd": 1660,
+    "dimensions": {
+      "height_cm": 153.0,
+      "width_cm": 30.0,
+      "depth_cm": 24.0,
+      "weight_kg": 85.0
+    },
+    "photos": [
+      {
+        "url": "/sculptures/tsar-153.webp",
+        "alt_ua": "Цар — монументальна скульптура зі світлого пісковику, 153×30 см",
+        "alt_en": "The King — monumental light sandstone stele, 153×30 cm",
+        "is_cover": true,
+        "display_order": 0
+      }
+    ],
+    "status": "SOLD",
+    "display_order": 15,
+    "is_featured": true,
+    "created_at": "2026-11-24T22:41:00Z",
+    "updated_at": "2026-11-24T22:41:00Z"
+  },
+  {
+    "id": "sculpt-022",
+    "slug": "tsar-piskovyk-155",
+    "title_ua": "Цар",
+    "title_en": "The King",
+    "story_ua": "Висока монументальна постать царя з рожевувато-сірого пісковику, вінець якого прикрашає викарбуваний хрест. Спокійні риси обличчя та складені на грудях долоні створюють урочистий, молитовний настрій. Природні відколи та лаконічний силует колони надають скульптурі сакральної величі та позачасового звучання.",
+    "story_en": "A tall monumental figure of a king in pinkish-grey sandstone, his high crown marked with an incised cross. Serene facial features and hands cradling a rough stone block impart a solemn, meditative presence, uniting sacred symbolism with raw quarry texture.",
+    "material_ua": "Пісковик",
+    "material_en": "Sandstone",
+    "technique_ua": "Монументальне ручне тесання, сакральне гравірування, збереження природної фактури породи",
+    "technique_en": "Monumental hand carving, sacred cross engraving, natural quarry cleavage preservation",
+    "year": 2026,
+    "edition_ua": "Єдиний екземпляр",
+    "edition_en": "Unique original",
+    "price_uah": 70000,
+    "price_eur": 1580,
+    "price_usd": 1710,
+    "dimensions": {
+      "height_cm": 155.0,
+      "width_cm": 31.0,
+      "depth_cm": 25.0,
+      "weight_kg": 88.0
+    },
+    "photos": [
+      {
+        "url": "/sculptures/tsar-155.webp",
+        "alt_ua": "Цар — монументальна стела з пісковику з хрестом на короні, 155×31 см",
+        "alt_en": "The King — monumental sandstone stele with cross on crown, 155×31 cm",
+        "is_cover": true,
+        "display_order": 0
+      }
+    ],
+    "status": "SOLD",
+    "display_order": 16,
+    "is_featured": true,
+    "created_at": "2026-11-24T22:42:00Z",
+    "updated_at": "2026-11-24T22:42:00Z"
+  },
+  {
+    "id": "sculpt-023",
+    "slug": "tsar-piskovyk-167",
+    "title_ua": "Цар",
+    "title_en": "The King",
+    "story_ua": "Велична монументальна скульптура заввишки 167 см зі світлого пісковику. Цар із відкритим, уважним поглядом та виразною бородою тримає обома руками чашу — символ достатку, гостинності та духовної повноти. Виразний контраст між детально прорізаним верхом і дикою, нерівною формою кам’яного стовпа робить твір справжньою домінантою простору.",
+    "story_en": "An imposing 167 cm monumental sculpture in pale sandstone. With an open, watchful gaze and richly carved beard, the crowned king holds a chalice in both hands—an emblem of abundance and spiritual fullness—rising above a dramatically rough-hewn monolithic stone column.",
+    "material_ua": "Пісковик",
+    "material_en": "Sandstone",
+    "technique_ua": "Монументальне пряме вирубування з моноліту, наївна пластика, контрастна обробка поверхні",
+    "technique_en": "Monumental direct monolith carving, naive figurative modeling, contrasting surface finishes",
+    "year": 2026,
+    "edition_ua": "Єдиний екземпляр",
+    "edition_en": "Unique original",
+    "price_uah": 78000,
+    "price_eur": 1760,
+    "price_usd": 1900,
+    "dimensions": {
+      "height_cm": 167.0,
+      "width_cm": 41.0,
+      "depth_cm": 28.0,
+      "weight_kg": 110.0
+    },
+    "photos": [
+      {
+        "url": "/sculptures/tsar-167.webp",
+        "alt_ua": "Цар — монументальна скульптура з чашею з пісковику, 167×41 см",
+        "alt_en": "The King — monumental sandstone sculpture holding a chalice, 167×41 cm",
+        "is_cover": true,
+        "display_order": 0
+      }
+    ],
+    "status": "SOLD",
+    "display_order": 17,
+    "is_featured": true,
+    "created_at": "2026-11-24T22:43:00Z",
+    "updated_at": "2026-11-24T22:43:00Z"
+  },
+  {
+    "id": "sculpt-024",
+    "slug": "sv-dymytrii-piskovyk",
+    "title_ua": "Св. Димитрій",
+    "title_en": "St. Demetrius",
+    "story_ua": "Сакральний наївний образ Святого Димитрія, вирізьблений зі світлого пісковику. Постать воїна-покровителя зі списом у руці та високим головним убором сповнена внутрішньої тиші й рішучості. Дрібноточкова бучардована фактура одежі контрастує з м’якими лініями обличчя, надаючи каменю живого, теплого звучання.",
+    "story_en": "A sacred naive figure of Saint Demetrius carved from light sandstone. Holding his spear upright beneath a tall ceremonial headdress, the patron warrior radiates quiet resolve and grace. Finely stippled cloak textures contrast with the gentle contours of his contemplative face.",
+    "material_ua": "Пісковик",
+    "material_en": "Sandstone",
+    "technique_ua": "Кругле ручне різьблення по пісковику, бучардування, дрібноточкове карбування фактури",
+    "technique_en": "Freestanding hand carving in sandstone, bush-hammered stippling, fine chisel texturing",
+    "year": 2026,
+    "edition_ua": "Єдиний екземпляр",
+    "edition_en": "Unique original",
+    "price_uah": 31000,
+    "price_eur": 700,
+    "price_usd": 760,
+    "dimensions": {
+      "height_cm": 43.0,
+      "width_cm": 12.0,
+      "depth_cm": 13.0,
+      "weight_kg": 9.5
+    },
+    "photos": [
+      {
+        "url": "/sculptures/sv-dymytrii.webp",
+        "alt_ua": "Св. Димитрій — сакральна скульптура зі світлого пісковику, 43×12×13 см",
+        "alt_en": "St. Demetrius — sacred light sandstone sculpture, 43×12×13 cm",
+        "is_cover": true,
+        "display_order": 0
+      }
+    ],
+    "status": "SOLD",
+    "display_order": 18,
+    "is_featured": true,
+    "created_at": "2026-11-24T22:44:00Z",
+    "updated_at": "2026-11-24T22:44:00Z"
+  },
+  {
+    "id": "sculpt-025",
+    "slug": "anhelyk-piskovyk",
+    "title_ua": "Ангелик",
+    "title_en": "Little Angel",
+    "story_ua": "Зворушливий образ ангела-охоронця зі світлого пісковику з широко розправленими різьбленими крилами та рельєфним хрестом на грудях. Дитяча чистота й умиротворення обличчя наповнюють простір теплом і затишком. Скульптура покоїться на масивному брусі натурального дуба, що гармонійно відтіняє м’який тон каменю.",
+    "story_en": "A tender guardian angel sculpted in pale sandstone with wide, deeply carved wings and a relief cross upon its chest. The serene, childlike visage brings quiet solace and warmth to any space, resting gracefully atop a solid natural oak pedestal.",
+    "material_ua": "Пісковик",
+    "material_en": "Sandstone",
+    "technique_ua": "Пряме ручне різьблення по пісковику, рельєфне моделювання крил, підставка з масиву дуба",
+    "technique_en": "Direct hand carving in sandstone, layered wing relief, solid oak wood pedestal",
+    "year": 2026,
+    "edition_ua": "Єдиний екземпляр",
+    "edition_en": "Unique original",
+    "price_uah": 24000,
+    "price_eur": 540,
+    "price_usd": 590,
+    "dimensions": {
+      "height_cm": 20.0,
+      "width_cm": 30.0,
+      "depth_cm": 8.0,
+      "weight_kg": 4.8
+    },
+    "photos": [
+      {
+        "url": "/sculptures/anhelyk-piskovyk.webp",
+        "alt_ua": "Ангелик — скульптура з пісковику з розправленими крилами на дубовій підставці",
+        "alt_en": "Little Angel — sandstone winged sculpture on oak pedestal",
+        "is_cover": true,
+        "display_order": 0
+      }
+    ],
+    "status": "SOLD",
+    "display_order": 19,
+    "is_featured": true,
+    "created_at": "2026-11-24T22:45:00Z",
+    "updated_at": "2026-11-24T22:45:00Z"
+  },
+  {
+    "id": "sculpt-026",
+    "slug": "arkhanhel-mykhail-piskovyk",
+    "title_ua": "Архангел Михаїл",
+    "title_en": "Archangel Michael",
+    "story_ua": "Струнка, піднесена постать Архангела Михаїла, висічена з теплого теракотового пісковику. Спрямовані вгору крила, молитовно складені руки та лаконічна пластика фігури створюють образ небесного оборонця. Композицію вінчає тонкий золотистий металевий німб, що делікатно ловить світло над кам’яним ликом.",
+    "story_en": "A slender, uplifted figure of Archangel Michael hewn from warm terracotta-toned sandstone. Sweeping upright wings, gently clasped hands, and minimalist folk contours evoke a celestial protector, crowned by a delicate golden metal halo catching light above the carved visage.",
+    "material_ua": "Пісковик",
+    "material_en": "Sandstone",
+    "technique_ua": "Кругле ручне тесання з пісковику, тонке шліфування, інкрустація металевим німбом",
+    "technique_en": "Freestanding sandstone carving, soft hand honing, golden metal halo accent",
+    "year": 2024,
+    "edition_ua": "Єдиний екземпляр",
+    "edition_en": "Unique original",
+    "price_uah": 36000,
+    "price_eur": 810,
+    "price_usd": 880,
+    "dimensions": {
+      "height_cm": 56.0,
+      "width_cm": 14.0,
+      "depth_cm": 15.0,
+      "weight_kg": 14.2
+    },
+    "photos": [
+      {
+        "url": "/sculptures/arkhanhel-mykhail.webp",
+        "alt_ua": "Архангел Михаїл — скульптура з пісковику із золотистим німбом, 2024",
+        "alt_en": "Archangel Michael — sandstone sculpture with golden halo, 2024",
+        "is_cover": true,
+        "display_order": 0
+      }
+    ],
+    "status": "SOLD",
+    "display_order": 20,
+    "is_featured": true,
+    "created_at": "2026-11-24T22:46:00Z",
+    "updated_at": "2026-11-24T22:46:00Z"
   }
 ];
