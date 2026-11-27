@@ -32,8 +32,8 @@ export interface Sculpture {
   story_en: string;
   material_ua: string;
   material_en: string;
-  technique_ua: string;
-  technique_en: string;
+  technique_ua?: string;
+  technique_en?: string;
   year: number;
   edition_ua: string;
   edition_en: string;
@@ -57,8 +57,8 @@ export interface SculptureInput {
   story_en: string;
   material_ua: string;
   material_en: string;
-  technique_ua: string;
-  technique_en: string;
+  technique_ua?: string;
+  technique_en?: string;
   year: number;
   edition_ua: string;
   edition_en: string;

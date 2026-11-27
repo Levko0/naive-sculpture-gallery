@@ -26,8 +26,6 @@ export const SculptureEditorModal: React.FC<SculptureEditorModalProps> = ({
   const [storyEn, setStoryEn] = useState('');
   const [materialUa, setMaterialUa] = useState('Шамотна глина, ангоби');
   const [materialEn, setMaterialEn] = useState('Chamotte clay, raw engobes');
-  const [techniqueUa, setTechniqueUa] = useState('Ручне ліплення, випал 1050°C, вощіння');
-  const [techniqueEn, setTechniqueEn] = useState('Hand-sculpted, fired at 1050°C, beeswax');
   const [year, setYear] = useState(new Date().getFullYear());
   const [priceUah, setPriceUah] = useState(18000);
   const [priceEur, setPriceEur] = useState<number | undefined>(420);
@@ -52,8 +50,6 @@ export const SculptureEditorModal: React.FC<SculptureEditorModalProps> = ({
       setStoryEn(sculpture.story_en);
       setMaterialUa(sculpture.material_ua);
       setMaterialEn(sculpture.material_en);
-      setTechniqueUa(sculpture.technique_ua);
-      setTechniqueEn(sculpture.technique_en);
       setYear(sculpture.year);
       setPriceUah(sculpture.price_uah);
       setPriceEur(sculpture.price_eur);
@@ -119,8 +115,6 @@ export const SculptureEditorModal: React.FC<SculptureEditorModalProps> = ({
         story_en: storyEn.trim(),
         material_ua: materialUa.trim(),
         material_en: materialEn.trim(),
-        technique_ua: techniqueUa.trim(),
-        technique_en: techniqueEn.trim(),
         year: Number(year),
         edition_ua: 'Єдиний екземпляр',
         edition_en: 'Unique original',

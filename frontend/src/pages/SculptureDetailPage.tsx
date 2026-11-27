@@ -83,7 +83,6 @@ export const SculptureDetailPage: React.FC = () => {
   const title = language === 'UA' ? sculpture.title_ua : sculpture.title_en;
   const story = language === 'UA' ? sculpture.story_ua : sculpture.story_en;
   const material = language === 'UA' ? sculpture.material_ua : sculpture.material_en;
-  const technique = language === 'UA' ? sculpture.technique_ua : sculpture.technique_en;
   const edition = language === 'UA' ? sculpture.edition_ua : sculpture.edition_en;
 
   const isAvailable = sculpture.status === 'AVAILABLE';
@@ -297,9 +296,6 @@ export const SculptureDetailPage: React.FC = () => {
 
               <dt className="text-gallery-muted font-normal">{t.sculpture.material}</dt>
               <dd className="font-medium text-right sm:text-left">{material}</dd>
-
-              <dt className="text-gallery-muted font-normal">{t.sculpture.technique}</dt>
-              <dd className="font-medium text-right sm:text-left">{technique}</dd>
             </dl>
           </div>
 

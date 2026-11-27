@@ -50,8 +50,8 @@ class SculptureBase(BaseModel):
     story_en: str = Field(min_length=10, description="Artist story / concept in English")
     material_ua: str = Field(min_length=2, description="Material in Ukrainian (e.g., Глина, Шамот)")
     material_en: str = Field(min_length=2, description="Material in English (e.g., Clay, Chamotte)")
-    technique_ua: str = Field(default="Ручне ліплення, випал, ангоби, глазур")
-    technique_en: str = Field(default="Hand-sculpted, kiln-fired, engobes, glaze")
+    technique_ua: Optional[str] = None
+    technique_en: Optional[str] = None
     year: int = Field(ge=2000, le=2050, default=2024)
     edition_ua: str = Field(default="Єдиний екземпляр")
     edition_en: str = Field(default="Unique original")
