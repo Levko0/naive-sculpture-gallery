@@ -619,4 +619,162 @@ SEED_SCULPTURES: List[Dict[str, Any]] = [   {   'id': 'sculpt-007',
         'display_order': 20,
         'is_featured': True,
         'created_at': '2026-11-24T22:46:00Z',
-        'updated_at': '2026-11-24T22:46:00Z'}]
+        'updated_at': '2026-11-24T22:46:00Z'},
+    {   'id': 'sculpt-027',
+        'slug': 'predky-piskovyk',
+        'title_ua': 'Предки',
+        'title_en': 'Ancestors',
+        'story_ua': "Багатофігурний кам'яний рельєф зі світлого пісковику, у якому оживають обличчя кількох "
+                    'поколінь роду. Зліва — поважний вусатий дід у шапці, у центрі — схилена в тихому '
+                    'благословенні постать матері-берегині, під покровом якої туляться молодші нащадки, а '
+                    'праворуч — зосереджений профіль старця. Необроблені грані брили підкреслюють відчуття, що '
+                    "пам'ять роду проступає просто з глибини віків.",
+        'story_en': 'A multi-figure relief carved from warm light sandstone, awakening the faces of generations '
+                    'past. To the left stands a mustachioed elder in a folk cap; at the center, a veiled '
+                    'matriarch shelters smaller ancestral figures beneath her mantle; to the right, a '
+                    'contemplative elder looks quietly aside. Raw quarry edges reinforce the sense of ancestral '
+                    'memory emerging directly from ancient stone.',
+        'material_ua': 'Пісковик',
+        'material_en': 'Sandstone',
+        'year': 2026,
+        'edition_ua': 'Єдиний екземпляр',
+        'edition_en': 'Unique original',
+        'price_uah': 40000,
+        'price_eur': 900,
+        'price_usd': 980,
+        'dimensions': {'height_cm': 40.0, 'width_cm': 30.0, 'depth_cm': 15.0, 'weight_kg': 18.5},
+        'photos': [   {   'url': '/sculptures/predky.webp',
+                          'alt_ua': 'Предки — багатофігурна скульптура з пісковику, 40×30×15 см, 2026',
+                          'alt_en': 'Ancestors — multi-figure sandstone relief sculpture, 40×30×15 cm, 2026',
+                          'is_cover': True,
+                          'display_order': 0}],
+        'status': 'AVAILABLE',
+        'display_order': 21,
+        'is_featured': True,
+        'created_at': '2026-11-27T09:44:00Z',
+        'updated_at': '2026-11-27T09:44:00Z'},
+    {   'id': 'sculpt-028',
+        'slug': 'prykhovane-piskovyk-metal',
+        'title_ua': 'Приховане',
+        'title_en': 'The Hidden',
+        'story_ua': 'Архітектонічна композиція з пісковику та патинованого металу, що розкриває тему внутрішнього '
+                    "прихистку й оберегу. Дві високі нахилені кам'яні стели з наївними ликами утворюють захисну "
+                    "арку над крихітною постаттю, схованою всередині на кам'яному містку. Контраст світлого "
+                    'тесаного пісковику та теплої іржавої фактури металевого постаменту надає твору філософської '
+                    'глибини й монументальної рівноваги.',
+        'story_en': 'An architectural composition in sandstone and patinated metal exploring shelter, intimacy, '
+                    'and inner sanctuary. Two tall leaning stone steles bearing naive faces form a protective '
+                    'arch over a tiny carved figure resting on a rough stone bridge within. The dialogue between '
+                    'pale chiseled sandstone and the warm weathered metal plinth gives the sculpture poetic '
+                    'balance and quiet monumentality.',
+        'material_ua': 'Пісковик, метал',
+        'material_en': 'Sandstone, metal',
+        'year': 2026,
+        'edition_ua': 'Єдиний екземпляр',
+        'edition_en': 'Unique original',
+        'price_uah': 90000,
+        'price_eur': 2030,
+        'price_usd': 2200,
+        'dimensions': {'height_cm': 70.0, 'width_cm': 50.0, 'depth_cm': 20.0, 'weight_kg': 38.0},
+        'photos': [   {   'url': '/sculptures/prykhovane.webp',
+                          'alt_ua': 'Приховане — скульптура з пісковику та металу, 70×50×20 см',
+                          'alt_en': 'The Hidden — sandstone and metal sculpture, 70×50×20 cm',
+                          'is_cover': True,
+                          'display_order': 0}],
+        'status': 'AVAILABLE',
+        'display_order': 22,
+        'is_featured': True,
+        'created_at': '2026-11-27T09:44:10Z',
+        'updated_at': '2026-11-27T09:44:10Z'},
+    {   'id': 'sculpt-029',
+        'slug': 'hutsul-habro',
+        'title_ua': 'Гуцул',
+        'title_en': 'Hutsul',
+        'story_ua': 'Характерний портретний бюст карпатського горянина, висічений із благородного темного габро з '
+                    'теплими мінеральними вкрапленнями. Заплющені очі, пишні вуса та глибока зосередженість '
+                    'обличчя передають незворушну силу й мудрість Карпат. Чітка геометрична основа підкреслює '
+                    "виразність наївної кам'яної пластики та живу гру світла на відколах породи.",
+        'story_en': 'A charismatic portrait bust of a Carpathian highlander carved from dark speckled gabbro '
+                    'laced with warm mineral flecks. Closed eyes, a sweeping mustache, and quiet inward resolve '
+                    'embody the enduring spirit of the Carpathian mountains, grounded upon a crisp square stone '
+                    'base.',
+        'material_ua': 'Габро',
+        'material_en': 'Gabbro',
+        'year': 2026,
+        'edition_ua': 'Єдиний екземпляр',
+        'edition_en': 'Unique original',
+        'price_uah': 25000,
+        'price_eur': 560,
+        'price_usd': 610,
+        'dimensions': {'height_cm': 25.0, 'width_cm': 20.0, 'depth_cm': 12.0, 'weight_kg': 8.5},
+        'photos': [   {   'url': '/sculptures/hutsul.webp',
+                          'alt_ua': 'Гуцул — скульптура з габро, 25×20×12 см',
+                          'alt_en': 'Hutsul — gabbro stone bust sculpture, 25×20×12 cm',
+                          'is_cover': True,
+                          'display_order': 0}],
+        'status': 'AVAILABLE',
+        'display_order': 23,
+        'is_featured': True,
+        'created_at': '2026-11-27T09:44:20Z',
+        'updated_at': '2026-11-27T09:44:20Z'},
+    {   'id': 'sculpt-030',
+        'slug': 'kozak-bazalt',
+        'title_ua': 'Козак',
+        'title_en': 'Cossack',
+        'story_ua': 'Камерний, сповнений тепла образ козака-бандуриста, вирізьблений зі справжньої львівської '
+                    'базальтової бруківки. Вусатий воїн-співець тримає в руках бандуру із солярною зіркою на '
+                    'деці, немов зберігаючи в твердому камені живу мелодію давніх дум. Природні темні прожилки й '
+                    'фактура старого базальту надають скульптурі неповторного історичного характеру.',
+        'story_en': 'An intimate folk sculpture of a Cossack bandura player carved directly from an authentic '
+                    'Lviv basalt cobblestone. The mustachioed minstrel cradles a bandura adorned with an incised '
+                    'solar star, preserving the living cadence of ancestral ballads within hard volcanic stone.',
+        'material_ua': 'Базальт (львівська бруківка)',
+        'material_en': 'Basalt (Lviv cobblestone)',
+        'year': 2026,
+        'edition_ua': 'Єдиний екземпляр',
+        'edition_en': 'Unique original',
+        'price_uah': 25000,
+        'price_eur': 560,
+        'price_usd': 610,
+        'dimensions': {'height_cm': 30.0, 'width_cm': 20.0, 'depth_cm': 14.0, 'weight_kg': 10.5},
+        'photos': [   {   'url': '/sculptures/kozak-bazalt.webp',
+                          'alt_ua': 'Козак — скульптура з базальту (львівська бруківка), 30×20×14 см, 2026',
+                          'alt_en': 'Cossack — sculpture in Lviv basalt cobblestone, 30×20×14 cm, 2026',
+                          'is_cover': True,
+                          'display_order': 0}],
+        'status': 'AVAILABLE',
+        'display_order': 24,
+        'is_featured': True,
+        'created_at': '2026-11-27T09:44:30Z',
+        'updated_at': '2026-11-27T09:44:30Z'},
+    {   'id': 'sculpt-031',
+        'slug': 'triitsia-piskovyk',
+        'title_ua': 'Трійця',
+        'title_en': 'Trinity Candlestick',
+        'story_ua': 'Сакральний свічник-трійця, висічений зі світлого пісковику в традиції гуцульської та '
+                    'подільської народної різьби. Три свічкові рамена поєднані в цілісну композицію з центральним '
+                    "Розп'яттям, крилатими ангелами та благословенними ликами. Світла фактура каменю перетворює "
+                    'обрядовий предмет на монументальний оберіг світла, миру та духовної єдності.',
+        'story_en': 'A ceremonial three-branched Trinity candlestick sculpted from pale sandstone in the '
+                    'tradition of Ukrainian folk sacred carving. Its three arms unite a central Crucifixion, '
+                    'winged angels, and serene visages into a luminous sculptural shrine celebrating light, '
+                    'peace, and spiritual unity.',
+        'material_ua': 'Пісковик',
+        'material_en': 'Sandstone',
+        'year': 2025,
+        'edition_ua': 'Єдиний екземпляр',
+        'edition_en': 'Unique original',
+        'price_uah': 100000,
+        'price_eur': 2250,
+        'price_usd': 2440,
+        'dimensions': {'height_cm': 65.0, 'width_cm': 46.0, 'depth_cm': 18.0, 'weight_kg': 28.0},
+        'photos': [   {   'url': '/sculptures/triitsia.webp',
+                          'alt_ua': 'Трійця — свічник-трійця з пісковику, 65×46×18 см, 2025',
+                          'alt_en': 'Trinity Candlestick — sandstone sculpture, 65×46×18 cm, 2025',
+                          'is_cover': True,
+                          'display_order': 0}],
+        'status': 'AVAILABLE',
+        'display_order': 25,
+        'is_featured': True,
+        'created_at': '2026-11-27T09:44:40Z',
+        'updated_at': '2026-11-27T09:44:40Z'}]
